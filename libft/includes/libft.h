@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 13:42:01 by emoreau           #+#    #+#             */
-/*   Updated: 2023/07/04 14:00:29 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/07 20:27:54 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char const *s, char *charset);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
