@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/07 21:07:52 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/15 02:10:06 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,36 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define CMD  1
-# define FILE  2
-# define ARG  3
-# define REDIR  4
-# define PIPE  5
+typedef enum s_token
+{
+	CMD,
+	ARG,
+	SUP,
+	SUP_DBE,
+	INF,
+	INF_DBE,
+	FD,
+	LIMITOR,
+	PIPE,
+}	t_token;
 
+typedef struct s_lexer
+{
+	char			*word;
+	t_token			token;
+	// int				i;
+	// t_data		*data;
+	struct s_lexer	*next;
+	struct s_lexer	*prev;
+}	t_lexer;
 
-typedef struct s_cmd
+typedef struct s_data
 {
 	char	*str;
-	int		type;
-}	t_cmd;
+	char 	*quote;
+	char 	**tab;
+	int		nb_word;
+	t_lexer	*lexer;
+}	t_data;
 
 #endif
