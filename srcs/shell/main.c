@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/15 04:29:59 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/15 19:27:21 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	num_separator(char *str, char *quote)
 	res = 0;
 	while (str[i])
 	{
-		if (is_separator(str[i]) == 1)
+		if (is_separator(str[i]) == 1 && quote[i] == '0')
 			res++;
 		i++;
 	}
 	return (res);
 }
 
-void add_space(char *str, char c, int i)
+void	add_space(char *str, char c, int i)
 {
 	str[i] = ' ';
 	i++;
@@ -47,9 +47,9 @@ void add_space(char *str, char c, int i)
 
 char	*space_separator(char *str, char *quote)
 {
-	char *res;
-	int	i;
-	int	j;
+	char	*res;
+	int		i;
+	int		j;
 
 	j = 0;
 	i = 0;
@@ -77,7 +77,7 @@ char	*space_separator(char *str, char *quote)
 // t_lexer create_lst(t_data *data)
 // {
 // 	t_lexer *lexer
-	
+
 // }
 
 t_data	*ft_lexer(t_data *data)
@@ -123,7 +123,7 @@ int	find_dbquote(char *str, char *quote, int *i)
 	while (str[*i] != '"' || str[*i - 1] == '\\')
 	{
 		if (str[*i] == 0)
-			return (0);	
+			return (0);
 		quote[*i] = '1';
 		(*i)++;
 	}
@@ -134,20 +134,21 @@ int	find_dbquote(char *str, char *quote, int *i)
 
 char	*quote(char *str)
 {
+	int		i;
+	char	*quote;
+
 	// if (numchar(str, '\'') % 2 == 1)
 	// 	return (0);
 	// if (numchar(str, '"') % 2 == 1)
 	// 	return (0);
-	int		i;
-	char	*quote;
-
 	i = 0;
 	quote = malloc(sizeof(ft_strlen(str) + 1));
 	if (!quote)
-		return(NULL);
+		return (NULL);
 	while (str[i])
 	{
-		if ((str[i] == '\'' && i == 0) || (str[i] == '\'' && str[i - 1] != '\\'))
+		if ((str[i] == '\'' && i == 0) || (str[i] == '\'' && str[i
+				- 1] != '\\'))
 		{
 			quote[i] = '3';
 			i++;
@@ -155,7 +156,7 @@ char	*quote(char *str)
 			// {
 			// 	i++;
 			// 	if (str[i] == 0)
-			// 		return (0);	
+			// 		return (0);
 			// }
 			if (find_quote(str, quote, &i) == 0)
 				return (NULL);
@@ -168,7 +169,7 @@ char	*quote(char *str)
 			// {
 			// 	i++;
 			// 	if (str[i] == 0)
-			// 		return (0);	
+			// 		return (0);
 			// }
 			if (find_dbquote(str, quote, &i) == 0)
 				return (NULL);
@@ -186,14 +187,71 @@ char	*quote(char *str)
 // int	quote(char *str)
 // {
 // 	if (veriquote(str) == 0)
-// 		return (0);	
+// 		return (0);
 // 	return (1);
 // }
 
-int parsing(t_data *data)
+int	pars_redir(t_data *data, int i)
+{
+	if (data->str[i + 1] == '|' || (data->str[i + 2] == '|' && data->str[i + 1] != '\\' ))
+		return (0);
+	else
+		return (1);
+}
+
+int	is_quote(char c)
+{
+	if (c == '\'' || c == '"')
+		return (1);
+	else
+		return (0);
+}
+
+int	has_word(t_data *data, int	i, int dir)
+{
+	i = i + dir;
+	while (data->str[i])
+	{
+		if (is_separator(data->str[i]) == 0)
+			return (1);
+		i = i + dir;
+	}
+	return (0);
+}
+
+int	pars_pipe(t_data *data, int	i)
+{
+	if (has_word(data, i, 1) == 0 || has_word(data, i, -1) == 0)
+		return (0);
+	else
+		return (1);
+}
+
+int	pars_separator(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->str[i])
+	{
+		if ((data->str[i] == '<' && data->quote[i] == '0')
+			|| (data->str[i] == '>' && data->quote[i] == '0'))
+			if (pars_redir(data, i) == 0)
+				return (0);
+		if (data->str[i] == '|' && data->quote[i] == '0')
+			if(pars_pipe(data, i) == 0)
+				return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	parsing(t_data *data)
 {
 	data->quote = quote(data->str);
 	if (!data->quote)
+		return (0);
+	if (pars_separator(data) == 0)
 		return (0);
 	// space_separator(data->str, data->quote);
 	ft_lexer(data);
@@ -202,7 +260,7 @@ int parsing(t_data *data)
 
 t_data	*first_init(void)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	{
@@ -214,7 +272,7 @@ t_data	*first_init(void)
 
 int	routine(void)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = first_init();
 	data->str = readline("minishell ");
@@ -234,17 +292,12 @@ int	main(int ac, char **av, char **env)
 	// char *str;
 	// char **tab;
 	// int i = 0;
-
 	// first_init(data);
 	routine();
-
-	
 	// while(strcmp("stop", str) != 0)
 	// {
 	// 	str = readline("minishell->");
 	// }
-
 	// tab = ft_split(str, " ");
-
 	// free(str);
 }
