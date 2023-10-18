@@ -6,17 +6,21 @@
 #    By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/10/06 18:49:22 by emoreau          ###   ########.fr        #
+#    Updated: 2023/10/18 16:38:52 by emoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_DIR		=	./srcs/
 OBJ_DIR		=	./obj/
 
-SRCS		=	shell/main.c
+SRCS		=	shell/main.c\
+					parsing/lexer.c\
+					parsing/quote.c\
+					parsing/pars_utils.c\
+					parsing/lexer_len.c\
+					parsing/copy_word.c
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
-BONUS_OBJS = $(patsubst %.c,$(BONUS_OBJ_DIR)%.o,$(SRCS_BONUS))
 
 NAME	=	minishell
 CC		=	gcc
@@ -27,10 +31,12 @@ all:	${NAME}
 
 $(NAME):	$(OBJS)
 	$(MAKE) -C libft
+	@echo Compiling $<
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline libft/libft.a
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(@D)
+	@echo Compiling $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
