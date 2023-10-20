@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/18 21:45:53 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/20 21:41:31 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ t_lexer	*create_node(t_data *data, int *i)
 	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
 		return (NULL);
-	lexer->word = find_token(data, i);
+	// if (find_token(data, i))
+		lexer->word = find_token(data, i);
 	return (lexer);
 }
 
@@ -50,7 +51,7 @@ t_lexer	*lst_cmd(t_data *data)
 	prev = 0;
 	i = 0;
 	int len = ft_strlen(data->str);
-	
+
 	while (i < len)
 	{
 		if (prev == 0)
@@ -76,16 +77,17 @@ t_lexer	*lexer(t_data *data)
 {
 	t_lexer *lexer;
 
-	if (quote(data->str) == 0)
-		return (0);
-	lexer = lst_cmd(data);;
-	give_token(lexer);
+	lexer = lst_cmd(data);
+	// rm_quote
+	// give_token(lexer);
 	// test
 	// t_lexer *tmp;
-
+	// if (!lexer || lexer == NULL)
+	// 	return (NULL);
 	while (lexer)
 	{
-		printf("%s\n", lexer->word);
+		if (lexer->word)
+			printf("%s le token est %d\n", lexer->word, lexer->token);
 		// printf("%s\n", lexer->word);
 		// tmp = lexer;
 		lexer = lexer->next;

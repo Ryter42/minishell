@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/18 16:30:45 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/20 21:32:05 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ t_data	*data_init(void)
 	return (data);
 }
 
+// int	parser(t_lexer *lexer)
+// {
+// 	separator_verif()
+// 	return (0);
+// }
+
 int	routine(char **env)
 {
 	(void)env;
@@ -31,13 +37,10 @@ int	routine(char **env)
 
 	data = data_init();
 	data->str = readline("minishell ");
-	
-	// if (lexer(data) == 0)
-	// 	return (0);
+	if (!first_check(data->str))
+		return (first_check(data->str));
 	data->lexer = lexer(data);
-	// str = ft_lexer(str);
-	// printf("%s\n", data->str);
-	// printf("%s\n", data->quote);
+	// parser(data->lexer);
 	return (1);
 }
 

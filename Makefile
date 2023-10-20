@@ -6,7 +6,7 @@
 #    By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/10/18 16:38:52 by emoreau          ###   ########.fr        #
+#    Updated: 2023/10/20 20:28:25 by emoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,11 @@ SRCS		=	shell/main.c\
 					parsing/quote.c\
 					parsing/pars_utils.c\
 					parsing/lexer_len.c\
-					parsing/copy_word.c
+					parsing/copy_word.c\
+					parsing/check.c\
+					parsing/token.c\
+					parsing/token_sep.c
+
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 

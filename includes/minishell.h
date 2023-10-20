@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/18 19:27:47 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/20 21:31:50 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ typedef struct s_data
 {
 	char	*str;
 	// char 	*quote;
-	char 	**tab;
+	// char 	**tab;
 	int		nb_word;
 	t_lexer	*lexer;
 }	t_data;
 
 int		routine(char **env);
 t_data	*data_init(void);
-int		quote(char *str);
+int		quote_verif(char *str);
 int		find_dbquote(char *str, int *i);
 int		find_quote(char *str, int *i);
 
@@ -73,8 +73,7 @@ int	separator_len(char *str, int i);
 char	*find_sep(char *str, int *i);
 int	quote_len(char *str, int i, char c);
 char *quote_word(char *str, int *i, char c);
-// int	dquote_len(char *str, int i);
-char *dquote_word(char *str, int *i);
+// char *dquote_word(char *str, int *i);
 int	word_len(char *str, int i);
 char *normal_word(char *str, int *i);
 char	*find_word(char *str, int *i);
@@ -82,9 +81,23 @@ char *find_token(t_data *data, int *i);
 t_lexer	*create_node(t_data *data, int *i);
 t_lexer	*lst_cmd(t_data *data);
 t_lexer	*lexer(t_data *data);
-t_lexer	*ft_lexer(t_data *data);
+// t_lexer	*ft_lexer(t_data *data);
 int tokend(char *str, int i);
 int stop_token(char c);
+
+// check
+
+int first_check(char *str);
+int	metachar_verif(char *str);
+int	metachar_verif2(char *str);
+int	metachar_verif3(int i, char *str);
+int	is_metachar(char c);
+
+// token
+
+t_token	token_inf(char *str);
+t_token	token_sup(char *str);
+t_token	token_sep(t_lexer *lexer);
 
 
 

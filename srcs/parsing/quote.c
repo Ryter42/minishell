@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:26:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/18 16:44:01 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/20 18:50:14 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	find_dbquote(char *str, int *i)
 	return (1);
 }
 
-int	quote(char *str)
+int	quote_verif(char *str)
 {
 	int		i;
 	// char	*quote;
