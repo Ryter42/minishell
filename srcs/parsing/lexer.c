@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/20 21:41:31 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/22 22:20:19 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,23 @@ t_lexer	*create_node(t_data *data, int *i)
 	if (!lexer)
 		return (NULL);
 	// if (find_token(data, i))
-		lexer->word = find_token(data, i);
-	return (lexer);
+	lexer->word = find_token(data, i);
+	if (lexer->word)
+		return (lexer);
+	else
+		return(free(lexer), NULL);
 }
 
-t_lexer	*lst_cmd(t_data *data)
+t_lexer	*lst_lexer(t_data *data)
 {
 	t_lexer *lexer;
+	int len; 
 	int i;
 	int	prev;
 
 	prev = 0;
 	i = 0;
-	int len = ft_strlen(data->str);
+	len = ft_strlen(data->str);
 
 	while (i < len)
 	{
@@ -63,39 +67,46 @@ t_lexer	*lst_cmd(t_data *data)
 		else
 		{
 			lexer->next = create_node(data, &i);
-			lexer->next->prev = lexer;
-			lexer = lexer->next;
+			if (lexer->next)
+			{
+				lexer->next->prev = lexer;
+				lexer = lexer->next;
+			}
 		}
 	}
-	lexer->next = NULL;
+	// lexer->next = NULL;
 	while (lexer->prev)
 		lexer = lexer->prev;
 	return (lexer);
 }
 
-t_lexer	*lexer(t_data *data)
+t_cmd	*lexer(t_data *data, char **env)
 {
 	t_lexer *lexer;
 
-	lexer = lst_cmd(data);
+	if (!first_check(data->str))
+		return (0);
+	lexer = lst_lexer(data);
+	give_token(lexer);
+	if (!check(lexer))
+		return (0);
 	// rm_quote
-	// give_token(lexer);
 	// test
-	// t_lexer *tmp;
 	// if (!lexer || lexer == NULL)
 	// 	return (NULL);
-	while (lexer)
-	{
-		if (lexer->word)
-			printf("%s le token est %d\n", lexer->word, lexer->token);
-		// printf("%s\n", lexer->word);
-		// tmp = lexer;
-		lexer = lexer->next;
-	}
+	// t_lexer *tmp;
+	// while (lexer)
+	// {
+	// 	if (lexer->word)
+	// 		// printf("%s le token est %d\n", lexer->word, lexer->token);
+	// 	// printf("%s\n", lexer->word);
+	// 	// tmp = lexer;
+	// 	lexer = lexer->next;
+	// }
 	// while(tmp)
 	// {
-	// 	printf("%s\n", tmp->word);
+	// 	// printf("%s\n", tmp->word);
 	// 	tmp = tmp->prev;	
 	// }
-	return (lexer);
+	return (clean_cmd(lexer, env));
 }

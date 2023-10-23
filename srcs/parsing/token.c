@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 21:37:39 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/20 21:30:38 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/21 18:38:20 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,17 @@ int	has_cmd(t_lexer *lexer)
 
 t_token token_word(t_lexer *lexer)
 {
-	if (token_is_redir(lexer->prev->token) > 0)
-		return (token_file(lexer->prev->token));
-	if (has_cmd(lexer) == 0)
-		return (CMD);
+	if (lexer->prev)
+	{
+		if (token_is_redir(lexer->prev->token) > 0)
+			return (token_file(lexer->prev->token));
+		if (has_cmd(lexer->prev) == 0)
+			return (CMD);
+		else
+			return (ARG);
+	}
 	else
-		return (ARG);
+		return (CMD);
 }
 
 t_token	whatoken(t_lexer *lexer)

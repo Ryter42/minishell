@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:16:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/07/04 13:59:34 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/23 02:14:22 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
-	while (str[i])
-		i++;
+	if (str)
+	{
+		while (str[i])
+			i++;
+	}
 	return (i);
 }
 

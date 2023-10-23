@@ -3,105 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 20:11:11 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/20 20:04:28 by emoreau          ###   ########.fr       */
+/*   Created: 2023/10/21 23:51:51 by elias             #+#    #+#             */
+/*   Updated: 2023/10/22 02:55:51 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int first_check(char *str)
+int	cmd_before_pipe(t_lexer *lexer)
 {
-	if (!quote_verif(str))
-		return (1);
-	if (!metachar_verif(str))
-		return (1);
+	while (lexer && lexer->token != PIPE)
+	{
+		if (lexer->token == CMD)
+			return (1);
+		lexer = lexer->prev;
+	}
 	return (0);
 }
 
-int bt_quote(char *str, int i)
+int	cmd_after_pipe(t_lexer *lexer)
 {
-	int		index;
-
-	index = 0;
-	// while (index <= i)
-	while (str[index])
+	while (lexer && lexer->token != PIPE)
 	{
-		if (str[index] == '\'')
+		if (lexer->token == CMD)
+			return (1);
+		lexer = lexer->next;
+	}
+	return (0);
+}
+
+int	pipe_error(t_lexer *lexer)
+{
+	if (cmd_before_pipe(lexer) == 0 || cmd_after_pipe(lexer) == 0)
+		return (printf("minishell: syntax error near unexpected token `|'\n"), 0);
+	else
+		return (1);
+}
+
+int	check_pipe(t_lexer *lexer)
+{
+	while (lexer)
+	{
+		if (lexer->word[0] == '|')
 		{
-			index++;
-			find_quote(str, &index);
-			// if (index > i)
-				// return (i);
+			if (!pipe_error(lexer))
+				return (0);
 		}
-		if (str[index] == '"')
-		{
-			index++;
-			find_dbquote(str, &index);
-			// if (index > i)
-			// 	return (1);
-		}
-		if (index == i)
-			return (0);
-		index++;
+		lexer = lexer->next;
 	}
 	return (1);
 }
 
-int	metachar_verif(char *str)
+int check(t_lexer *lexer)
 {
-	int	i;
-
-	i = ft_strlen(str) - 1;
-	while (i >= 0)
-	{
-		if (str[i] == ')' && bt_quote(str, i) == 0)
-		{
-			printf("minishell: syntax error near unexpected token `)'\n");
-			return (2);
-		}
-		else if (str[i] == '(' && bt_quote(str, i) == 0)
-		{
-			printf("minishell: syntax error near unexpected token `('\n");
-			return (2);
-		}
-		i--;
-	}
-	if (metachar_verif2(str) == 2)
-		return (2);
-	else
+	if (!check_separator(lexer))
 		return (0);
-}
-
-// int	is_metachar(char c)
-// {
-// 	if (c == ')' || c == '(' || c == '&' || c == ';')
-// 		return (1);
-// 	else
-// 		return (0);
-// }
-
-
-int	metachar_verif2(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '&' && bt_quote(str, i) == 0)
-		{
-			printf("minishell: syntax error near unexpected token `&'\n");
-			return (2);
-		}
-		else if (str[i] == ';' && bt_quote(str, i) == 0)
-		{
-			printf("minishell: syntax error near unexpected token `;'\n");
-			return (2);
-		}
-		i++;
-	}
-	return (0);
+	// if (!check_pipe(lexer))
+	// 	return (0);
+	return (1);
 }

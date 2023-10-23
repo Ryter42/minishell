@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/20 21:31:50 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/23 03:15:14 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,19 @@ typedef struct s_lexer
 	struct s_lexer	*prev;
 }	t_lexer;
 
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			**arg;
+	char 			*infile;
+	char 			*outfile;
+	int				add_out;
+	int				heredoc;
+	char			**limiter;
+	struct s_cmd	*next;
+	// struct s_cmd	*prev;
+}	t_cmd;
+
 typedef struct s_data
 {
 	char	*str;
@@ -69,21 +82,22 @@ int		find_quote(char *str, int *i);
 int	is_separator(char c);
 int	is_space(char c);
 int	is_quote(char c);
-int	separator_len(char *str, int i);
+int	is_redir(char c);
+
+int		separator_len(char *str, int i);
 char	*find_sep(char *str, int *i);
-int	quote_len(char *str, int i, char c);
-char *quote_word(char *str, int *i, char c);
+int		quote_len(char *str, int i, char c);
+char 	*quote_word(char *str, int *i, char c);
 // char *dquote_word(char *str, int *i);
-int	word_len(char *str, int i);
-char *normal_word(char *str, int *i);
+int		word_len(char *str, int i);
+char 	*normal_word(char *str, int *i);
 char	*find_word(char *str, int *i);
-char *find_token(t_data *data, int *i);
+char 	*find_token(t_data *data, int *i);
 t_lexer	*create_node(t_data *data, int *i);
-t_lexer	*lst_cmd(t_data *data);
-t_lexer	*lexer(t_data *data);
-// t_lexer	*ft_lexer(t_data *data);
-int tokend(char *str, int i);
-int stop_token(char c);
+t_lexer	*lst_lexer(t_data *data);
+t_cmd	*lexer(t_data *data, char **env);
+int 	tokend(char *str, int i);
+int 	stop_token(char c);
 
 // check
 
@@ -92,14 +106,27 @@ int	metachar_verif(char *str);
 int	metachar_verif2(char *str);
 int	metachar_verif3(int i, char *str);
 int	is_metachar(char c);
+int check(t_lexer *lexer);
+int	check_separator(t_lexer *lexer);
 
 // token
 
+void	give_token(t_lexer *lexer);
 t_token	token_inf(char *str);
 t_token	token_sup(char *str);
 t_token	token_sep(t_lexer *lexer);
 
+// clean
+t_cmd	*clean_cmd(t_lexer *lexer, char **env);
 
+// expand
+void	expand(t_lexer *lexer, char **env);
+void	variable(t_lexer *lexer, char **env);
+void	replace_var(char **env, t_lexer *lexer, char *var_name);
+char	*find_var(char **env, char *name, int len);
+int 	bt_sp_quote(char *str, int i);
+char	*find_var_name(char *str, int index);
+int		variable_len(char *str, int i);
 
 #endif
 

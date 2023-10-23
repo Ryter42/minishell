@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/10/06 17:37:13 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/22 03:07:17 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ void	ft_wait(t_data *data)
 	free(data->pid);
 }
 
-// int	main(int ac, char **av, char **env)
-// {
-// 	t_data	*data;
+int	exec(char **env)
+{
+	t_data	*data;
 
-// 	if (ac < 5)
-// 		return (ft_printf("Error arg\n"), 1);
-// 	data = init(ac, av, env);
-// 	loopfork(data);
-// 	ft_free(data);
-// 	unlink(".heredoc_tmp");
-// 	return (0);
-// }
+	if (ac < 5)
+		return (ft_printf("Error arg\n"), 1);
+	data = init(ac, av, env);
+	loopfork(data);
+	ft_free(data);
+	unlink(".heredoc_tmp");
+	return (0);
+}

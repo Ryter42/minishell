@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/20 21:32:05 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/23 02:43:40 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,16 @@ t_data	*data_init(void)
 
 int	routine(char **env)
 {
-	(void)env;
 	t_data	*data;
 
 	data = data_init();
-	data->str = readline("minishell ");
-	if (!first_check(data->str))
-		return (first_check(data->str));
-	data->lexer = lexer(data);
-	// parser(data->lexer);
+	data->str = " ";
+	while (ft_strncmp(data->str, "stop", 4) != 0)
+	{
+		data->str = readline("minishell ");
+		add_history(data->str);
+		lexer(data, env);
+	}
 	return (1);
 }
 

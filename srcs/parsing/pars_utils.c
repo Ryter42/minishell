@@ -3,18 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   pars_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:29:03 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/18 21:37:46 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/22 02:01:04 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+int	is_redir(char c)
+{
+	if (c == '<' || c == '>')
+		return (1);
+	else
+		return (0);
+}
+
 int	is_separator(char c)
 {
-	if (c == '<' || c == '>' || c == '|')
+	if (is_redir(c) == 1 || c == '|')
 		return (1);
 	else
 		return (0);
