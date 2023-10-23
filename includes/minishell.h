@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 03:15:14 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/23 16:58:26 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,22 @@ t_token	token_sep(t_lexer *lexer);
 
 // clean
 t_cmd	*clean_cmd(t_lexer *lexer, char **env);
+t_cmd	*lst_cmd(t_lexer *lexer);
+t_cmd	*create_cmd(t_lexer *lexer);
+void	outfile(t_lexer *lexer, t_cmd *cmd);
+void	create_outfile(t_lexer *lexer);
+char	*infile(t_lexer *lexer);
+char	**arg(t_lexer *lexer);
+int		nb_arg(t_lexer *lexer);
+char	*commande(t_lexer *lexer);
+char	**limiter(t_lexer *lexer, int n);
+int		heredoc(t_lexer *lexer);
+
+int		num_quote(char *str);
+int		copy_in_quote(char *str, char *str2, int *i, int *i2);
+char	*line_without_quote(char *str);
+void	rm_quote(t_lexer *lexer);
+
 
 // expand
 void	expand(t_lexer *lexer, char **env);

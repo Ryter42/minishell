@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 03:11:58 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 03:13:37 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/23 15:35:32 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*find_var(char **env, char *name, int len)
 	index = 0;
 	while (env[i])
 	{
-		if (!ft_strncmp(env[i], name, len + 1))
+		if (!ft_strncmp(env[i], name, len) && env[i][len] == '=')
 			break ;
 		i++;
 	}

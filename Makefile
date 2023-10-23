@@ -6,7 +6,7 @@
 #    By: elias <elias@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/10/23 03:15:41 by elias            ###   ########.fr        #
+#    Updated: 2023/10/23 17:00:41 by elias            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,10 @@ SRCS		=	shell/main.c\
 					parsing/token.c\
 					parsing/token_sep.c\
 					parsing/clean.c\
+					parsing/clean2.c\
 					parsing/expand.c\
-					parsing/expand2.c
-
+					parsing/expand2.c\
+					parsing/rm_quote.c
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 

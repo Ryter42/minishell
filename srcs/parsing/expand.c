@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 03:10:31 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 03:13:16 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/23 16:16:15 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,18 @@ void	variable(t_lexer *lexer, char **env)
 
 void	expand(t_lexer *lexer, char **env)
 {
-	t_lexer *tmp;
-	tmp = lexer;
+	// t_lexer *tmp;
+	// tmp = lexer;
 	while (lexer)
 	{
 		if (!is_separator(lexer->word[0]))
 			variable(lexer, env);
 		lexer = lexer->next;
 	}
-		while (tmp)
-	{
-		// if (tmp->word)
-		printf("%s\n", tmp->word);
-		tmp = tmp->next;
-	}
+	// 	while (tmp)
+	// {
+	// 	// if (tmp->word)
+	// 	printf("%s\n", tmp->word);
+	// 	tmp = tmp->next;
+	// }
 }
