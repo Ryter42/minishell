@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:16:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 02:14:22 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/23 23:55:44 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
-	if (str)
+	if (str[i] != 0)
 	{
-		while (str[i])
+		while (str[i] != 0)
 			i++;
 	}
 	return (i);

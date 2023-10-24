@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 17:00:00 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 18:20:49 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,36 @@ void	outfile(t_lexer *lexer, t_cmd *cmd)
 	}
 }
 
+char	*path_cmd(t_data *data, char *cmd)
+{
+	// char	*path_cmd;
+	// int		file;
+
+	(void)data;
+	// if (is_there_slash(cmd) == 0)
+	// {
+	// 	file = findpath(data, cmd);
+	// 	if (file < 0)
+	// 		return (NULL);
+	// 	path_cmd = ft_strjoin(data->path[file], cmd);
+	// 	return (path_cmd);
+	// }
+	// else
+		return (cmd);
+}
+
 t_cmd	*create_cmd(t_lexer *lexer)
 {
 	t_cmd	*cmd;
 	
 	cmd = malloc(sizeof(t_cmd));
-	cmd->heredoc = heredoc(lexer);
+	cmd->data = lexer->data;
+	cmd->heredoc = nb_heredoc(lexer);
 	if (cmd->heredoc)
 		cmd->limiter = limiter(lexer, cmd->heredoc);
 	else
 		cmd->limiter = NULL;
-	cmd->cmd = commande(lexer);
+	cmd->cmd = path_cmd(lexer->data, commande(lexer));
 	cmd->arg = arg(lexer);
 	cmd->infile = infile(lexer);
 	outfile(lexer, cmd);
@@ -107,11 +126,14 @@ void	printab(char **tab, char *var)
 
 
 
-t_cmd	*clean_cmd(t_lexer *lexer, char **env)
+t_cmd	*clean_cmd(t_lexer *lexer)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
-	expand(lexer, env);
+	// printf("%p\n", lexer->next);
+	lexer = expand(lexer, lexer->data->env);
+
+	printf("%p\n", lexer->next);
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
 	while (cmd)

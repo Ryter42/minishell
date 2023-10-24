@@ -6,13 +6,13 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:35 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 16:59:11 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/23 17:09:54 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	heredoc(t_lexer *lexer)
+int	nb_heredoc(t_lexer *lexer)
 {
 	int	lim;
 

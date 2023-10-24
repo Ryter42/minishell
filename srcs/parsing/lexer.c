@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/22 22:20:19 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 18:20:53 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_lexer	*create_node(t_data *data, int *i)
 		return (NULL);
 	// if (find_token(data, i))
 	lexer->word = find_token(data, i);
+	lexer->data = data;
 	if (lexer->word)
 		return (lexer);
 	else
@@ -80,16 +81,16 @@ t_lexer	*lst_lexer(t_data *data)
 	return (lexer);
 }
 
-t_cmd	*lexer(t_data *data, char **env)
+t_cmd	*lexer(t_data *data)
 {
 	t_lexer *lexer;
-
+	t_cmd	*cmd;
 	if (!first_check(data->str))
 		return (0);
 	lexer = lst_lexer(data);
 	give_token(lexer);
-	if (!check(lexer))
-		return (0);
+	// if (!check(lexer))
+		// return (0);
 	// rm_quote
 	// test
 	// if (!lexer || lexer == NULL)
@@ -106,7 +107,11 @@ t_cmd	*lexer(t_data *data, char **env)
 	// while(tmp)
 	// {
 	// 	// printf("%s\n", tmp->word);
-	// 	tmp = tmp->prev;	
+	// 	tmp = tmp->prev;
 	// }
-	return (clean_cmd(lexer, env));
+
+	printf("%s\n", lexer->word);
+	// printf("%p\n", lexer->next);
+	cmd = clean_cmd(lexer);
+	return (cmd);
 }

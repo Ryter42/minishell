@@ -6,13 +6,13 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 02:43:40 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 17:22:25 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_data	*data_init(void)
+t_data	*data_init(char **env)
 {
 	t_data	*data;
 
@@ -21,6 +21,9 @@ t_data	*data_init(void)
 		if (!data)
 			return (0);
 	}
+	data->fd_tmp = 0;
+	data->path = addslash(env);
+	data->env = env;
 	return (data);
 }
 
@@ -34,13 +37,14 @@ int	routine(char **env)
 {
 	t_data	*data;
 
-	data = data_init();
+	data = data_init(env);
 	data->str = " ";
 	while (ft_strncmp(data->str, "stop", 4) != 0)
 	{
 		data->str = readline("minishell ");
 		add_history(data->str);
-		lexer(data, env);
+		lexer(data);
+		// execution(lexer(data));
 	}
 	return (1);
 }

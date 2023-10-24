@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:54:24 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 16:54:41 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 18:20:19 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ char	*line_without_quote(char *str)
 void	rm_quote(t_lexer *lexer)
 {
 	int	i;
+
+	printf("%p\n", lexer->next);
 
 	while (lexer)
 	{
