@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 21:29:22 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/24 23:30:06 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,28 @@ int	open_infile(t_cmd *cmd,int index)
 	int	fd;
 
 	if (cmd->infile)
+	{
+		// dprintf(2, "infile = %s\n\n", cmd->infile);
 		fd = open(cmd->infile, O_RDONLY);
+		// dprintf(2, "fd in == %d\n\n", fd);		
+	}
 	else if (cmd->heredoc)
+	{
+		// dprintf(2, "heredoc = %d\n\n", cmd->heredoc);
 		fd = open(".heredoc_tmp", O_RDONLY);
+		// dprintf(2, "fd in == %d\n\n", fd);		
+	}
 	else if (index)
+	{
+		// dprintf(2, "pipe numero %d\n\n", index);
 		fd = cmd->data->fd_tmp;
+		// dprintf(2, "fd in == %d\n\n", fd);		
+	}
+	else
+	{
+		// dprintf(2, "rien_in\n\n");
+		return (0);
+	}
 	if (fd == -1)
 	{
 		close(cmd->data->fd[0]);
@@ -111,8 +128,6 @@ int	open_infile(t_cmd *cmd,int index)
 		// ft_free(cmd);
 		exit(EXIT_FAILURE);
 	}
-	else
-		return (0);
 	return (fd);
 }
 
@@ -131,6 +146,10 @@ void	dup_infile(t_cmd *cmd, int index)
 			perror("redir in");
 			exit (EXIT_FAILURE);
 		}
+		else
+		{
+			// dprintf(2, "dupin de %d fait \n\n", fd);
+		}
 	}
 }
 
@@ -141,14 +160,28 @@ int	open_outfile(t_cmd *cmd)
 	if (cmd->outfile)
 	{
 		if (cmd->add_out)
-			fd = open(cmd->infile, O_RDWR | O_CREAT);
+		{
+			fd = open(cmd->outfile, O_RDWR | O_CREAT, 0644); // apend
+			// dprintf(2, "fd out == %d\n\n", fd);		
+		}
 		else
-			fd = open(cmd->infile, O_RDWR | O_CREAT | O_TRUNC);
+		{
+			// dprintf(2, "outfile =  %s\n\n", cmd->outfile);
+			fd = open(cmd->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			// dprintf(2, "fd out == %d\n\n", fd);		
+		}
 	}
 	else if (cmd->next)
+	{
+		// dprintf(2, "cmd->next =  %p\n\n", cmd->next);
 		fd = cmd->data->fd[1];
+		// dprintf(2, "fd out == %d\n\n", fd);		
+	}
 	else
+	{
+		// dprintf(2, "rien_out\n\n");
 		return (0);
+	}
 	if (fd == -1)
 	{
 		close(cmd->data->fd[0]);
@@ -167,13 +200,14 @@ void	dup_outfile(t_cmd *cmd)
 	fd = open_outfile(cmd);
 	if (fd)
 	{
-		// fd = open_outfile(cmd);
+		dprintf(2, "fd = %d\n", fd);
 		close(cmd->data->fd[0]);
-		if (dup2(fd, STDIN_FILENO) == -1)
+		if (dup2(fd, STDOUT_FILENO) == -1)
 		{
-			perror("redir in");
+			perror("redir out");
 			exit (EXIT_FAILURE);
 		}
+		close(fd);
 	}
 }
 
@@ -198,8 +232,8 @@ void	exec(t_cmd *cmd, int index)
 	// 	perror("redir out");
 	// 	exit (EXIT_FAILURE);
 	// }
-	// dup_infile(cmd, index);
-	// dup_outfile(cmd);
+	dup_infile(cmd, index);
+	dup_outfile(cmd);
 	if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
 	{
 		perror(cmd->cmd);

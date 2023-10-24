@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 20:06:32 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/24 23:18:20 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char	*infile(t_lexer *lexer)
 {
 	// lexer = find_last_infile(lexer);
-
 	while (lexer->next && lexer->token != PIPE)
 		lexer = lexer->next;
 	while (lexer && lexer->token != INF && lexer->token != INF_DB)
@@ -38,10 +37,11 @@ void	create_outfile(t_lexer *lexer)
 void	outfile(t_lexer *lexer, t_cmd *cmd)
 {
 	while (lexer->next && lexer->token != PIPE)
-		lexer = lexer->next;
-	while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
+			lexer = lexer->next;
+	while (lexer && lexer->token != PIPE && lexer->token != SUP
+		&& lexer->token != SUP_DB)
 		lexer = lexer->prev;
-	if (lexer)
+	if (lexer && lexer->token != PIPE)
 	{
 		cmd->outfile = lexer->next->word;
 		if (lexer->token == SUP)
@@ -78,7 +78,7 @@ char	*path_cmd(t_data *data, char *cmd)
 t_cmd	*create_cmd(t_lexer *lexer)
 {
 	t_cmd	*cmd;
-	
+
 	cmd = malloc(sizeof(t_cmd));
 	cmd->data = lexer->data;
 	cmd->heredoc = nb_heredoc(lexer);
@@ -95,8 +95,8 @@ t_cmd	*create_cmd(t_lexer *lexer)
 
 t_cmd	*lst_cmd(t_lexer *lexer)
 {
-	t_cmd *cmd;
-	t_cmd *tmp;
+	t_cmd	*cmd;
+	t_cmd	*tmp;
 
 	cmd = create_cmd(lexer);
 	tmp = cmd;
@@ -108,8 +108,8 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 	{
 		cmd->next = create_cmd(lexer);
 		cmd = cmd->next;
-		while (lexer && lexer->token !=	 PIPE)
-			lexer = lexer->next;	
+		while (lexer && lexer->token != PIPE)
+			lexer = lexer->next;
 		if (lexer)
 			lexer = lexer->next;
 	}
@@ -120,38 +120,40 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 
 void	printab(char **tab, char *var)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	while (tab[i])
 	{
 		printf("%s ", var);
 		printf("%d = %s ", i, tab[i]);
 		i++;
 	}
-		printf("\n");
+	printf("\n");
 }
-
-
 
 t_cmd	*clean_cmd(t_lexer *lexer)
 {
-	t_cmd	*cmd;
+	t_cmd *cmd;
+	t_cmd *tmp;
 
 	lexer = expand(lexer, lexer->data->env);
 
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
+	tmp = cmd;
 	// while (cmd)
 	// {
-	// 	printf("cmd = %s\n", cmd->cmd);
-	// 	printf("infile = %s\n", cmd->infile);
-	// 	printf("heredoc = %d\n", cmd->heredoc);
-	// 	if (cmd->limiter)
-	// 		printab(cmd->limiter, "limiter");
-	// 	printab(cmd->arg, "arg");
-	// 	printf("outfile = %s\n", cmd->outfile);
-	// 	printf("add = %d\n", cmd->add_out);
-	// 	printf("\nnew cmd\n");
+		// 	printf("cmd = %s\n", cmd->cmd);
+		// 	printf("infile = %s\n", cmd->infile);
+		// 	printf("heredoc = %d\n", cmd->heredoc);
+		// 	if (cmd->limiter)
+		// 		printab(cmd->limiter, "limiter");
+		// 	printab(cmd->arg, "arg");
+		// printf("outfile = %s\n", cmd->outfile);
+		// 	printf("add = %d\n", cmd->add_out);
+		// 	printf("\nnew cmd\n");
 	// 	cmd = cmd->next;
 	// }
-	return (cmd);
+	return (tmp);
 }
