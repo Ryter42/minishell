@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 17:33:56 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 19:49:30 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	exec(t_cmd *cmd)
 	ft_dup(cmd);
 	if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
 	{
-		perror("cmd->cmd");
+		perror(cmd->cmd);
 		exit(EXIT_FAILURE);
 	}
 }

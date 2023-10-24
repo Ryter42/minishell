@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 18:20:49 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 20:06:32 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,28 @@ void	outfile(t_lexer *lexer, t_cmd *cmd)
 			cmd->add_out = 1;
 		// create_outfile(lexer);
 	}
+	else
+	{
+		cmd->outfile = NULL;
+		cmd->add_out = 0;
+	}
 }
 
 char	*path_cmd(t_data *data, char *cmd)
 {
-	// char	*path_cmd;
-	// int		file;
+	char	*path_cmd;
+	int		file;
 
 	(void)data;
-	// if (is_there_slash(cmd) == 0)
-	// {
-	// 	file = findpath(data, cmd);
-	// 	if (file < 0)
-	// 		return (NULL);
-	// 	path_cmd = ft_strjoin(data->path[file], cmd);
-	// 	return (path_cmd);
-	// }
-	// else
+	if (is_there_slash(cmd) == 0)
+	{
+		file = findpath(data, cmd);
+		if (file < 0)
+			return (NULL);
+		path_cmd = ft_strjoin(data->path[file], cmd);
+		return (path_cmd);
+	}
+	else
 		return (cmd);
 }
 
@@ -82,7 +87,7 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	else
 		cmd->limiter = NULL;
 	cmd->cmd = path_cmd(lexer->data, commande(lexer));
-	cmd->arg = arg(lexer);
+	cmd->arg = arg(lexer, cmd->cmd);
 	cmd->infile = infile(lexer);
 	outfile(lexer, cmd);
 	return (cmd);
@@ -108,7 +113,8 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 		if (lexer)
 			lexer = lexer->next;
 	}
-	// cmd->next = NULL;
+	if (cmd)
+		cmd->next = NULL;
 	return (tmp);
 }
 
@@ -130,24 +136,22 @@ t_cmd	*clean_cmd(t_lexer *lexer)
 {
 	t_cmd	*cmd;
 
-	// printf("%p\n", lexer->next);
 	lexer = expand(lexer, lexer->data->env);
 
-	printf("%p\n", lexer->next);
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
-	while (cmd)
-	{
-		printf("cmd = %s\n", cmd->cmd);
-		printf("infile = %s\n", cmd->infile);
-		printf("heredoc = %d\n", cmd->heredoc);
-		if (cmd->limiter)
-			printab(cmd->limiter, "limiter");
-		printab(cmd->arg, "arg");
-		printf("outfile = %s\n", cmd->outfile);
-		printf("add = %d\n", cmd->add_out);
-		printf("\nnew cmd\n");
-		cmd = cmd->next;
-	}
+	// while (cmd)
+	// {
+	// 	printf("cmd = %s\n", cmd->cmd);
+	// 	printf("infile = %s\n", cmd->infile);
+	// 	printf("heredoc = %d\n", cmd->heredoc);
+	// 	if (cmd->limiter)
+	// 		printab(cmd->limiter, "limiter");
+	// 	printab(cmd->arg, "arg");
+	// 	printf("outfile = %s\n", cmd->outfile);
+	// 	printf("add = %d\n", cmd->add_out);
+	// 	printf("\nnew cmd\n");
+	// 	cmd = cmd->next;
+	// }
 	return (cmd);
 }

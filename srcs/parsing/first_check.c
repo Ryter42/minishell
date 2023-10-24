@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 20:11:11 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 15:48:35 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 19:10:11 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	metachar_verif(char *str)
 			printf("minishell: syntax error near unexpected token `%c'\n", str[i]);
 			return (0);
 		}
-		i--;
+		i++;
 	}
 		return (1);
 }

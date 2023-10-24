@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 19:38:32 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 18:50:04 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-void	ft_free(t_data *data)
+void	ft_free(t_cmd *cmd)
 {
-	ft_wait(data);
+	(void)cmd;
+	// ft_wait(data);
 	// if (data->arg)
 	// 	free_tab(data->arg);
 	// if (data->cmd)

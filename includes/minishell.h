@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 23:21:47 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 20:07:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_cmd	*create_cmd(t_lexer *lexer);
 void	outfile(t_lexer *lexer, t_cmd *cmd);
 void	create_outfile(t_lexer *lexer);
 char	*infile(t_lexer *lexer);
-char	**arg(t_lexer *lexer);
+char	**arg(t_lexer *lexer, char *cmd);
 int		nb_arg(t_lexer *lexer);
 char	*commande(t_lexer *lexer);
 char	**limiter(t_lexer *lexer, int n);

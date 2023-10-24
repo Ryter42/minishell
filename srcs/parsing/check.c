@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 23:51:51 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 17:40:27 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 20:12:46 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_pipe(t_lexer *lexer)
 
 int check(t_lexer *lexer)
 {
-	printf("1--%s\n", lexer->word);
+	// printf("1--%s\n", lexer->word);
 
 	if (!check_separator(lexer))
 		return (0);

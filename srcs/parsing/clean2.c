@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:35 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 17:09:54 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 20:07:33 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	**limiter(t_lexer *lexer, int n)
 		}
 		lexer = lexer->next;
 	}
+	tab[i] = NULL;
 	return (tab);
 }
 
@@ -70,13 +71,14 @@ int	nb_arg(t_lexer *lexer)
 	return (i);
 }
 
-char	**arg(t_lexer *lexer)
+char	**arg(t_lexer *lexer, char *cmd)
 {
 	char	**tab;
 	int	i;
 
-	i = 0;
-	tab = malloc(sizeof(char *) * nb_arg(lexer));
+	i = 1;
+	tab = malloc(sizeof(char *) * (nb_arg(lexer) + 2));
+	tab[0] = cmd;
 	while (lexer && lexer->token != PIPE)
 	{
 		if (lexer->token == ARG)
@@ -86,5 +88,6 @@ char	**arg(t_lexer *lexer)
 		}
 		lexer = lexer->next;
 	}
+	tab[i] = NULL;
 	return (tab);
 }

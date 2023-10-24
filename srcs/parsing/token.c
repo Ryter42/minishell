@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 21:37:39 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 17:21:03 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 19:45:16 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,13 @@ t_token	whatoken(t_lexer *lexer)
 
 void	give_token(t_lexer *lexer)
 {
+	t_lexer *head;
+
+	head = lexer;
 	while (lexer)
 	{
 		lexer->token = whatoken(lexer);
 		lexer = lexer->next;
 	}
+	lexer = head;
 }

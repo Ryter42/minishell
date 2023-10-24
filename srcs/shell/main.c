@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 17:22:25 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/24 20:18:35 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_data	*data_init(char **env)
 int	routine(char **env)
 {
 	t_data	*data;
+	t_cmd	*cmd;
 
 	data = data_init(env);
 	data->str = " ";
@@ -43,8 +44,9 @@ int	routine(char **env)
 	{
 		data->str = readline("minishell ");
 		add_history(data->str);
-		lexer(data);
-		// execution(lexer(data));
+		cmd = lexer(data);
+		if (cmd)
+			execution(cmd);
 	}
 	return (1);
 }
