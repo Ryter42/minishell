@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 19:49:30 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/24 21:29:22 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,16 @@
 // 	}
 // }
 
-int	open_infile(t_cmd *cmd)
+int	open_infile(t_cmd *cmd,int index)
 {
 	int	fd;
 
-	fd = open(cmd->infile, O_RDONLY);
+	if (cmd->infile)
+		fd = open(cmd->infile, O_RDONLY);
+	else if (cmd->heredoc)
+		fd = open(".heredoc_tmp", O_RDONLY);
+	else if (index)
+		fd = cmd->data->fd_tmp;
 	if (fd == -1)
 	{
 		close(cmd->data->fd[0]);
@@ -106,16 +111,20 @@ int	open_infile(t_cmd *cmd)
 		// ft_free(cmd);
 		exit(EXIT_FAILURE);
 	}
+	else
+		return (0);
 	return (fd);
 }
 
 
-void	ft_dup(t_cmd *cmd)
+void	dup_infile(t_cmd *cmd, int index)
 {
 	int	fd;
-	if (cmd->infile)
+	
+	fd = open_infile(cmd, index);
+	if (fd)
 	{
-		fd = open_infile(cmd);
+		// fd = open_infile(cmd);
 		close(cmd->data->fd[0]);
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
@@ -123,11 +132,54 @@ void	ft_dup(t_cmd *cmd)
 			exit (EXIT_FAILURE);
 		}
 	}
-	// else
 }
 
-void	exec(t_cmd *cmd)
+int	open_outfile(t_cmd *cmd)
 {
+	int	fd;
+
+	if (cmd->outfile)
+	{
+		if (cmd->add_out)
+			fd = open(cmd->infile, O_RDWR | O_CREAT);
+		else
+			fd = open(cmd->infile, O_RDWR | O_CREAT | O_TRUNC);
+	}
+	else if (cmd->next)
+		fd = cmd->data->fd[1];
+	else
+		return (0);
+	if (fd == -1)
+	{
+		close(cmd->data->fd[0]);
+		close(cmd->data->fd[1]);
+		perror(cmd->outfile);
+		// ft_free(cmd);
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
+}
+
+void	dup_outfile(t_cmd *cmd)
+{
+	int	fd;
+	
+	fd = open_outfile(cmd);
+	if (fd)
+	{
+		// fd = open_outfile(cmd);
+		close(cmd->data->fd[0]);
+		if (dup2(fd, STDIN_FILENO) == -1)
+		{
+			perror("redir in");
+			exit (EXIT_FAILURE);
+		}
+	}
+}
+
+void	exec(t_cmd *cmd, int index)
+{
+	(void)index;
 	// get_cmd(data);
 	// if (data->index == 2 + data->heredoc)
 	// 	firstcmd(data);
@@ -146,7 +198,8 @@ void	exec(t_cmd *cmd)
 	// 	perror("redir out");
 	// 	exit (EXIT_FAILURE);
 	// }
-	ft_dup(cmd);
+	// dup_infile(cmd, index);
+	// dup_outfile(cmd);
 	if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
 	{
 		perror(cmd->cmd);

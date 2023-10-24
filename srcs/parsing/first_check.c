@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 20:11:11 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 19:10:11 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/24 20:52:26 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,24 +101,24 @@ int	is_metachar(char c)
 }
 
 
-int	metachar_verif2(char *str)
-{
-	int	i;
+// int	metachar_verif2(char *str)
+// {
+// 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '&' && bt_quote(str, i) == 0)
-		{
-			printf("minishell: syntax error near unexpected token `&'\n");
-			return (2);
-		}
-		else if (str[i] == ';' && bt_quote(str, i) == 0)
-		{
-			printf("minishell: syntax error near unexpected token `;'\n");
-			return (2);
-		}
-		i++;
-	}
-	return (0);
-}
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '&' && bt_quote(str, i) == 0)
+// 		{
+// 			printf("minishell: syntax error near unexpected token `&'\n");
+// 			return (2);
+// 		}
+// 		else if (str[i] == ';' && bt_quote(str, i) == 0)
+// 		{
+// 			printf("minishell: syntax error near unexpected token `;'\n");
+// 			return (2);
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }

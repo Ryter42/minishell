@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 20:40:03 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/24 21:18:25 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	loopfork(t_cmd *cmd)
 		if (cmd->data->pid[nb_loop] < 0)
 			return ;
 		if (cmd->data->pid[nb_loop] == 0)
-			exec(cmd);
+			exec(cmd, nb_loop);
 		if (cmd->data->fd[1])
 			close(cmd->data->fd[1]);
 		if (fd_tmp)

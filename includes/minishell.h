@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 20:07:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/24 21:19:05 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ typedef enum s_token
 	PIPE,
 }	t_token;
 
-typedef enum s_quote
-{
-	SANS,
-	SIMPLE,
-	DOUBLE,
-}	t_quote;
+// typedef enum s_quote
+// {
+// 	SANS,
+// 	SIMPLE,
+// 	DOUBLE,
+// }	t_quote;
 
 typedef struct s_data
 {
@@ -59,7 +59,7 @@ typedef struct s_lexer
 {
 	char			*word;
 	t_token			token;
-	t_quote			quote;
+	// t_quote			quote;
 	// int				i;
 	// t_data		*data;
 	t_data			*data;
@@ -163,7 +163,7 @@ void	get_cmd(t_data *data);
 void	firstcmd(t_data *data);
 void	midlecmd(t_data *data);
 void	lastcmd(t_data *data);
-void	exec(t_cmd *cmd);
+void	exec(t_cmd *cmd, int index);
 char	*pathenv(char **env);
 int		is_there_slash(char *str);
 char	**addslash(char **env);
