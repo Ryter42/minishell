@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 20:14:54 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/25 01:23:20 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ t_lexer	*lst_lexer(t_data *data)
 	prev = 0;
 	i = 0;
 	len = ft_strlen(data->str);
+	if (!len)
+		return (NULL);
 	while (i < len)
 	{
 		if (prev == 0)
@@ -90,6 +92,8 @@ t_cmd	*lexer(t_data *data)
 	if (!first_check(data->str))
 		return (0);
 	lexer = lst_lexer(data);
+	if (!lexer)
+		return (NULL);
 	give_token(lexer);
 	if (!check(lexer))
 		return (0);

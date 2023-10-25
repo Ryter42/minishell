@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 22:15:02 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/25 05:53:33 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ void	loopfork(t_cmd *cmd)
 {
 	// pid_t	*pid;
 	// int		fd[2];
-	int		fd_tmp;
+	// int		fd_tmp = 0;
 	int		nb_loop;
+	t_cmd	*tmp;
 
 	nb_loop = 0;
 	cmd->data->nb_cmd = ft_nb_cmd(cmd);
@@ -69,23 +70,24 @@ void	loopfork(t_cmd *cmd)
 			exec(cmd, nb_loop);
 		if (cmd->data->fd[1])
 			close(cmd->data->fd[1]);
-		if (fd_tmp)
-			close(fd_tmp);
-		fd_tmp = cmd->data->fd[0];
+		if (cmd->data->fd_tmp)
+			close(cmd->data->fd_tmp);
+		cmd->data->fd_tmp = cmd->data->fd[0];
 		waitpid(cmd->data->pid[nb_loop], NULL, 0);
 		nb_loop++;
+		tmp = cmd;
 		cmd = cmd->next;
 	}
-	close(fd_tmp);
+	close(tmp->data->fd_tmp);
 }
 
-void	ft_wait(t_data *data)
+void	ft_wait(t_cmd *cmd)
 {
-	while (data->nb_cmd-- >= 0)
+	while (cmd->data->nb_cmd-- >= 0)
 	{
-		waitpid(data->pid[data->nb_cmd], NULL, 0);
+		waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
 	}
-	free(data->pid);
+	free(cmd->data->pid);
 }
 
 int	execution(t_cmd *cmd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 21:19:05 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/25 02:44:09 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ int		is_heredoc(char *str);
 void	heredoc(t_data *data, int fd);
 int		ft_open(t_data *data);
 int		ft_open_heredoc(t_data *data);
-void	ft_wait(t_data *data);
+void	ft_wait(t_cmd *cmd);
 
 #endif
 

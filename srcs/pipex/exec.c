@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 23:30:06 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/25 06:12:50 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,27 +97,33 @@ int	open_infile(t_cmd *cmd,int index)
 {
 	int	fd;
 
+	// dprintf(2, "dans infile----cmd = %s	index = %d\n	cmd->next = %p\n", cmd->cmd, index, cmd->next);
 	if (cmd->infile)
 	{
 		// dprintf(2, "infile = %s\n\n", cmd->infile);
 		fd = open(cmd->infile, O_RDONLY);
+		if (index)
+			close(cmd->data->fd_tmp);
 		// dprintf(2, "fd in == %d\n\n", fd);		
 	}
 	else if (cmd->heredoc)
 	{
-		// dprintf(2, "heredoc = %d\n\n", cmd->heredoc);
+		dprintf(2, "heredoc = %d\n\n", cmd->heredoc);
 		fd = open(".heredoc_tmp", O_RDONLY);
+		if (index)
+			close(cmd->data->fd_tmp);
 		// dprintf(2, "fd in == %d\n\n", fd);		
 	}
 	else if (index)
 	{
 		// dprintf(2, "pipe numero %d\n\n", index);
 		fd = cmd->data->fd_tmp;
-		// dprintf(2, "fd in == %d\n\n", fd);		
+		// dprintf(2, "fd in == %d\n\n", fd);
 	}
 	else
 	{
-		// dprintf(2, "rien_in\n\n");
+		// dprintf(2, "rien_in\n\n");	
+		close(cmd->data->fd_tmp);
 		return (0);
 	}
 	if (fd == -1)
@@ -137,19 +143,18 @@ void	dup_infile(t_cmd *cmd, int index)
 	int	fd;
 	
 	fd = open_infile(cmd, index);
+		// dprintf(2, "2-fd in == %d\n\n", fd);
 	if (fd)
 	{
-		// fd = open_infile(cmd);
+		// fd = open_infile(cmd, index);
 		close(cmd->data->fd[0]);
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
 			perror("redir in");
 			exit (EXIT_FAILURE);
 		}
-		else
-		{
+		close(fd);
 			// dprintf(2, "dupin de %d fait \n\n", fd);
-		}
 	}
 }
 
@@ -157,29 +162,32 @@ int	open_outfile(t_cmd *cmd)
 {
 	int	fd;
 
+	// dprintf(2, "dans outfile----cmd = %s	cmd->next = %p\n", cmd->cmd, cmd->next);
 	if (cmd->outfile)
 	{
 		if (cmd->add_out)
 		{
-			fd = open(cmd->outfile, O_RDWR | O_CREAT, 0644); // apend
+			fd = open(cmd->outfile, O_RDWR | O_CREAT | O_APPEND, 0644);
 			// dprintf(2, "fd out == %d\n\n", fd);		
 		}
 		else
 		{
 			// dprintf(2, "outfile =  %s\n\n", cmd->outfile);
 			fd = open(cmd->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			// dprintf(2, "fd out == %d\n\n", fd);		
+			// dprintf(2, "fd out == %d\n\n", fd);
 		}
+		close(cmd->data->fd[1]);
 	}
 	else if (cmd->next)
 	{
 		// dprintf(2, "cmd->next =  %p\n\n", cmd->next);
 		fd = cmd->data->fd[1];
-		// dprintf(2, "fd out == %d\n\n", fd);		
+		dprintf(2, "fd out == %d\n\n", fd);
 	}
 	else
 	{
 		// dprintf(2, "rien_out\n\n");
+		close(cmd->data->fd[1]);
 		return (0);
 	}
 	if (fd == -1)
@@ -198,11 +206,12 @@ void	dup_outfile(t_cmd *cmd)
 	int	fd;
 	
 	fd = open_outfile(cmd);
+	dprintf(2, "cmd == %s 2-fd out == %d\n\n",cmd->cmd, fd);
 	if (fd)
 	{
-		dprintf(2, "fd = %d\n", fd);
-		close(cmd->data->fd[0]);
-		if (dup2(fd, STDOUT_FILENO) == -1)
+		// dprintf(2, "fd = %d\n", fd);
+		// close(cmd->data->fd[0]);
+		if (dup2(fd, STDOUT_FILENO) == - 1)
 		{
 			perror("redir out");
 			exit (EXIT_FAILURE);
@@ -213,7 +222,7 @@ void	dup_outfile(t_cmd *cmd)
 
 void	exec(t_cmd *cmd, int index)
 {
-	(void)index;
+	// (void)index;
 	// get_cmd(data);
 	// if (data->index == 2 + data->heredoc)
 	// 	firstcmd(data);
