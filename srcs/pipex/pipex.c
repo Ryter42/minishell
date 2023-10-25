@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/10/25 05:53:33 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/25 16:49:33 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,28 +53,31 @@ void	loopfork(t_cmd *cmd)
 	// pid_t	*pid;
 	// int		fd[2];
 	// int		fd_tmp = 0;
-	int		nb_loop;
+	// int		nb_loop;
 	t_cmd	*tmp;
 
-	nb_loop = 0;
+	// nb_loop = 0;
 	cmd->data->nb_cmd = ft_nb_cmd(cmd);
 	cmd->data->pid = malloc(sizeof(pid_t) * (cmd->data->nb_cmd));
+	cmd->data->nb_cmd = 0;
+	dprintf(2, " cmd numero %d\n", cmd->data->nb_cmd);
 	while (cmd)
 	{
 		if (pipe(cmd->data->fd) < 0)
 			return ;
-		cmd->data->pid[nb_loop] = fork();
-		if (cmd->data->pid[nb_loop] < 0)
+		cmd->data->pid[cmd->data->nb_cmd] = fork();
+		if (cmd->data->pid[cmd->data->nb_cmd] < 0)
 			return ;
-		if (cmd->data->pid[nb_loop] == 0)
-			exec(cmd, nb_loop);
+		if (cmd->data->pid[cmd->data->nb_cmd] == 0)
+			exec(cmd, cmd->data->nb_cmd);
 		if (cmd->data->fd[1])
 			close(cmd->data->fd[1]);
 		if (cmd->data->fd_tmp)
 			close(cmd->data->fd_tmp);
 		cmd->data->fd_tmp = cmd->data->fd[0];
-		waitpid(cmd->data->pid[nb_loop], NULL, 0);
-		nb_loop++;
+		waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
+		cmd->data->nb_cmd++;
+		// nb_loop++;
 		tmp = cmd;
 		cmd = cmd->next;
 	}
@@ -83,9 +86,11 @@ void	loopfork(t_cmd *cmd)
 
 void	ft_wait(t_cmd *cmd)
 {
-	while (cmd->data->nb_cmd-- >= 0)
+	while (cmd->data->nb_cmd > 0)
 	{
-		waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
+		dprintf(2, " wait numero %d\n", cmd->data->nb_cmd);
+		waitpid(cmd->data->pid[cmd->data->nb_cmd - 1], NULL, 0);
+		cmd->data->nb_cmd--;
 	}
 	free(cmd->data->pid);
 }

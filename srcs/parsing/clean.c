@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/24 23:18:20 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/25 16:05:02 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	outfile(t_lexer *lexer, t_cmd *cmd)
 {
 	while (lexer->next && lexer->token != PIPE)
 			lexer = lexer->next;
-	while (lexer && lexer->token != PIPE && lexer->token != SUP
-		&& lexer->token != SUP_DB)
+	// while (lexer && lexer->token != PIPE && lexer->token != SUP
+	while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token != PIPE)
 	{
@@ -118,42 +118,13 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 	return (tmp);
 }
 
-void	printab(char **tab, char *var)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		printf("%s ", var);
-		printf("%d = %s ", i, tab[i]);
-		i++;
-	}
-	printf("\n");
-}
-
 t_cmd	*clean_cmd(t_lexer *lexer)
 {
 	t_cmd *cmd;
-	t_cmd *tmp;
 
 	lexer = expand(lexer, lexer->data->env);
 
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
-	tmp = cmd;
-	// while (cmd)
-	// {
-		// 	printf("cmd = %s\n", cmd->cmd);
-		// 	printf("infile = %s\n", cmd->infile);
-		// 	printf("heredoc = %d\n", cmd->heredoc);
-		// 	if (cmd->limiter)
-		// 		printab(cmd->limiter, "limiter");
-		// 	printab(cmd->arg, "arg");
-		// printf("outfile = %s\n", cmd->outfile);
-		// 	printf("add = %d\n", cmd->add_out);
-		// 	printf("\nnew cmd\n");
-	// 	cmd = cmd->next;
-	// }
-	return (tmp);
+	return (cmd);
 }

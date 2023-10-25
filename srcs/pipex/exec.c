@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/25 06:12:50 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/25 18:04:57 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ int	open_infile(t_cmd *cmd,int index)
 {
 	int	fd;
 
-	// dprintf(2, "dans infile----cmd = %s	index = %d\n	cmd->next = %p\n", cmd->cmd, index, cmd->next);
+	dprintf(2, "---dans infile----\n		cmd = %s	infile = %s	index = %d\n", cmd->cmd, cmd->infile,index);
 	if (cmd->infile)
 	{
-		// dprintf(2, "infile = %s\n\n", cmd->infile);
+		dprintf(2, "infile = %s\n\n", cmd->infile);
 		fd = open(cmd->infile, O_RDONLY);
 		if (index)
 			close(cmd->data->fd_tmp);
@@ -116,9 +116,9 @@ int	open_infile(t_cmd *cmd,int index)
 	}
 	else if (index)
 	{
-		// dprintf(2, "pipe numero %d\n\n", index);
+		dprintf(2, "pipe numero %d\n\n", index);
 		fd = cmd->data->fd_tmp;
-		// dprintf(2, "fd in == %d\n\n", fd);
+		dprintf(2, "fd in == %d\n\n", fd);
 	}
 	else
 	{
@@ -143,7 +143,7 @@ void	dup_infile(t_cmd *cmd, int index)
 	int	fd;
 	
 	fd = open_infile(cmd, index);
-		// dprintf(2, "2-fd in == %d\n\n", fd);
+	dprintf(2, "2-fd in == %d\n\n", fd);
 	if (fd)
 	{
 		// fd = open_infile(cmd, index);
@@ -162,7 +162,8 @@ int	open_outfile(t_cmd *cmd)
 {
 	int	fd;
 
-	// dprintf(2, "dans outfile----cmd = %s	cmd->next = %p\n", cmd->cmd, cmd->next);
+	dprintf(2, "---dans outfile---\n		cmd = %s	outfile = %s	cmd->next = %p\n", cmd->cmd, cmd->outfile, cmd->next);
+		// dprintf(2, "outfile =  %s\n\n", cmd->outfile);
 	if (cmd->outfile)
 	{
 		if (cmd->add_out)
@@ -172,15 +173,15 @@ int	open_outfile(t_cmd *cmd)
 		}
 		else
 		{
-			// dprintf(2, "outfile =  %s\n\n", cmd->outfile);
+			dprintf(2, "outfile =  %s\n\n", cmd->outfile);
 			fd = open(cmd->outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			// dprintf(2, "fd out == %d\n\n", fd);
+			dprintf(2, "fd out == %d\n\n", fd);
 		}
 		close(cmd->data->fd[1]);
 	}
 	else if (cmd->next)
 	{
-		// dprintf(2, "cmd->next =  %p\n\n", cmd->next);
+		dprintf(2, "cmd->next =  %p\n\n", cmd->next);
 		fd = cmd->data->fd[1];
 		dprintf(2, "fd out == %d\n\n", fd);
 	}
@@ -206,7 +207,7 @@ void	dup_outfile(t_cmd *cmd)
 	int	fd;
 	
 	fd = open_outfile(cmd);
-	dprintf(2, "cmd == %s 2-fd out == %d\n\n",cmd->cmd, fd);
+	// dprintf(2, "cmd == %s 2-fd out == %d\n\n",cmd->cmd, fd);
 	if (fd)
 	{
 		// dprintf(2, "fd = %d\n", fd);
@@ -218,29 +219,46 @@ void	dup_outfile(t_cmd *cmd)
 		}
 		close(fd);
 	}
+	else
+		dprintf(2, "fd = 0\n");
+}
+
+void	printab(char **tab, char *var)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("%s ", var);
+		printf("%d = %s	", (i + 1), tab[i]);
+		i++;
+	}
+	printf("\n");
+}
+
+void	print_cmd(t_cmd *cmd)
+{
+	if (cmd->cmd)
+		printf("cmd = %s\n", cmd->cmd);
+	if (cmd->infile)
+		printf("infile = %s\n", cmd->infile);
+	if (cmd->heredoc)
+		printf("heredoc = %d\n", cmd->heredoc);
+	if (cmd->limiter)
+			printab(cmd->limiter, "limiter");
+	if (cmd->arg)
+		printab(cmd->arg, "arg");
+	if (cmd->outfile)
+		printf("outfile = %s\n", cmd->outfile);
+	if (cmd->add_out)
+		printf("add = %d\n", cmd->add_out);
 }
 
 void	exec(t_cmd *cmd, int index)
 {
 	// (void)index;
-	// get_cmd(data);
-	// if (data->index == 2 + data->heredoc)
-	// 	firstcmd(data);
-	// else if (data->index <= data->ac - 3)
-	// 	midlecmd(data);
-	// else
-	// 	lastcmd(data);
-	// close(data->fd[0]);
-	// if (dup2(data->fd_tmp, STDIN_FILENO) == -1)
-	// {
-	// 	perror("redir in");
-	// 	exit (EXIT_FAILURE);
-	// }
-	// if (dup2(data->fd[1], STDOUT_FILENO) == -1)
-	// {
-	// 	perror("redir out");
-	// 	exit (EXIT_FAILURE);
-	// }
+	print_cmd(cmd);
 	dup_infile(cmd, index);
 	dup_outfile(cmd);
 	if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
