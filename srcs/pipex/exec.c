@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/26 19:22:03 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 19:38:17 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,10 +209,10 @@ int	open_outfile(t_cmd *cmd)
 		else
 		{
 			dprintf(2, "outfile que oceane m'a demander d'afficher == %s\n\n", cmd->outfile);
-			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0777);
 			dprintf(2, "fd out == %d\n\n", fd);
-			// fd = open("elias", O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			// dprintf(2, "fd out == %d\n\n", fd);
+			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0777);
+			dprintf(2, "fd out == %d\n\n", fd);
 		}
 		close(cmd->data->fd[1]);
 	}
@@ -257,8 +257,8 @@ void	dup_outfile(t_cmd *cmd)
 		}
 		close(fd);
 	}
-	// else
-	// 	dprintf(2, "fd = 0\n");
+	else
+		dprintf(2, "fd = 0\n");
 }
 
 void	printab(char **tab, char *var)

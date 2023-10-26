@@ -157,7 +157,6 @@ int	open_outfile(t_cmd *cmd)
 		{
 			dprintf(2, "outfile que oceane m'a demander d'afficher == %s\n\n", cmd->outfile);
 			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0777);
-			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0777);
 			dprintf(2, "fd out == %d\n\n", fd);
 		}
 		close(cmd->data->fd[1]);

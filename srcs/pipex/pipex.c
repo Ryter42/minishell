@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 17:14:06 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/26 18:38:27 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	loopfork(t_cmd *cmd)
 	// int		fd[2];
 	// int		fd_tmp = 0;
 	// int		nb_loop;
-	t_cmd	*tmp;
+	// t_cmd	*tmp;
 
 	// nb_loop = 0;
 	cmd->data->nb_cmd = ft_nb_cmd(cmd);
@@ -67,23 +67,23 @@ void	loopfork(t_cmd *cmd)
 			ft_heredoc(cmd);
 		if (pipe(cmd->data->fd) < 0)
 			return ;
-		cmd->data->pid[cmd->data->nb_cmd] = fork();
-		if (cmd->data->pid[cmd->data->nb_cmd] < 0)
-			return ;
-		if (cmd->data->pid[cmd->data->nb_cmd] == 0)
+		// cmd->data->pid[cmd->data->nb_cmd] = fork();
+		// if (cmd->data->pid[cmd->data->nb_cmd] < 0)
+		// 	return ;
+		// if (cmd->data->pid[cmd->data->nb_cmd] == 0)
 			exec(cmd, cmd->data->nb_cmd);
-		if (cmd->data->fd[1])
-			close(cmd->data->fd[1]);
-		if (cmd->data->fd_tmp)
-			close(cmd->data->fd_tmp);
-		cmd->data->fd_tmp = cmd->data->fd[0];
-		waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
-		cmd->data->nb_cmd++;
-		// nb_loop++;
-		tmp = cmd;
-		cmd = cmd->next;
+		// if (cmd->data->fd[1])
+		// 	close(cmd->data->fd[1]);
+		// if (cmd->data->fd_tmp)
+		// 	close(cmd->data->fd_tmp);
+		// cmd->data->fd_tmp = cmd->data->fd[0];
+		// waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
+		// cmd->data->nb_cmd++;
+		// // nb_loop++;
+		// tmp = cmd;
+		// cmd = cmd->next;
 	}
-	close(tmp->data->fd_tmp);
+	// close(tmp->data->fd_tmp);
 }
 
 void	ft_wait(t_cmd *cmd)
