@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   token_sep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/09/25 11:18:01 by emoreau          ###   ########.fr       */
+/*   Created: 2023/10/20 20:26:20 by emoreau           #+#    #+#             */
+/*   Updated: 2023/10/20 20:27:52 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../../includes/minishell.h"
 
-void	free_tab(char **tab)
+t_token	token_inf(char *str)
 {
-	int	i;
-
-	i = 0;
-	if (!tab || tab == NULL)
-		return ;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
+	if (ft_strlen(str) == 1)
+		return (INF);
+	else
+		return	(INF_DB);
 }
 
-void	ft_free(t_data *data)
+t_token	token_sup(char *str)
 {
-	ft_wait(data);
-	if (data->arg)
-		free_tab(data->arg);
-	if (data->cmd)
-		free(data->cmd);
-	if (data->path)
-		free_tab(data->path);
-	if (data)
-		free(data);
+	if (ft_strlen(str) == 1)
+		return (SUP);
+	else
+		return	(SUP_DB);
+}
+
+t_token	token_sep(t_lexer *lexer)
+{
+	if (lexer->word[0] == '<')
+		return	(token_inf(lexer->word));
+	if (lexer->word[0] == '>')
+		return	(token_sup(lexer->word));
+	else
+		return (PIPE);
 }

@@ -3,20 +3,39 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: elias <elias@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/10/06 18:49:22 by emoreau          ###   ########.fr        #
+#    Updated: 2023/10/24 17:29:50 by elias            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_DIR		=	./srcs/
 OBJ_DIR		=	./obj/
 
-SRCS		=	shell/main.c
+SRCS		=	shell/main.c\
+					parsing/lexer.c\
+					parsing/quote.c\
+					parsing/pars_utils.c\
+					parsing/lexer_len.c\
+					parsing/copy_word.c\
+					parsing/check.c\
+					parsing/check_sep.c\
+					parsing/first_check.c\
+					parsing/token.c\
+					parsing/token_sep.c\
+					parsing/clean.c\
+					parsing/clean2.c\
+					parsing/expand.c\
+					parsing/expand2.c\
+					parsing/rm_quote.c\
+					pipex/free.c\
+					pipex/heredoc.c\
+					pipex/pipex.c\
+					pipex/exec.c\
+					pipex/path.c
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
-BONUS_OBJS = $(patsubst %.c,$(BONUS_OBJ_DIR)%.o,$(SRCS_BONUS))
 
 NAME	=	minishell
 CC		=	gcc
@@ -27,10 +46,12 @@ all:	${NAME}
 
 $(NAME):	$(OBJS)
 	$(MAKE) -C libft
+	@echo Compiling $<
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline libft/libft.a
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(@D)
+	@echo Compiling $<
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

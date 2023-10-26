@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 17:30:36 by elias             #+#    #+#             */
-/*   Updated: 2023/09/25 13:27:58 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/23 18:01:43 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include "../libft/includes/libft.h"
 # include <sys/wait.h>
 
-typedef struct s_data
+typedef struct s_data_pipex
 {
 	int		ac;
 	char	**av;
@@ -30,7 +30,7 @@ typedef struct s_data
 	int		fd_tmp;
 	int		heredoc;
 	char	*limiteur;
-}	t_data;
+}	t_data_pipex;
 
 t_data	*init(int ac, char **av, char **env);
 int		loopfork(t_data *data);
@@ -42,7 +42,7 @@ void	exec(t_data *data);
 char	*pathenv(char **env);
 int		is_there_slash(char *str);
 char	**addslash(char **env);
-int		findpath(char **path, char *cmd, t_data *data);
+int		findpath(t_data *data);
 void	ft_free(t_data *data);
 void	free_tab(char **tab);
 int		is_heredoc(char *str);

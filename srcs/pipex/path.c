@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path_bonus.c                                       :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:41:05 by emoreau           #+#    #+#             */
-/*   Updated: 2023/09/25 13:22:56 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/23 19:40:06 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../../includes/minishell.h"
 
 char	*pathenv(char **env)
 {
@@ -43,7 +43,7 @@ char	**addslash(char **env)
 	int		i;
 
 	i = 0;
-	tmp = ft_split(pathenv(env), ':');
+	tmp = ft_split(pathenv(env), ":");
 	path = malloc(sizeof(char *) * (strllen(tmp) + 1));
 	while (tmp[i])
 	{
@@ -55,26 +55,26 @@ char	**addslash(char **env)
 	return (path);
 }
 
-int	findpath(char **path, char *cmd, t_data *data)
+int	findpath(t_data *data, char *cmd)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
 	tmp = NULL;
-	while (path[i])
+	while (data->path[i])
 	{
-		tmp = ft_strjoin(path[i], cmd);
+		tmp = ft_strjoin(data->path[i], cmd);
 		if (access(tmp, F_OK) == 0)
 			return (free(tmp), i);
 		free(tmp);
 		i++;
 	}
 	ft_printf("%s : command not found\n", cmd);
-	close(data->fd[1]);
-	close(data->fd[0]);
-	close(data->fd_tmp);
-	ft_free(data);
-	exit(EXIT_FAILURE);
+	// close(data->fd[1]);
+	// close(data->fd[0]);
+	// close(data->fd_tmp);
+	// ft_free(data);
+	// exit(EXIT_FAILURE);
 	return (-1);
 }

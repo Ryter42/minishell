@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 14:16:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/23 23:55:44 by elias            ###   ########.fr       */
+/*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
+/*   Updated: 2023/10/25 02:42:20 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../../includes/minishell.h"
 
-int	ft_strlen(const char *str)
+void	free_tab(char **tab)
 {
 	int	i;
 
 	i = 0;
-	if (str[i] != 0)
+	if (!tab || tab == NULL)
+		return ;
+	while (tab[i])
 	{
-		while (str[i] != 0)
-			i++;
+		free(tab[i]);
+		i++;
 	}
-	return (i);
+	free(tab);
 }
 
-int	strllen(char **str)
+void	ft_free(t_cmd *cmd)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	// (void)cmd;
+	ft_wait(cmd);
+	// if (data->arg)
+	// 	free_tab(data->arg);
+	// if (data->cmd)
+	// 	free(data->cmd);
+	// if (data->path)
+	// 	free_tab(data->path);
+	// if (data)
+	// 	free(data);
 }
