@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/25 16:05:02 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/27 02:55:06 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 char	*infile(t_lexer *lexer)
 {
 	// lexer = find_last_infile(lexer);
-	while (lexer->next && lexer->token != PIPE)
+	while (lexer->next && lexer->next->token != PIPE)
 		lexer = lexer->next;
-	while (lexer && lexer->token != INF && lexer->token != INF_DB)
+	while (lexer && lexer->token != PIPE && lexer->token != INF && lexer->token != INF_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token == INF)
 		return (lexer->next->word);
@@ -36,10 +36,10 @@ void	create_outfile(t_lexer *lexer)
 
 void	outfile(t_lexer *lexer, t_cmd *cmd)
 {
-	while (lexer->next && lexer->token != PIPE)
+	while (lexer->next && lexer->next->token != PIPE)
 			lexer = lexer->next;
-	// while (lexer && lexer->token != PIPE && lexer->token != SUP
-	while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
+	// while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
+	while (lexer && lexer->token != PIPE && lexer->token != SUP && lexer->token != SUP_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token != PIPE)
 	{
@@ -62,7 +62,8 @@ char	*path_cmd(t_data *data, char *cmd)
 	char	*path_cmd;
 	int		file;
 
-	(void)data;
+	if (!cmd)
+		return (NULL);
 	if (is_there_slash(cmd) == 0)
 	{
 		file = findpath(data, cmd);

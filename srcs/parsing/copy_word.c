@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/18 19:52:50 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/27 04:11:42 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ char *normal_word(char *str, int *i)
 		(*i)++;
 	}
 	res[index] = 0;
+	// printf("%s\n", res);
 	return (res);
 }
 

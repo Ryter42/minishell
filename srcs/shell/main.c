@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 20:18:35 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/27 04:09:36 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	routine(char **env)
 	data->str = " ";
 	while (ft_strncmp(data->str, "stop", 4) != 0)
 	{
-		data->str = readline("minishell ");
+		data->str = readline("minishell&> ");
 		add_history(data->str);
 		cmd = lexer(data);
 		if (cmd)
@@ -50,6 +50,8 @@ int	routine(char **env)
 	}
 	return (1);
 }
+
+// ne pas oublier de gerer ".." comme entree de commande
 
 int	main(int ac, char **av, char **env)
 {

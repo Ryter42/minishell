@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/10/26 17:14:06 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/27 04:10:39 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	loopfork(t_cmd *cmd)
 	cmd->data->pid = malloc(sizeof(pid_t) * (cmd->data->nb_cmd));
 	cmd->data->nb_cmd = 0;
 	// dprintf(2, " cmd numero %d\n", cmd->data->nb_cmd);
+	// dprintf(2, "\n\ndebut de la commande fd_tmp = %d\n\n", cmd->data->fd_tmp);
 	while (cmd)
 	{
 		if (cmd->limiter)
@@ -74,23 +75,24 @@ void	loopfork(t_cmd *cmd)
 			exec(cmd, cmd->data->nb_cmd);
 		if (cmd->data->fd[1])
 			close(cmd->data->fd[1]);
-		if (cmd->data->fd_tmp)
+		if (cmd->data->nb_cmd && cmd->data->fd_tmp)
 			close(cmd->data->fd_tmp);
 		cmd->data->fd_tmp = cmd->data->fd[0];
-		waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
+		// waitpid(cmd->data->pid[cmd->data->nb_cmd], NULL, 0);
 		cmd->data->nb_cmd++;
 		// nb_loop++;
 		tmp = cmd;
 		cmd = cmd->next;
 	}
 	close(tmp->data->fd_tmp);
+	// dprintf(2, "\n\nfin de la commande fd_tmp = %d\n\n", tmp->data->fd_tmp);
 }
 
 void	ft_wait(t_cmd *cmd)
 {
 	while (cmd->data->nb_cmd > 0)
 	{
-		dprintf(2, " wait numero %d\n", cmd->data->nb_cmd);
+		// dprintf(2, " wait numero %d\n", cmd->data->nb_cmd);
 		waitpid(cmd->data->pid[cmd->data->nb_cmd - 1], NULL, 0);
 		cmd->data->nb_cmd--;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 01:14:00 by emoreau           #+#    #+#             */
-/*   Updated: 2023/09/25 13:19:06 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/10/27 04:02:54 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ char	*nextline(int fd, int c, char *buf)
 	ssize_t		readed;
 
 	if (c == 0)
-		return (free(stash), NULL);
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
 	readed = 1;
 	while (readed > 0)
 	{
