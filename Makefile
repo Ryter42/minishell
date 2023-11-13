@@ -6,7 +6,7 @@
 #    By: elias <elias@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/10/24 17:29:50 by elias            ###   ########.fr        #
+#    Updated: 2023/11/01 19:14:22 by elias            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ SRC_DIR		=	./srcs/
 OBJ_DIR		=	./obj/
 
 SRCS		=	shell/main.c\
+					shell/signal.c\
 					parsing/lexer.c\
 					parsing/quote.c\
 					parsing/pars_utils.c\
@@ -29,17 +30,26 @@ SRCS		=	shell/main.c\
 					parsing/expand.c\
 					parsing/expand2.c\
 					parsing/rm_quote.c\
-					pipex/free.c\
-					pipex/heredoc.c\
-					pipex/pipex.c\
-					pipex/exec.c\
-					pipex/path.c
+					exec/free.c\
+					exec/heredoc.c\
+					exec/pipex.c\
+					exec/exec.c\
+					exec/path.c\
+					bultin/bultin.c\
+					bultin/echo.c\
+					bultin/pwd.c\
+					bultin/cd.c\
+					bultin/env.c\
+					bultin/exit.c\
+					bultin/export.c\
+					bultin/unset.c
 
 OBJS = $(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 
 NAME	=	minishell
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -g3
+# LDLIBS	= -lreadline
 RM		=	rm -rf
 
 all:	${NAME}
@@ -52,7 +62,7 @@ $(NAME):	$(OBJS)
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(@D)
 	@echo Compiling $<
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ #-lreadline
 
 clean:
 	${RM} $(OBJ_DIR) $(BONUS_OBJ_DIR)

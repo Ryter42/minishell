@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/26 02:34:50 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/27 04:06:37 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	heredoc(char *limiter, int fd)
 {
 	char	*str;
 
-	write(1, ">", 1);
+	write(1, "heredoc>", 1);
 	str = get_next_line(0, 1);
 	while (str && ((ft_strncmp(str, limiter, ft_strlen(limiter)))
 			|| (ft_strlen(limiter) != ft_strlen(str) - 1)))
 	{
-		write(1, ">", 1);
+		write(1, "heredoc>", 1);
 		ft_putstr_fd(str, fd);
 		free(str);
 		str = get_next_line(0, 1);

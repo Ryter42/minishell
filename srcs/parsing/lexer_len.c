@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:31:42 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/22 01:37:38 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/27 01:53:51 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	quote_len(char *str, int i, char c)
 	quote = 0;
 	len = 1;
 	i++;
-	while (quote_end(str, i, c) == 0 && (quote == 0 || stop_token(str[i]) == 0))
+	while (quote_end(str, i, c) == 0 && (quote == 0 || (stop_token(str[i]) == 0 && is_quote(str[i + 1]) == 0)))
 	{
 		if (str[i] == c)
 			quote = 1;

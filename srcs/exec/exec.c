@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/26 19:38:17 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/01 00:45:40 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ int	open_infile(t_cmd *cmd,int index)
 	else
 	{
 		// dprintf(2, "rien_in\n\n");	
-		close(cmd->data->fd_tmp);
+		// dprintf(2, "fd_tmp == %d\n", cmd->data->fd_tmp );
+		// close(cmd->data->fd_tmp);
 		return (0);
 	}
 	if (fd == -1)
@@ -142,19 +143,20 @@ void	dup_infile(t_cmd *cmd, int index)
 {
 	int	fd;
 	
+	close(cmd->data->fd[0]); 
 	fd = open_infile(cmd, index);
-	dprintf(2, "2-fd in == %d\n\n", fd);
+	// if (!index)
+	// 	close(cmd->data->fd_tmp);
+	// dprintf(2, "2-fd in == %d\n\n", fd);
 	if (fd)
 	{
-		// fd = open_infile(cmd, index);
-		close(cmd->data->fd[0]);
 		if (dup2(fd, STDIN_FILENO) == -1)
 		{
 			perror("redir in");
+			close(fd);
 			exit (EXIT_FAILURE);
 		}
 		close(fd);
-			// dprintf(2, "dupin de %d fait \n\n", fd);
 	}
 }
 
@@ -208,11 +210,12 @@ int	open_outfile(t_cmd *cmd)
 		}
 		else
 		{
-			dprintf(2, "outfile que oceane m'a demander d'afficher == %s\n\n", cmd->outfile);
-			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0777);
-			dprintf(2, "fd out == %d\n\n", fd);
-			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0777);
-			dprintf(2, "fd out == %d\n\n", fd);
+			// dprintf(2, "outfile == %s\n\n", cmd->outfile);
+			fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			// fd = open(cmd->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			// dprintf(2, "fd out == %d\n\n", fd);
+			// fd = open("elias", O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			// dprintf(2, "fd out == %d\n\n", fd);
 		}
 		close(cmd->data->fd[1]);
 	}
@@ -245,7 +248,7 @@ void	dup_outfile(t_cmd *cmd)
 	
 	fd = open_outfile(cmd);
 	// dprintf(2, "cmd == %s 2-fd out == %d\n\n",cmd->cmd, fd);
-	dprintf(2, "2-fd out == %d\n\n", fd);
+	// dprintf(2, "2-fd out == %d\n\n", fd);
 	if (fd)
 	{
 		// dprintf(2, "fd = %d\n", fd);
@@ -253,12 +256,13 @@ void	dup_outfile(t_cmd *cmd)
 		if (dup2(fd, STDOUT_FILENO) == - 1)
 		{
 			perror("redir out");
+			close(fd);
 			exit (EXIT_FAILURE);
 		}
 		close(fd);
 	}
-	else
-		dprintf(2, "fd = 0\n");
+	// else
+	// 	dprintf(2, "fd = 0\n");
 }
 
 void	printab(char **tab, char *var)
@@ -299,9 +303,20 @@ void	exec(t_cmd *cmd, int index)
 	// print_cmd(cmd);
 	dup_infile(cmd, index);
 	dup_outfile(cmd);
-	if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
+	if (!cmd->cmd)
+		exit(EXIT_SUCCESS);
+	printf("bultin = %d\n", cmd->bultin);
+	if (cmd->bultin)
 	{
-		perror(cmd->cmd);
-		exit(EXIT_FAILURE);
+		exec_fork_bultin(cmd, index);
+		// exit(1);
+	}
+	else
+	{
+		if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
+		{
+			perror(cmd->cmd);
+			exit(EXIT_FAILURE);
+		}
 	}
 }

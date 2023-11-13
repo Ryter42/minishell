@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/26 18:44:44 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/01 02:37:02 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define MINISHELL_H
 # include "../libft/includes/libft.h"
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -71,6 +74,7 @@ typedef struct s_lexer
 typedef struct s_cmd
 {
 	char			*cmd;
+	int				bultin;
 	char			**arg;
 	char 			*infile;
 	char 			*outfile;
@@ -82,11 +86,14 @@ typedef struct s_cmd
 	// struct s_cmd	*prev;
 }	t_cmd;
 
+
 int		routine(char **env);
 t_data	*data_init(char **env);
 int		quote_verif(char *str);
 int		find_dbquote(char *str, int *i);
 int		find_quote(char *str, int *i);
+char	**cpy_env_with(char **env, char *arg);
+void	set_signal_action(void);
 
 // lexer
 
@@ -170,13 +177,37 @@ char	*pathenv(char **env);
 int		is_there_slash(char *str);
 char	**addslash(char **env);
 int		findpath(t_data *data, char *cmd);
-void	ft_free(t_cmd *cmd);
-void	free_tab(char **tab);
 // int		is_heredoc(void);
 void	heredoc(char *limiter, int fd);
 int		ft_open(t_data *data);
 int		ft_open_heredoc(void);
 void	ft_wait(t_cmd *cmd);
+void	dup_infile(t_cmd *cmd, int index);
+void	dup_outfile(t_cmd *cmd);
+
+
+void	print_cmd(t_cmd *cmd);
+// bultin
+int		is_bultin(char *cmd);
+void	exec_fork_bultin(t_cmd *cmd, int index);
+void	exec_env_bultin(t_cmd *cmd, int index);
+void	echo(t_cmd *cmd);
+void	pwd(t_cmd *cmd);
+void	unset(t_cmd *cmd);
+void	env(t_cmd *cmd);
+void	export(t_cmd *cmd);
+void	cd(t_cmd *cmd);
+void	ft_exit(t_cmd *cmd);
+
+// free
+void	free_all(t_cmd *cmd);
+void	free_cmd(t_cmd *cmd);
+void	free_data(t_data *data);
+void	free_tab(char **tab);
+void	free_tab(char **tab);
+void	free_lexer(t_lexer *lexer);
+
+
 
 #endif
 

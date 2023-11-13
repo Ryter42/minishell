@@ -30,24 +30,4 @@ declare -x XPC_SERVICE_NAME=0
 declare -x ZSH=/Users/elias/.oh-my-zsh
 declare -x _=/Users/elias/code/42/projet/minishell/./minishell
 declare -x __CFBundleIdentifier=com.apple.Terminal
-minishell& ls
-in env
-bultin = 0
-Makefile
-dockerfile
-includes
-libft
-minishell
-obj
-out
-out1
-srcs
 minishell& 
-minishell& 
-minishell& 
-minishell& 
-minishell& 
-minishell& 
-minishell& 
-minishell& 
-minishell& 

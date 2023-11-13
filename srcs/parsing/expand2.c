@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 03:11:58 by elias             #+#    #+#             */
-/*   Updated: 2023/10/23 15:35:32 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/30 17:37:52 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*find_var(char **env, char *name, int len)
 			res[index] = env[i][index + len + 1];
 			index++;
 		}
+		res[index] = 0;
 		return (res);
 	}
 	else

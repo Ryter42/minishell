@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 14:16:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/31 20:52:55 by elias            ###   ########.fr       */
+/*   Created: 2023/10/30 17:21:10 by elias             #+#    #+#             */
+/*   Updated: 2023/10/31 02:15:33 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "../../includes/minishell.h"
 
-int	ft_strlen(const char *str)
+// void	free_tab(char **tab)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (tab[i])
+// 	{
+// 		free(tab[i]);
+// 		i++;
+// 	}
+// }
+
+void	ft_exit(t_cmd *cmd)
 {
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != 0)
-		i++;
-	return (i);
-}
-
-int	strllen(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
+	free_all(cmd);
+	exit(1);
 }

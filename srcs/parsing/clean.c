@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/25 16:05:02 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/31 04:18:49 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 char	*infile(t_lexer *lexer)
 {
 	// lexer = find_last_infile(lexer);
-	while (lexer->next && lexer->token != PIPE)
+	while (lexer->next && lexer->next->token != PIPE)
 		lexer = lexer->next;
-	while (lexer && lexer->token != INF && lexer->token != INF_DB)
+	while (lexer && lexer->token != PIPE && lexer->token != INF && lexer->token != INF_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token == INF)
 		return (lexer->next->word);
@@ -36,10 +36,10 @@ void	create_outfile(t_lexer *lexer)
 
 void	outfile(t_lexer *lexer, t_cmd *cmd)
 {
-	while (lexer->next && lexer->token != PIPE)
+	while (lexer->next && lexer->next->token != PIPE)
 			lexer = lexer->next;
-	// while (lexer && lexer->token != PIPE && lexer->token != SUP
-	while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
+	// while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
+	while (lexer && lexer->token != PIPE && lexer->token != SUP && lexer->token != SUP_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token != PIPE)
 	{
@@ -62,7 +62,8 @@ char	*path_cmd(t_data *data, char *cmd)
 	char	*path_cmd;
 	int		file;
 
-	(void)data;
+	// if (!cmd)
+	// 	return (NULL);
 	if (is_there_slash(cmd) == 0)
 	{
 		file = findpath(data, cmd);
@@ -73,6 +74,26 @@ char	*path_cmd(t_data *data, char *cmd)
 	}
 	else
 		return (cmd);
+}
+
+void cmd_init(t_cmd *cmd, char *command)
+{
+	if (!command)
+	{
+		cmd->cmd = NULL;
+		cmd->bultin = -1;
+		return ;
+	}
+	if (is_bultin(command) == 1)
+	{
+		cmd->bultin = 1;
+		cmd->cmd = command;
+	}
+	else
+	{
+		cmd->bultin = 0;
+		cmd->cmd = path_cmd(cmd->data, command);
+	}
 }
 
 t_cmd	*create_cmd(t_lexer *lexer)
@@ -86,7 +107,8 @@ t_cmd	*create_cmd(t_lexer *lexer)
 		cmd->limiter = limiter(lexer, cmd->heredoc);
 	else
 		cmd->limiter = NULL;
-	cmd->cmd = path_cmd(lexer->data, commande(lexer));
+	// cmd->cmd = path_cmd(lexer->data, commande(lexer));
+	cmd_init(cmd, commande(lexer));
 	cmd->arg = arg(lexer, cmd->cmd);
 	cmd->infile = infile(lexer);
 	outfile(lexer, cmd);
@@ -118,6 +140,20 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 	return (tmp);
 }
 
+void	free_lexer(t_lexer *lexer)
+{
+	t_lexer	*tmp;
+
+	while (lexer)
+	{
+		// if (lexer->word)
+			// free(lexer->word);
+		tmp = lexer;
+		lexer = lexer->next;
+		free(tmp);
+	}
+}
+
 t_cmd	*clean_cmd(t_lexer *lexer)
 {
 	t_cmd *cmd;
@@ -126,5 +162,6 @@ t_cmd	*clean_cmd(t_lexer *lexer)
 
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
+	free_lexer(lexer);
 	return (cmd);
 }
