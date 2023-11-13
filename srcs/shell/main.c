@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/01 19:21:10 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 16:04:38 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	routine(char **env)
 		// set_signal_action();
 		// sigaction(SIGINT, struc_signal_controle_c(), NULL);
 
-		signal(SIGINT, sigint_handler);
+		// signal(SIGINT, sigint_handler);
 		if (data->str)
 			free(data->str);
 		data->str = readline("minishell& ");

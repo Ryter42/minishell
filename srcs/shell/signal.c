@@ -3,47 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 02:18:29 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 19:18:50 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 16:04:18 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	sigint_handler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		write(2, "\n", 1);
-		// rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
+// void	sigint_handler(int signal)
+// {
+// 	if (signal == SIGINT)
+// 	{
+// 		write(2, "\n", 1);
+// 		// rl_replace_line("", 0);
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 	}
+// }
 
-void	set_signal_action(void)
-{
-	struct sigaction	act;
+// void	set_signal_action(void)
+// {
+// 	struct sigaction	act;
 
-	act.sa_handler = &sigint_handler;
- 	act.sa_sigaction = NULL;
-    act.sa_mask = 0;
-    act.sa_flags = 0;
-	sigaction(SIGINT, &act, NULL);
-}
+// 	act.sa_handler = &sigint_handler;
+//  	act.sa_sigaction = NULL;
+//     act.sa_mask = 0;
+//     act.sa_flags = 0;
+// 	sigaction(SIGINT, &act, NULL);
+// }
 
-struct sigaction	*struc_signal_controle_c(void)
-{
-	struct sigaction	*act;
+// struct sigaction	*struc_signal_controle_c(void)
+// {
+// 	struct sigaction	*act;
 
-	act = malloc(sizeof(act));
-	if (!act)
-		return (NULL);
-	act->sa_handler = &sigint_handler;
- 	act->sa_sigaction = NULL;
-    act->sa_mask = 0;
-    act->sa_flags = 0;
-	return (act);
-}
+// 	act = malloc(sizeof(act));
+// 	if (!act)
+// 		return (NULL);
+// 	act->sa_handler = &sigint_handler;
+//  	act->sa_sigaction = NULL;
+//     act->sa_mask = 0;
+//     act->sa_flags = 0;
+// 	return (act);
+// }
+
+// void	signal_ctrl_c(int signo)
+// {
+// 	(void)signo;
+// 	if (g_in_here_doc != 1)
+// 	{
+// 		g_in_here_doc = 130;
+// 		write(2, "\n", 1);
+// 		rl_replace_line("", 0);
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 	}
+// }
+
+// void	signal_ctrl_c_here_doc(int signo)
+// {
+// 	t_here_doc	*s;
+
+// 	(void)signo;
+// 	if (g_in_here_doc == 1)
+// 	{
+// 		s = starthd();
+// 		g_in_here_doc = 130;
+// 		close(s->fd);
+// 		free(s->limiter);
+// 		free(s->line);
+// 		write(2, "\n", 1);
+// 		rl_replace_line("", 0);
+// 		rl_on_new_line();
+// 		rl_redisplay();
+// 		exit(130);
+// 	}
+// }
+
+// void	signal_ctrl_c_in_child(int signo)
+// {
+// 	(void)signo;
+// 	ft_putstr_fd("\n", 2);
+// 	exit(0);
+// }
+
+// void	signal_ctrl_slash(int signo)
+// {
+// 	(void)signo;
+// }
+
+// void	signal_ctrl_backslash(int signo)
+// {
+// 	(void)signo;
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:40:44 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 16:03:37 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	loopfork(t_cmd *cmd)
 	while (cmd)
 	{
 		if (cmd->limiter)
-			ft_heredoc(cmd);
+			fork_heredoc(cmd);
 		if (pipe(cmd->data->fd) < 0)
 			return ;
 		cmd->data->pid[cmd->data->nb_cmd] = fork();

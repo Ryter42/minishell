@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/01 02:37:02 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 16:04:02 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ int		findpath(t_data *data, char *cmd);
 void	heredoc(char *limiter, int fd);
 int		ft_open(t_data *data);
 int		ft_open_heredoc(void);
+void	fork_heredoc(t_cmd *cmd);
 void	ft_wait(t_cmd *cmd);
 void	dup_infile(t_cmd *cmd, int index);
 void	dup_outfile(t_cmd *cmd);
