@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/27 02:55:06 by elias            ###   ########.fr       */
+/*   Updated: 2023/10/31 04:18:49 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ char	*path_cmd(t_data *data, char *cmd)
 	char	*path_cmd;
 	int		file;
 
-	if (!cmd)
-		return (NULL);
+	// if (!cmd)
+	// 	return (NULL);
 	if (is_there_slash(cmd) == 0)
 	{
 		file = findpath(data, cmd);
@@ -74,6 +74,26 @@ char	*path_cmd(t_data *data, char *cmd)
 	}
 	else
 		return (cmd);
+}
+
+void cmd_init(t_cmd *cmd, char *command)
+{
+	if (!command)
+	{
+		cmd->cmd = NULL;
+		cmd->bultin = -1;
+		return ;
+	}
+	if (is_bultin(command) == 1)
+	{
+		cmd->bultin = 1;
+		cmd->cmd = command;
+	}
+	else
+	{
+		cmd->bultin = 0;
+		cmd->cmd = path_cmd(cmd->data, command);
+	}
 }
 
 t_cmd	*create_cmd(t_lexer *lexer)
@@ -87,7 +107,8 @@ t_cmd	*create_cmd(t_lexer *lexer)
 		cmd->limiter = limiter(lexer, cmd->heredoc);
 	else
 		cmd->limiter = NULL;
-	cmd->cmd = path_cmd(lexer->data, commande(lexer));
+	// cmd->cmd = path_cmd(lexer->data, commande(lexer));
+	cmd_init(cmd, commande(lexer));
 	cmd->arg = arg(lexer, cmd->cmd);
 	cmd->infile = infile(lexer);
 	outfile(lexer, cmd);
@@ -119,6 +140,20 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 	return (tmp);
 }
 
+void	free_lexer(t_lexer *lexer)
+{
+	t_lexer	*tmp;
+
+	while (lexer)
+	{
+		// if (lexer->word)
+			// free(lexer->word);
+		tmp = lexer;
+		lexer = lexer->next;
+		free(tmp);
+	}
+}
+
 t_cmd	*clean_cmd(t_lexer *lexer)
 {
 	t_cmd *cmd;
@@ -127,5 +162,6 @@ t_cmd	*clean_cmd(t_lexer *lexer)
 
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
+	free_lexer(lexer);
 	return (cmd);
 }

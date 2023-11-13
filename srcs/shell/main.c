@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/27 04:09:36 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/01 19:21:10 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,14 @@ t_data	*data_init(char **env)
 		if (!data)
 			return (0);
 	}
+	data->str = NULL;
 	data->fd_tmp = 0;
 	data->path = addslash(env);
-	data->env = env;
+	data->env = cpy_env_with(env, NULL);
 	return (data);
 }
 
-// int	parser(t_lexer *lexer)
-// {
-// 	separator_verif()
-// 	return (0);
-// }
+struct sigaction	*struc_signal_controle_c(void);
 
 int	routine(char **env)
 {
@@ -39,10 +36,15 @@ int	routine(char **env)
 	t_cmd	*cmd;
 
 	data = data_init(env);
-	data->str = " ";
-	while (ft_strncmp(data->str, "stop", 4) != 0)
+	while (1)
 	{
-		data->str = readline("minishell&> ");
+		// set_signal_action();
+		// sigaction(SIGINT, struc_signal_controle_c(), NULL);
+
+		signal(SIGINT, sigint_handler);
+		if (data->str)
+			free(data->str);
+		data->str = readline("minishell& ");
 		add_history(data->str);
 		cmd = lexer(data);
 		if (cmd)
