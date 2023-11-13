@@ -1,0 +1,53 @@
+declare -x DISPLAY=/private/tmp/com.apple.launchd.duBCk0YQKv/org.xquartz:0
+declare -x HOME=/Users/elias
+declare -x HOMEBREW_CELLAR=/opt/homebrew/Cellar
+declare -x HOMEBREW_PREFIX=/opt/homebrew
+declare -x HOMEBREW_REPOSITORY=/opt/homebrew
+declare -x INFOPATH=/opt/homebrew/share/info:
+declare -x LANG=fr_FR.UTF-8
+declare -x LESS=-R
+declare -x LOGNAME=elias
+declare -x LSCOLORS=Gxfxcxdxbxegedabagacad
+declare -x LS_COLORS=di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43
+declare -x LaunchInstanceID=9F381985-A3F9-4DD9-8846-58F4DDE95E8B
+declare -x MANPATH=/opt/homebrew/share/man::
+declare -x OLDPWD=/Users/elias/code/42/projet/minishell
+declare -x PAGER=less
+declare -x PATH=/usr/local/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/Apple/usr/bin
+declare -x PWD=/Users/elias/code/42/projet/minishell
+declare -x SECURITYSESSIONID=186a4
+declare -x SHELL=/bin/zsh
+declare -x SHLVL=1
+declare -x SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.buIPVTPVYy/Listeners
+declare -x TERM=xterm-256color
+declare -x TERM_PROGRAM=Apple_Terminal
+declare -x TERM_PROGRAM_VERSION=447
+declare -x TERM_SESSION_ID=7184E06E-150A-4D30-8359-B29216CD4088
+declare -x TMPDIR=/var/folders/wj/951ssgq96y365ngnlq6jfqbc0000gn/T/
+declare -x USER=elias
+declare -x XPC_FLAGS=0x0
+declare -x XPC_SERVICE_NAME=0
+declare -x ZSH=/Users/elias/.oh-my-zsh
+declare -x _=/Users/elias/code/42/projet/minishell/./minishell
+declare -x __CFBundleIdentifier=com.apple.Terminal
+minishell& ls
+in env
+bultin = 0
+Makefile
+dockerfile
+includes
+libft
+minishell
+obj
+out
+out1
+srcs
+minishell& 
+minishell& 
+minishell& 
+minishell& 
+minishell& 
+minishell& 
+minishell& 
+minishell& 
+minishell& 
