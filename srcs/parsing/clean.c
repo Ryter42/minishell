@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/10/31 04:18:49 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 16:18:30 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	outfile(t_lexer *lexer, t_cmd *cmd)
 			cmd->add_out = 0;
 		else
 			cmd->add_out = 1;
-		// create_outfile(lexer);
+		create_outfile(lexer);
 	}
 	else
 	{

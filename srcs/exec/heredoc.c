@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/13 16:05:28 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/13 19:19:36 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@
 // 	else
 // 		return (0);
 // }
+
+// void clearInputBuffer()
+// {
+//     int c;
+//     while ((c = getchar()) != '\n' && c != EOF);
+// }
+
 void	fork_heredoc(t_cmd *cmd)
 {
 	pid_t pid;
@@ -27,6 +34,7 @@ void	fork_heredoc(t_cmd *cmd)
 	if (pid == 0)
 		ft_heredoc(cmd);
 	waitpid(pid, NULL, 0);
+	// clearInputBuffer();
 }
 
 void	ft_heredoc(t_cmd *cmd)

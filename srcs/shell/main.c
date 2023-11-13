@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/13 16:04:38 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/13 16:25:03 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_data	*data_init(char **env)
 	return (data);
 }
 
-struct sigaction	*struc_signal_controle_c(void);
+// struct sigaction	*struc_signal_controle_c(void);
 
 int	routine(char **env)
 {
@@ -45,6 +45,8 @@ int	routine(char **env)
 		if (data->str)
 			free(data->str);
 		data->str = readline("minishell& ");
+		// printf("minishell& ");
+		// data->str = get_next_line(0 , 1);
 		add_history(data->str);
 		cmd = lexer(data);
 		if (cmd)

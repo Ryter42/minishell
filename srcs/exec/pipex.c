@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 16:03:37 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/13 16:16:31 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	loopfork(t_cmd *cmd)
 		if (cmd->data->pid[cmd->data->nb_cmd] == 0)
 			exec(cmd, cmd->data->nb_cmd);
 			// exec_fork_bultin(cmd, cmd->data->nb_cmd);
-		if (!cmd->next && !cmd->data->nb_cmd)
+		if (!cmd->next && !cmd->data->nb_cmd && cmd->bultin)
 			exec_env_bultin(cmd, cmd->data->nb_cmd);
 		if (cmd->data->fd[1])
 			close(cmd->data->fd[1]);
