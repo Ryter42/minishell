@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/31 17:26:00 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/14 12:45:57 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	printab(char **tab, char *var);
 
 void	free_tab(char **tab)
 {
 	int	i;
 
 	i = 0;
-	if (!tab || tab == NULL)
-		return ;
+	// if (!tab || tab == NULL)
+	// 	return ;
 	while (tab[i])
 	{
 		free(tab[i]);
@@ -37,6 +39,7 @@ void	free_data(t_data *data)
 		free(data->pid);
 	if (data->str)
 		free(data->str);
+	free(data);
 }
 
 // void	free_cmd(t_cmd *cmd)
@@ -61,8 +64,9 @@ void	free_cmd(t_cmd *cmd)
 
 	while (cmd)
 	{
-		// if (cmd->arg)
-		// 	free_tab(cmd->arg);
+		// printab(cmd->arg, "arg ");
+		if (cmd->arg)
+			free_tab(cmd->arg);
 		// if (cmd->cmd)
 		// 	free(cmd->cmd);
 		if (cmd->infile)
@@ -79,6 +83,8 @@ void	free_cmd(t_cmd *cmd)
 
 void	free_all(t_cmd *cmd)
 {
-	free_data(cmd->data);
-	free_cmd(cmd);
+	if (cmd->data)
+		free_data(cmd->data);
+	if (cmd)
+		free_cmd(cmd);
 }

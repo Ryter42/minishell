@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/01 02:37:02 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/14 15:20:36 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_data
 	char 	**env;
 	char 	**path;
 	int		fd[2];
+	int		fd_in;
+	int		fd_out;
 	int		nb_cmd;
 	int		fd_tmp;
 	pid_t	*pid;
@@ -181,6 +183,7 @@ int		findpath(t_data *data, char *cmd);
 void	heredoc(char *limiter, int fd);
 int		ft_open(t_data *data);
 int		ft_open_heredoc(void);
+void	fork_heredoc(t_cmd *cmd);
 void	ft_wait(t_cmd *cmd);
 void	dup_infile(t_cmd *cmd, int index);
 void	dup_outfile(t_cmd *cmd);
@@ -191,6 +194,7 @@ void	print_cmd(t_cmd *cmd);
 int		is_bultin(char *cmd);
 void	exec_fork_bultin(t_cmd *cmd, int index);
 void	exec_env_bultin(t_cmd *cmd, int index);
+int		is_env_bultin(t_cmd *cmd);
 void	echo(t_cmd *cmd);
 void	pwd(t_cmd *cmd);
 void	unset(t_cmd *cmd);
@@ -207,6 +211,9 @@ void	free_tab(char **tab);
 void	free_tab(char **tab);
 void	free_lexer(t_lexer *lexer);
 
+
+void	reset_in_out(t_cmd *cmd);
+void	backup(t_cmd *cmd);
 
 
 #endif

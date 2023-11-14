@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:40:44 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/14 16:01:47 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ int	ft_nb_cmd(t_cmd *cmd)
 	return (i);
 }
 
+void	backup(t_cmd *cmd)
+{
+	cmd->data->fd_out = dup(STDOUT_FILENO);
+	if (cmd->data->fd_out == -1)
+		perror("dup out");
+	cmd->data->fd_in = dup(STDIN_FILENO);
+	if (cmd->data->fd_in == -1)
+		perror("dup in");
+	// dup_infile(cmd, index);
+	// dup_outfile(cmd);
+}
 
 void	loopfork(t_cmd *cmd)
 {
@@ -60,21 +71,24 @@ void	loopfork(t_cmd *cmd)
 	cmd->data->nb_cmd = ft_nb_cmd(cmd);
 	cmd->data->pid = malloc(sizeof(pid_t) * (cmd->data->nb_cmd));
 	cmd->data->nb_cmd = 0;
+	
 	// dprintf(2, " cmd numero %d\n", cmd->data->nb_cmd);
 	// dprintf(2, "\n\ndebut de la commande fd_tmp = %d\n\n", cmd->data->fd_tmp);
 	while (cmd)
 	{
+		// printf("boucle\n");
 		if (cmd->limiter)
-			ft_heredoc(cmd);
+			fork_heredoc(cmd);
 		if (pipe(cmd->data->fd) < 0)
 			return ;
+		backup(cmd);
 		cmd->data->pid[cmd->data->nb_cmd] = fork();
 		if (cmd->data->pid[cmd->data->nb_cmd] < 0)
 			return ;
 		if (cmd->data->pid[cmd->data->nb_cmd] == 0)
 			exec(cmd, cmd->data->nb_cmd);
-			// exec_fork_bultin(cmd, cmd->data->nb_cmd);
-		if (!cmd->next && !cmd->data->nb_cmd)
+		// exec_fork_bultin(cmd, cmd->data->nb_cmd);
+		if (!cmd->next && !cmd->data->nb_cmd && is_env_bultin(cmd) == 1)
 			exec_env_bultin(cmd, cmd->data->nb_cmd);
 		if (cmd->data->fd[1])
 			close(cmd->data->fd[1]);
@@ -102,6 +116,37 @@ void	ft_wait(t_cmd *cmd)
 	free(cmd->data->pid);
 }
 
+void	reset_in_out(t_cmd *cmd)
+{
+	if (dup2(cmd->data->fd_out, STDOUT_FILENO) == - 1)
+	{
+		perror("reset redir out");
+		exit (EXIT_FAILURE);
+	}
+	close(cmd->data->fd_out);
+	if (dup2(cmd->data->fd_in, STDIN_FILENO) == -1)
+	{
+		perror("reset redir in");
+		exit (EXIT_FAILURE);
+	}
+	close(cmd->data->fd_out);
+	// ne fonctionne pas a tester avec la commande < Makefile echo
+}
+
+// void	reset_in_out(void)
+// {
+// 	if (dup2(1, STDOUT_FILENO) == - 1)
+// 	{
+// 		perror("redir out");
+// 		exit (EXIT_FAILURE);
+// 	}
+// 	if (dup2(0, STDIN_FILENO) == -1)
+// 	{
+// 		perror("redir in");
+// 		exit (EXIT_FAILURE);
+// 	}
+// }
+
 int	execution(t_cmd *cmd)
 {
 	// t_data	*data;
@@ -111,6 +156,7 @@ int	execution(t_cmd *cmd)
 	// data = init(data);
 	loopfork(cmd);
 	ft_wait(cmd);
+	reset_in_out(cmd);
 	free_cmd(cmd);
 	unlink(".heredoc_tmp");
 	return (0);

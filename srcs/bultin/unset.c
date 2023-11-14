@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:26:30 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:20:08 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/14 15:10:09 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ char	**cpy_env_without(char **env, int indice)
 			j++;
 		else
 		{
-			res[i] = env[j];
+			res[i] = ft_strdup(env[j]);
 			i++;
 			j++;
 		}
 	}
 	res[i] = 0;
-	free(env);
+	free_tab(env);
 	return (res);
 }
 
@@ -59,8 +59,7 @@ void	unset(t_cmd *cmd)
 	int	i;
 
 	i = 1;
-	dprintf(2, "unset\n");
-	print_cmd(cmd);
+	// dprintf(2, "unset\n");
 	if (!cmd->arg[1])
 		return ;
 	if (cmd->arg[1][0] == '-' && cmd->arg[1][1])

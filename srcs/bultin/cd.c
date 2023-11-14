@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:09 by elias             #+#    #+#             */
-/*   Updated: 2023/10/31 18:35:02 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/14 15:10:31 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	cd(t_cmd *cmd)
 	buff1 = NULL;
 	buff2 = NULL;
 	buff1 = getcwd(buff1, 0);
-	dprintf(2, "cd\n");
+	// dprintf(2, "cd\n");
 	if (!cmd->arg[1] || cmd->arg[1][0] == '~')
 	{
 		if (chdir(path_to_home(find_var(cmd->data->env, "HOME", 4), cmd->arg[1])) == -1)

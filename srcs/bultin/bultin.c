@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bultin.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 16:27:42 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:37:11 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/14 15:21:54 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,27 @@ int	is_bultin(char *cmd)
 	return (0);
 }
 
+int	is_env_bultin(t_cmd *cmd)
+{
+	if (ft_strncmp(cmd->cmd, "cd", 2) == 0 && ft_strlen(cmd->cmd) == 2)
+		return (1);
+	else if (ft_strncmp(cmd->cmd, "export", 6) == 0 && ft_strlen(cmd->cmd) == 6)
+		return (1);
+	else if (ft_strncmp(cmd->cmd, "unset", 5) == 0 && ft_strlen(cmd->cmd) == 5)
+		return (1);
+	else if (ft_strncmp(cmd->cmd, "exit", 4) == 0 && ft_strlen(cmd->cmd) == 4)
+		return (1);
+	else
+		return (0);
+}
+
 void	exec_env_bultin(t_cmd *cmd, int index)
 {
-	printf("in env\n");
+	// printf("in env\n");
 	dup_infile(cmd, index);
 	dup_outfile(cmd);
+	// (void)index;
+	// ft_redir(cmd, index);
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0 && ft_strlen(cmd->cmd) == 2)
 		cd(cmd);
 	if (ft_strncmp(cmd->cmd, "export", 6) == 0 && ft_strlen(cmd->cmd) == 6)
@@ -44,11 +60,13 @@ void	exec_env_bultin(t_cmd *cmd, int index)
 		unset(cmd);
 	if (ft_strncmp(cmd->cmd, "exit", 4) == 0 && ft_strlen(cmd->cmd) == 4)
 		ft_exit(cmd);
+	// reset_in_out(cmd);
+
 }
 
 void	exec_fork_bultin(t_cmd *cmd, int index)
 {
-	printf("in fork\n");
+	// printf("in fork\n");
 	if (ft_strncmp(cmd->cmd, "echo", 4) == 0 && ft_strlen(cmd->cmd) == 4)
 		echo(cmd);
 	if (ft_strncmp(cmd->cmd, "pwd", 3) == 0 && ft_strlen(cmd->cmd) == 3)
@@ -57,7 +75,7 @@ void	exec_fork_bultin(t_cmd *cmd, int index)
 		env(cmd);
 	if (cmd->next || index)
 	{
-		dprintf(2, "cmd->next = %p et index = %d\n", cmd->next, index);
+		// dprintf(2, "cmd->next = %p et index = %d\n", cmd->next, index);
 		if (ft_strncmp(cmd->cmd, "exit", 4) == 0 && ft_strlen(cmd->cmd) == 4)
 			ft_exit(cmd);
 		if (ft_strncmp(cmd->cmd, "cd", 2) == 0 && ft_strlen(cmd->cmd) == 2)

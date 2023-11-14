@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/27 04:06:37 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 19:35:20 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,22 @@
 // 	else
 // 		return (0);
 // }
+
+// void clearInputBuffer()
+// {
+//     int c;
+//     while ((c = getchar()) != '\n' && c != EOF);
+// }
+
+void	fork_heredoc(t_cmd *cmd)
+{
+	pid_t pid;
+	
+	pid = fork();
+	if (pid == 0)
+		ft_heredoc(cmd);
+	waitpid(pid, NULL, 0);
+}
 
 void	ft_heredoc(t_cmd *cmd)
 {
@@ -36,12 +52,12 @@ void	heredoc(char *limiter, int fd)
 {
 	char	*str;
 
-	write(1, "heredoc>", 1);
+	write(1, "heredoc>", 8);
 	str = get_next_line(0, 1);
 	while (str && ((ft_strncmp(str, limiter, ft_strlen(limiter)))
 			|| (ft_strlen(limiter) != ft_strlen(str) - 1)))
 	{
-		write(1, "heredoc>", 1);
+		write(1, "heredoc>", 8);
 		ft_putstr_fd(str, fd);
 		free(str);
 		str = get_next_line(0, 1);
