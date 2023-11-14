@@ -1,0 +1,12 @@
+{
+	_ignore_readline_
+	memcheck:Leak
+	match-leak-kinds: all
+	fun:readline
+}
+{
+	_ignore_add_history_
+	memcheck:Leak
+	match-leak-kinds: all
+	fun:add_history
+}

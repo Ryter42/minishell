@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:54 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:11:12 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 20:42:19 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,29 @@ int	valid_export(char *arg)
 
 char	**cpy_env_with(char **env, char *arg)
 {
-	int	i;
-	char **res;
+	int		i;
+	int 	add;
+	char	**res;
 
+	if (arg)
+		add = 1;
+	else
+		add = 0;
 	i = 0;
-	res = malloc(sizeof(char *) * (strllen(env) + 2));
+	res = malloc(sizeof(char *) * (strllen(env) + 1 + add));
 	while (env[i])
 	{
-		res[i] = env[i];
+		res[i] = ft_strdup(env[i]);
 		i++;
 	}
-	res[i] = arg;
-	i++;
+	if (arg)
+	{
+		res[i] = ft_strdup(arg);
+		i++;
+	}
 	res[i] = 0;
 	if (arg)
-		free(env);
+		free_tab(env);
 	return (res);
 }
 

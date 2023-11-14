@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 16:18:30 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/13 20:06:27 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,8 @@ void	free_lexer(t_lexer *lexer)
 
 	while (lexer)
 	{
-		// if (lexer->word)
-			// free(lexer->word);
+		if (lexer->word)
+			lexer->word = NULL;
 		tmp = lexer;
 		lexer = lexer->next;
 		free(tmp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/01 00:45:40 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 21:09:37 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,11 +305,11 @@ void	exec(t_cmd *cmd, int index)
 	dup_outfile(cmd);
 	if (!cmd->cmd)
 		exit(EXIT_SUCCESS);
-	printf("bultin = %d\n", cmd->bultin);
+	// printf("bultin = %d\n", cmd->bultin);
 	if (cmd->bultin)
 	{
 		exec_fork_bultin(cmd, index);
-		// exit(1);
+		exit(1);
 	}
 	else
 	{

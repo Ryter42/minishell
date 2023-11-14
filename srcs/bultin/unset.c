@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:26:30 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:20:08 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 20:41:48 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ char	**cpy_env_without(char **env, int indice)
 			j++;
 		else
 		{
-			res[i] = env[j];
+			res[i] = ft_strdup(env[j]);
 			i++;
 			j++;
 		}
 	}
 	res[i] = 0;
-	free(env);
+	free_tab(env);
 	return (res);
 }
 

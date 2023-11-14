@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:23:18 by elias             #+#    #+#             */
-/*   Updated: 2023/10/29 19:37:51 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 21:43:16 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	newline(char **arg)
 {
-	int	i;
-
-	i = 0;
-	while (arg[i + 1][0] == '-' && arg[i + 1][1] == 'n' && !arg[i + 1][2])
-		i++;
-	return (i);
+	if (!arg[1])
+		return (0);
+	if (arg[1][0] == '-' && arg[1][1] == 'n' && !arg[1][2])
+		return (1);
+	else
+		return (0);
 }
 
 void	echo(t_cmd *cmd)

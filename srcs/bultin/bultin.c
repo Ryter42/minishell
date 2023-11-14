@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bultin.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 16:27:42 by elias             #+#    #+#             */
-/*   Updated: 2023/11/01 00:37:11 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/13 21:15:09 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	is_bultin(char *cmd)
 
 void	exec_env_bultin(t_cmd *cmd, int index)
 {
-	printf("in env\n");
+	// printf("in env\n");
 	dup_infile(cmd, index);
 	dup_outfile(cmd);
 	if (ft_strncmp(cmd->cmd, "cd", 2) == 0 && ft_strlen(cmd->cmd) == 2)
@@ -48,7 +48,7 @@ void	exec_env_bultin(t_cmd *cmd, int index)
 
 void	exec_fork_bultin(t_cmd *cmd, int index)
 {
-	printf("in fork\n");
+	// printf("in fork\n");
 	if (ft_strncmp(cmd->cmd, "echo", 4) == 0 && ft_strlen(cmd->cmd) == 4)
 		echo(cmd);
 	if (ft_strncmp(cmd->cmd, "pwd", 3) == 0 && ft_strlen(cmd->cmd) == 3)
@@ -57,7 +57,7 @@ void	exec_fork_bultin(t_cmd *cmd, int index)
 		env(cmd);
 	if (cmd->next || index)
 	{
-		dprintf(2, "cmd->next = %p et index = %d\n", cmd->next, index);
+		// dprintf(2, "cmd->next = %p et index = %d\n", cmd->next, index);
 		if (ft_strncmp(cmd->cmd, "exit", 4) == 0 && ft_strlen(cmd->cmd) == 4)
 			ft_exit(cmd);
 		if (ft_strncmp(cmd->cmd, "cd", 2) == 0 && ft_strlen(cmd->cmd) == 2)

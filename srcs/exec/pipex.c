@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 16:16:31 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/13 21:31:47 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	loopfork(t_cmd *cmd)
 	// dprintf(2, "\n\ndebut de la commande fd_tmp = %d\n\n", cmd->data->fd_tmp);
 	while (cmd)
 	{
+		// printf("boucle\n");
 		if (cmd->limiter)
 			fork_heredoc(cmd);
 		if (pipe(cmd->data->fd) < 0)
@@ -102,6 +103,22 @@ void	ft_wait(t_cmd *cmd)
 	free(cmd->data->pid);
 }
 
+void	reset_in_out(void)
+{
+	if (dup2(1, STDOUT_FILENO) == - 1)
+	{
+		perror("redir out");
+		exit (EXIT_FAILURE);
+	}
+	if (dup2(0, STDIN_FILENO) == -1)
+	{
+		perror("redir in");
+		exit (EXIT_FAILURE);
+	}
+	// ne fonctionne pas a tester avec la commande < Makefile echo
+}
+
+
 int	execution(t_cmd *cmd)
 {
 	// t_data	*data;
@@ -113,5 +130,6 @@ int	execution(t_cmd *cmd)
 	ft_wait(cmd);
 	free_cmd(cmd);
 	unlink(".heredoc_tmp");
+	// reset_in_out();
 	return (0);
 }
