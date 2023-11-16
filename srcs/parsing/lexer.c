@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/25 01:23:20 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/16 19:50:59 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_lexer	*create_node(t_data *data, int *i)
 	if (lexer->word)
 		return (lexer);
 	else
-		return(free(lexer), NULL);
+		return(ft_free(lexer), NULL);
 }
 
 t_lexer	*lst_lexer(t_data *data)
@@ -90,13 +90,13 @@ t_cmd	*lexer(t_data *data)
 
 	lexer = NULL;
 	if (!first_check(data->str))
-		return (0);
+		return (NULL);
 	lexer = lst_lexer(data);
 	if (!lexer)
 		return (NULL);
 	give_token(lexer);
 	if (!check(lexer))
-		return (0);
+		return (NULL);
 	// rm_quote
 	// test
 	// if (!lexer || lexer == NULL)
@@ -115,6 +115,7 @@ t_cmd	*lexer(t_data *data)
 	// 	// printf("%s\n", tmp->word);
 	// 	tmp = tmp->prev;
 	// }
+	// printf("data = %p\n", data);
 
 	cmd = clean_cmd(lexer);
 	return (cmd);

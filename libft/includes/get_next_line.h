@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 01:15:21 by emoreau           #+#    #+#             */
-/*   Updated: 2023/09/25 13:03:00 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 18:32:48 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "libft.h"
+
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5

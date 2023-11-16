@@ -6,7 +6,7 @@
 #    By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/17 21:28:46 by emoreau           #+#    #+#              #
-#    Updated: 2023/03/31 23:46:50 by emoreau          ###   ########.fr        #
+#    Updated: 2023/11/16 18:38:42 by emoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRCS = $(SRC_DIR)ft_strlen.c\
 		$(SRC_DIR)ft_lstclear.c\
 		$(SRC_DIR)ft_lstiter.c\
 		$(SRC_DIR)ft_lstmap.c\
+		$(SRC_DIR)ft_free.c\
 		$(GNL_DIR)get_next_line.c\
 		$(GNL_DIR)get_next_line_utils.c\
 		$(PRINTF_DIR)ft_printf.c\

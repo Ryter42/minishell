@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/13 16:04:02 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 18:59:40 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+extern int	status[2];
 
 typedef enum s_token
 {
@@ -48,9 +50,12 @@ typedef struct s_data
 	char 	**env;
 	char 	**path;
 	int		fd[2];
+	int		fd_in;
+	int		fd_out;
 	int		nb_cmd;
 	int		fd_tmp;
-	pid_t	*pid;
+	int		status;
+	// pid_t	*pid;
 	// int		nb_loop;
 	// char 	*quote;
 	// char 	**tab;
@@ -80,12 +85,22 @@ typedef struct s_cmd
 	char 			*outfile;
 	int				add_out;
 	int				heredoc;
+	int				fd_heredoc;
 	char			**limiter;
+	// char			*hd_last_line;
+	pid_t			*pid;
 	t_data			*data;
 	struct s_cmd	*next;
 	// struct s_cmd	*prev;
 }	t_cmd;
 
+// typedef struct s_free
+// {
+// 	t_cmd	*cmd;
+// 	char	*str;
+	
+// }	t_free;
+t_cmd	*give_adress();
 
 int		routine(char **env);
 t_data	*data_init(char **env);
@@ -178,11 +193,11 @@ int		is_there_slash(char *str);
 char	**addslash(char **env);
 int		findpath(t_data *data, char *cmd);
 // int		is_heredoc(void);
-void	heredoc(char *limiter, int fd);
+void	heredoc(t_cmd *cmd, int i);
 int		ft_open(t_data *data);
 int		ft_open_heredoc(void);
 void	fork_heredoc(t_cmd *cmd);
-void	ft_wait(t_cmd *cmd);
+int		ft_wait(t_cmd *cmd);
 void	dup_infile(t_cmd *cmd, int index);
 void	dup_outfile(t_cmd *cmd);
 
@@ -192,6 +207,8 @@ void	print_cmd(t_cmd *cmd);
 int		is_bultin(char *cmd);
 void	exec_fork_bultin(t_cmd *cmd, int index);
 void	exec_env_bultin(t_cmd *cmd, int index);
+int		is_env_bultin(t_cmd *cmd);
+int		is_fork_bultin(t_cmd *cmd, int index);
 void	echo(t_cmd *cmd);
 void	pwd(t_cmd *cmd);
 void	unset(t_cmd *cmd);
@@ -207,7 +224,13 @@ void	free_data(t_data *data);
 void	free_tab(char **tab);
 void	free_tab(char **tab);
 void	free_lexer(t_lexer *lexer);
+// void	ft_free(void *var);
 
+void	reset_in_out(t_cmd *cmd);
+void	backup(t_cmd *cmd);
+void	signal_ctrl_c(int signo);
+void	signal_ctrl_backslash(int signo);
+void	ctrl_c_fork(int signo);
 
 
 #endif

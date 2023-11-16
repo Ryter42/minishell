@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 17:01:17 by emoreau           #+#    #+#             */
-/*   Updated: 2022/12/02 20:03:12 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 18:31:08 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,5 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*))
 		return ;
 	if ((*del))
 		(*del)(lst->content);
-	free(lst);
+	ft_free(lst);
 }

@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:23:18 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 21:43:16 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/14 13:06:56 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	echo(t_cmd *cmd)
 	int	nl;
 
 	nl = newline(cmd->arg);
-	printf ("nl = %d\n", nl);
 	i = 1 + nl;
 	while (cmd->arg[i])
 	{

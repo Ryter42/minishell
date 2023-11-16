@@ -6,25 +6,50 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/13 16:25:03 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 20:15:50 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+// int	status[2];
+
+char	**create_env(void)
+{
+	char	**env;
+
+	env = malloc (sizeof(char *) * 2);
+	if (!env)
+		return (NULL);
+	*env = getcwd(*env, 0);
+	env[1] = NULL;
+	return (env);
+}
+
+char **init_env(char **env)
+{
+	if (!env)
+		return (create_env());
+	else
+		return (cpy_env_with(env, NULL));
+}
+
 t_data	*data_init(char **env)
 {
 	t_data	*data;
 
+	// status[1] = 0;
 	data = malloc(sizeof(t_data));
 	{
 		if (!data)
 			return (0);
 	}
 	data->str = NULL;
+	// data->pid = NULL;
 	data->fd_tmp = 0;
-	data->path = addslash(env);
-	data->env = cpy_env_with(env, NULL);
+	data->env = init_env(env);
+	data->path = addslash(data->env);
+	// printf("path = %p\n", data->path);
 	return (data);
 }
 
@@ -34,24 +59,41 @@ int	routine(char **env)
 {
 	t_data	*data;
 	t_cmd	*cmd;
+	// int		status;
 
+	// status = 0;
 	data = data_init(env);
 	while (1)
 	{
+		data->status = 0;
+		signal(SIGQUIT, SIG_IGN);
+		// signal(SIG, signal_ctrl_backslash);
+		signal(SIGINT, signal_ctrl_c);
 		// set_signal_action();
 		// sigaction(SIGINT, struc_signal_controle_c(), NULL);
 
 		// signal(SIGINT, sigint_handler);
 		if (data->str)
-			free(data->str);
+			ft_free(data->str);
 		data->str = readline("minishell& ");
-		// printf("minishell& ");
+		if (data->str == NULL)
+			break;
+		if (!*(data->str))
+			continue;
 		// data->str = get_next_line(0 , 1);
 		add_history(data->str);
+		// printf("data = %p\n", data);
+
 		cmd = lexer(data);
+		// printf("cmd->data = %p\n", cmd->data);
+		
+		// printf("cmd->next = %p\n", cmd->next);
+		// printf("address de data dans routine = %p\n", cmd->data);
 		if (cmd)
-			execution(cmd);
+			cmd->data->status = execution(cmd);
 	}
+	printf("fin du programme\n");
+	free_data(data);
 	return (1);
 }
 
@@ -61,6 +103,11 @@ int	main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
+	if (!isatty(STDIN_FILENO))
+	{
+		write(2, "minishell: stdin is not a tty", 30);
+		exit(1);
+	}
 	// char *str;
 	// char **tab;
 	// int i = 0;
@@ -71,5 +118,5 @@ int	main(int ac, char **av, char **env)
 	// 	str = readline("minishell->");
 	// }
 	// tab = ft_split(str, " ");
-	// free(str);
+	// ft_free(str);
 }

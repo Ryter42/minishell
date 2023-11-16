@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 18:14:21 by emoreau           #+#    #+#             */
-/*   Updated: 2023/07/04 13:38:58 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 18:31:08 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,6 @@ char	*strfrjoin(char *s1, char *s2)
 		str[i + j] = s2[j];
 	str[i + j] = '\0';
 	if (s1)
-		free(s1);
+		ft_free(s1);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:26:30 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 20:41:48 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/14 15:10:09 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ void	unset(t_cmd *cmd)
 	int	i;
 
 	i = 1;
-	dprintf(2, "unset\n");
-	print_cmd(cmd);
+	// dprintf(2, "unset\n");
 	if (!cmd->arg[1])
 		return ;
 	if (cmd->arg[1][0] == '-' && cmd->arg[1][1])

@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:54 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 20:42:19 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/15 13:40:15 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,9 @@ void	export(t_cmd *cmd)
 {
 	int	i;
 	// char	**new_env;
-	dprintf(2, "export\n");
+	// printf("export\n");
 
+	// printf("address de data dans export = %p\n", cmd->data);
 	i = 1;
 	if (!cmd->arg[1])
 		print_sort_tab(cmd->data->env);

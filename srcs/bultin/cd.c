@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:09 by elias             #+#    #+#             */
-/*   Updated: 2023/10/31 18:35:02 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/15 23:08:55 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ char	*new_var(char *name, char *value)
 
 	tmp = ft_strjoin(name, "=");
 	res = ft_strjoin(tmp, value);
-	free(tmp);
-	// free(value);
+	ft_free(tmp);
+	// ft_free(value);
 	return (res);
 }
 
@@ -53,7 +53,7 @@ char	**change_var(char *var_name, char *var_value, char **env)
 	}
 		// printf("i = %d\n", i);
 	res[i] = 0;
-	free(env);
+	ft_free(env);
 	return (res);
 }
 
@@ -99,9 +99,11 @@ void	cd(t_cmd *cmd)
 	buff1 = NULL;
 	buff2 = NULL;
 	buff1 = getcwd(buff1, 0);
-	dprintf(2, "cd\n");
+	// dprintf(2, "cd\n");
 	if (!cmd->arg[1] || cmd->arg[1][0] == '~')
 	{
+		// printf("env = %p\n", cmd->data->env);
+		// printf("env = %p\n", cmd->arg);
 		if (chdir(path_to_home(find_var(cmd->data->env, "HOME", 4), cmd->arg[1])) == -1)
 		{
 			perror(path_to_home(find_var(cmd->data->env, "HOME", 4), cmd->arg[1]));
@@ -119,4 +121,6 @@ void	cd(t_cmd *cmd)
 	buff2 = getcwd(buff2, 0);
 	cmd->data->env = change_var("OLDPWD", buff1, cmd->data->env);
 	cmd->data->env = change_var("PWD", buff2, cmd->data->env);
+	ft_free(buff1);
+	ft_free(buff2);
 }

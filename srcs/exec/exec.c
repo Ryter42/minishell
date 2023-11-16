@@ -6,92 +6,11 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/13 21:09:37 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 20:20:13 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// void	get_cmd(t_data *data)
-// {
-// 	data->arg = ft_split(data->av[data->index], ' ');
-// 	if (is_there_slash(data->av[data->index]) == 0)
-// 	{
-// 		data->file = findpath(data->path, data->arg[0], data);
-// 		data->cmd = ft_strjoin(data->path[data->file], data->arg[0]);
-// 	}
-// 	else
-// 		data->cmd = ft_strdup(data->av[data->index]);
-// }
-
-// void	firstcmd(t_data *data)
-// {
-// 	int	fd;
-
-// 	fd = ft_open(data);
-// 	close(data->fd[0]);
-// 	if (dup2(fd, STDIN_FILENO) == -1)
-// 	{
-// 		perror("redir in");
-// 		exit (EXIT_FAILURE);
-// 	}
-// 	if (dup2(data->fd[1], STDOUT_FILENO) == -1)
-// 	{
-// 		perror("redir out");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	if (execve(data->cmd, data->arg, data->env) == -1)
-// 	{
-// 		perror(data->cmd);
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
-
-// void	midlecmd(t_data *data)
-// {
-// 	close(data->fd[0]);
-// 	if (dup2(data->fd_tmp, STDIN_FILENO) == -1)
-// 	{
-// 		perror("redir in");
-// 		exit (EXIT_FAILURE);
-// 	}
-// 	if (dup2(data->fd[1], STDOUT_FILENO) == -1)
-// 	{
-// 		perror("redir out");
-// 		exit (EXIT_FAILURE);
-// 	}
-// 	if (execve(data->cmd, data->arg, data->env) == -1)
-// 	{
-// 		perror("data->cmd");
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
-
-// void	lastcmd(t_data *data)
-// {
-// 	int	fd;
-
-// 	if (data->heredoc)
-// 		fd = open(data->av[data->ac - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-// 	else
-// 		fd = open(data->av[data->ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 	close(data->fd[1]);
-// 	if (dup2(data->fd_tmp, STDIN_FILENO) == -1)
-// 	{
-// 		perror("redir in");
-// 		exit (EXIT_FAILURE);
-// 	}
-// 	if (dup2(fd, STDOUT_FILENO) == -1)
-// 	{
-// 		perror("redir out");
-// 		exit (EXIT_FAILURE);
-// 	}
-// 	if (execve(data->cmd, data->arg, data->env) == -1)
-// 	{
-// 		perror(data->cmd);
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
 
 int	open_infile(t_cmd *cmd,int index)
 {
@@ -131,8 +50,8 @@ int	open_infile(t_cmd *cmd,int index)
 	{
 		close(cmd->data->fd[0]);
 		close(cmd->data->fd[1]);
-		perror(cmd->infile);
-		// ft_free(cmd);
+		printf("%s: %s: No such file or directory\n",cmd->cmd, cmd->infile);
+		free_all(cmd);
 		exit(EXIT_FAILURE);
 	}
 	return (fd);
@@ -145,6 +64,7 @@ void	dup_infile(t_cmd *cmd, int index)
 	
 	close(cmd->data->fd[0]); 
 	fd = open_infile(cmd, index);
+	// cmd->data->fd_in = fd;
 	// if (!index)
 	// 	close(cmd->data->fd_tmp);
 	// dprintf(2, "2-fd in == %d\n\n", fd);
@@ -154,6 +74,7 @@ void	dup_infile(t_cmd *cmd, int index)
 		{
 			perror("redir in");
 			close(fd);
+			free_all(cmd);
 			exit (EXIT_FAILURE);
 		}
 		close(fd);
@@ -164,43 +85,6 @@ int	open_outfile(t_cmd *cmd)
 {
 	int	fd;
 
-// 	char cwd[1024];
-// if (getcwd(cwd, sizeof(cwd)) != NULL) {
-//     printf("Répertoire actuel : %s\n", cwd);
-// } else {
-//     perror("Erreur lors de la récupération du répertoire actuel");
-//     return -1; // ou une autre gestion d'erreur
-// }
-
-//  #include <sys/stat.h>
-
-// struct stat {
-//     dev_t         st_dev;      /* ID du périphérique contenant le fichier */
-//     ino_t         st_ino;      /* Numéro d'inœud */
-//     mode_t        st_mode;     /* Mode du fichier (permissions et type) */
-//     nlink_t       st_nlink;    /* Nombre de liens matériels */
-//     uid_t         st_uid;      /* ID de l'utilisateur propriétaire */
-//     gid_t         st_gid;      /* ID du groupe propriétaire */
-//     dev_t         st_rdev;     /* ID du périphérique (si fichier spécial) */
-//     off_t         st_size;     /* Taille totale en octets */
-//     blksize_t     st_blksize;  /* Taille du bloc d'E/S optimal pour le système de fichiers */
-//     blkcnt_t      st_blocks;   /* Nombre de blocs alloués */
-//     struct timespec st_atim;  /* Heure d'accès */
-//     struct timespec st_mtim;  /* Heure de modification */
-//     struct timespec st_ctim;  /* Heure de changement de statut */
-// };
-
-// struct stat st;
-// if (stat(".", &st) == 0) {
-//     printf("Permissions du répertoire actuel : %o\n", st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO));
-// } else {
-//     perror("Erreur lors de la récupération des permissions du répertoire actuel");
-//     return -1; // ou une autre gestion d'erreur
-// }
-
-
-	// dprintf(2, "---dans outfile---\n		cmd = %s	outfile = %s	cmd->next = %p\n", cmd->cmd, cmd->outfile, cmd->next);
-		// dprintf(2, "outfile =  %s\n\n", cmd->outfile);
 	if (cmd->outfile)
 	{
 		if (cmd->add_out)
@@ -222,6 +106,7 @@ int	open_outfile(t_cmd *cmd)
 	else if (cmd->next)
 	{
 		// dprintf(2, "cmd->next =  %p\n\n", cmd->next);
+		// printf("fd = %d\n", cmd->data->fd[1]);
 		fd = cmd->data->fd[1];
 		// dprintf(2, "fd out == %d\n\n", fd);
 	}
@@ -236,7 +121,7 @@ int	open_outfile(t_cmd *cmd)
 		close(cmd->data->fd[0]);
 		close(cmd->data->fd[1]);
 		perror(cmd->outfile);
-		// ft_free(cmd);
+		free_all(cmd);
 		exit(EXIT_FAILURE);
 	}
 	return (fd);
@@ -247,16 +132,19 @@ void	dup_outfile(t_cmd *cmd)
 	int	fd;
 	
 	fd = open_outfile(cmd);
+	// cmd->data->fd_out = fd;
 	// dprintf(2, "cmd == %s 2-fd out == %d\n\n",cmd->cmd, fd);
 	// dprintf(2, "2-fd out == %d\n\n", fd);
 	if (fd)
 	{
 		// dprintf(2, "fd = %d\n", fd);
 		// close(cmd->data->fd[0]);
+		//backup_out = dup(STDOUT_FILENA)
 		if (dup2(fd, STDOUT_FILENO) == - 1)
 		{
 			perror("redir out");
 			close(fd);
+			free_all(cmd);
 			exit (EXIT_FAILURE);
 		}
 		close(fd);
@@ -288,7 +176,7 @@ void	print_cmd(t_cmd *cmd)
 	if (cmd->heredoc)
 		printf("heredoc = %d\n", cmd->heredoc);
 	if (cmd->limiter)
-			printab(cmd->limiter, "limiter");
+		printab(cmd->limiter, "limiter");
 	if (cmd->arg)
 		printab(cmd->arg, "arg");
 	if (cmd->outfile)
@@ -299,16 +187,34 @@ void	print_cmd(t_cmd *cmd)
 
 void	exec(t_cmd *cmd, int index)
 {
+	// mettre waitpid au bon endroit
+	
+	// print_cmd(cmd);
+	// printf("address de data dans exec = %p\n", cmd->data);
+	// printf("cmd->next = %p\n", cmd->next);
+
+	// signal(SIGQUIT, signal_ctrl_backslash);
+	// ft_free(cmd->data->pid);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, ctrl_c_fork);
+	signal(SIGQUIT, SIG_IGN);
+	// if (cmd->limiter && (is_fork_bultin(cmd, index) || !cmd->bultin || !cmd->cmd))
+	// 	ft_heredoc(cmd);
 	// (void)index;
 	// print_cmd(cmd);
 	dup_infile(cmd, index);
 	dup_outfile(cmd);
+	// ft_redir(cmd, index);
 	if (!cmd->cmd)
+	{
+		free_all(cmd);
 		exit(EXIT_SUCCESS);
+	}
 	// printf("bultin = %d\n", cmd->bultin);
 	if (cmd->bultin)
 	{
 		exec_fork_bultin(cmd, index);
+		free_all(cmd);
 		exit(1);
 	}
 	else
@@ -316,6 +222,7 @@ void	exec(t_cmd *cmd, int index)
 		if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
 		{
 			perror(cmd->cmd);
+			free_all(cmd);
 			exit(EXIT_FAILURE);
 		}
 	}

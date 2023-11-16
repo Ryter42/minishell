@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 01:14:00 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/27 04:02:54 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/16 18:31:08 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*nextline(int fd, int c, char *buf)
 
 	if (c == 0)
 	{
-		free(stash);
+		ft_free(stash);
 		stash = NULL;
 		return (NULL);
 	}
@@ -46,17 +46,17 @@ char	*nextline(int fd, int c, char *buf)
 	{
 		readed = read(fd, buf, BUFFER_SIZE);
 		if (readed == -1)
-			return (free(buf), NULL);
+			return (ft_free(buf), NULL);
 		buf[readed] = '\0';
 		stash = ft_strjoin_gnl(stash, buf);
 		if (backslash(buf) == 1)
 			break ;
 	}
 	if (readed <= 0 && stash[0] == 0)
-		return (free(buf), free(stash), stash = NULL, NULL);
+		return (ft_free(buf), ft_free(stash), stash = NULL, NULL);
 	line = inistash(stash);
 	stash = freestash(stash);
-	return (free(buf), line);
+	return (ft_free(buf), line);
 }
 
 char	*freestash(char *stash)
@@ -83,7 +83,7 @@ char	*freestash(char *stash)
 		j++;
 	}
 	str[j] = '\0';
-	free(stash);
+	ft_free(stash);
 	return (str);
 }
 

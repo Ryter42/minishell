@@ -6,21 +6,45 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/13 20:06:27 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 20:16:09 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	free_infile(t_lexer *lexer)
+{
+	while (lexer && lexer->token != PIPE)
+	{
+		if (lexer->token == INF || lexer->token == INF_DB)
+			ft_free(lexer->next->word);
+		lexer = lexer->prev;
+	}
+}
+
+void	free_outfile(t_lexer *lexer)
+{
+	while (lexer && lexer->token != PIPE)
+	{
+		if (lexer->token == SUP || lexer->token == SUP_DB)
+			ft_free(lexer->next->word);
+		lexer = lexer->prev;
+	}
+}
 
 char	*infile(t_lexer *lexer)
 {
 	// lexer = find_last_infile(lexer);
 	while (lexer->next && lexer->next->token != PIPE)
 		lexer = lexer->next;
-	while (lexer && lexer->token != PIPE && lexer->token != INF && lexer->token != INF_DB)
+	while (lexer && lexer->token != PIPE && lexer->token != INF
+		&& lexer->token != INF_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token == INF)
+	{
+		free_infile(lexer->prev);
 		return (lexer->next->word);
+	}
 	return (NULL);
 }
 
@@ -37,18 +61,21 @@ void	create_outfile(t_lexer *lexer)
 void	outfile(t_lexer *lexer, t_cmd *cmd)
 {
 	while (lexer->next && lexer->next->token != PIPE)
-			lexer = lexer->next;
+		lexer = lexer->next;
 	// while (lexer && lexer->token != SUP && lexer->token != SUP_DB)
-	while (lexer && lexer->token != PIPE && lexer->token != SUP && lexer->token != SUP_DB)
+	while (lexer && lexer->token != PIPE && lexer->token != SUP
+		&& lexer->token != SUP_DB)
 		lexer = lexer->prev;
 	if (lexer && lexer->token != PIPE)
 	{
 		cmd->outfile = lexer->next->word;
+		free_outfile(lexer->prev);
 		if (lexer->token == SUP)
 			cmd->add_out = 0;
 		else
 			cmd->add_out = 1;
-		create_outfile(lexer);
+		// create_outfile(lexer);
+
 	}
 	else
 	{
@@ -68,15 +95,17 @@ char	*path_cmd(t_data *data, char *cmd)
 	{
 		file = findpath(data, cmd);
 		if (file < 0)
-			return (NULL);
+			return (ft_free(cmd), NULL);
 		path_cmd = ft_strjoin(data->path[file], cmd);
+		ft_free(cmd);
+		// cmd = NULL;
 		return (path_cmd);
 	}
 	else
 		return (cmd);
 }
 
-void cmd_init(t_cmd *cmd, char *command)
+void	cmd_init(t_cmd *cmd, char *command)
 {
 	if (!command)
 	{
@@ -101,6 +130,7 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
+	// cmd->hd_last_line = NULL;
 	cmd->data = lexer->data;
 	cmd->heredoc = nb_heredoc(lexer);
 	if (cmd->heredoc)
@@ -108,6 +138,7 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	else
 		cmd->limiter = NULL;
 	// cmd->cmd = path_cmd(lexer->data, commande(lexer));
+	// printf("cmd->data = %p\n", cmd->data);
 	cmd_init(cmd, commande(lexer));
 	cmd->arg = arg(lexer, cmd->cmd);
 	cmd->infile = infile(lexer);
@@ -115,13 +146,21 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	return (cmd);
 }
 
+t_cmd	*give_adress()
+{
+	static t_cmd cmd = {0};
+
+	return (&cmd);
+}
+
 t_cmd	*lst_cmd(t_lexer *lexer)
 {
 	t_cmd	*cmd;
 	t_cmd	*tmp;
 
+	tmp = give_adress();
 	cmd = create_cmd(lexer);
-	tmp = cmd;
+	tmp->next = cmd;
 	while (lexer && lexer->token != PIPE)
 		lexer = lexer->next;
 	if (lexer)
@@ -137,7 +176,16 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 	}
 	if (cmd)
 		cmd->next = NULL;
-	return (tmp);
+	return (tmp->next);
+}
+
+int	token_is_sep(t_token token)
+{
+	if (token == PIPE || token == INF || token == INF_DB || token == SUP
+		|| token == SUP_DB)
+		return (1);
+	else
+		return (0);
 }
 
 void	free_lexer(t_lexer *lexer)
@@ -146,11 +194,18 @@ void	free_lexer(t_lexer *lexer)
 
 	while (lexer)
 	{
-		if (lexer->word)
+		if (token_is_sep(lexer->token) == 1)
+		{
+			// printf("word = %s ; token = %d\n", lexer->word, lexer->token);
+			// if (is_separator(lexer->word[0]))
+			// printf("free : %s\n", lexer->word);
+			ft_free(lexer->word);
+		}
+		else
 			lexer->word = NULL;
 		tmp = lexer;
 		lexer = lexer->next;
-		free(tmp);
+		ft_free(tmp);
 	}
 }
 
@@ -162,6 +217,9 @@ t_cmd	*clean_cmd(t_lexer *lexer)
 
 	rm_quote(lexer);
 	cmd = lst_cmd(lexer);
+	// printf("address de data dans clean_cmd = %p\n", cmd->data);
+	// printf("cmd->next = %p\n", cmd->next);
+	
 	free_lexer(lexer);
 	return (cmd);
 }

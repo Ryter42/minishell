@@ -78,6 +78,8 @@ char	**ft_split(char const *s, char *charset)
 	char	**tab;
 	char	*str;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	str = (char *)s;
 	j = 0;
