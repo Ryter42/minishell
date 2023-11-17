@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 18:59:40 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ void	free_data(t_data *data);
 void	free_tab(char **tab);
 void	free_tab(char **tab);
 void	free_lexer(t_lexer *lexer);
-// void	ft_free(void *var);
+// void	free(void *var);
 
 void	reset_in_out(t_cmd *cmd);
 void	backup(t_cmd *cmd);

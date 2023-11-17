@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:41:05 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 20:17:50 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	findpath(t_data *data, char *cmd)
 		{
 			tmp = ft_strjoin(data->path[i], cmd);
 			if (access(tmp, F_OK) == 0)
-				return (ft_free(tmp), i);
-			ft_free(tmp);
+				return (free(tmp), i);
+			free(tmp);
 			i++;
 		}
 	}

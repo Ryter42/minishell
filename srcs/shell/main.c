@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 20:15:50 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 17:34:18 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	routine(char **env)
 
 		// signal(SIGINT, sigint_handler);
 		if (data->str)
-			ft_free(data->str);
+			free(data->str);
 		data->str = readline("minishell& ");
 		if (data->str == NULL)
 			break;
@@ -89,11 +89,13 @@ int	routine(char **env)
 		
 		// printf("cmd->next = %p\n", cmd->next);
 		// printf("address de data dans routine = %p\n", cmd->data);
+		// if (data->status == 2)
+		// 	free_cmd(cmd);
 		if (cmd)
 			cmd->data->status = execution(cmd);
 	}
 	printf("fin du programme\n");
-	free_data(data);
+	free_cmd(cmd);
 	return (1);
 }
 
@@ -118,5 +120,5 @@ int	main(int ac, char **av, char **env)
 	// 	str = readline("minishell->");
 	// }
 	// tab = ft_split(str, " ");
-	// ft_free(str);
+	// free(str);
 }

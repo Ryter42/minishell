@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 20:11:11 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/14 17:58:13 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:29:43 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int first_check(char *str)
 {
 	if (!str)
-		return (0);
+		return (2);
 	if (!quote_verif(str))
-		return (0);
+		return (2);
 	if (!metachar_verif(str))
-		return (0);
+		return (2);
 	return (1);
 }
 

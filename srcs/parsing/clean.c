@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/16 20:16:09 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 18:25:49 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	free_infile(t_lexer *lexer)
 {
 	while (lexer && lexer->token != PIPE)
 	{
-		if (lexer->token == INF || lexer->token == INF_DB)
-			ft_free(lexer->next->word);
+		// if (lexer->token == INF || lexer->token == INF_DB)
+		if (lexer->token == INF)
+			free(lexer->next->word);
 		lexer = lexer->prev;
 	}
 }
@@ -27,7 +28,7 @@ void	free_outfile(t_lexer *lexer)
 	while (lexer && lexer->token != PIPE)
 	{
 		if (lexer->token == SUP || lexer->token == SUP_DB)
-			ft_free(lexer->next->word);
+			free(lexer->next->word);
 		lexer = lexer->prev;
 	}
 }
@@ -95,9 +96,9 @@ char	*path_cmd(t_data *data, char *cmd)
 	{
 		file = findpath(data, cmd);
 		if (file < 0)
-			return (ft_free(cmd), NULL);
+			return (free(cmd), NULL);
 		path_cmd = ft_strjoin(data->path[file], cmd);
-		ft_free(cmd);
+		free(cmd);
 		// cmd = NULL;
 		return (path_cmd);
 	}
@@ -130,7 +131,7 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
-	// cmd->hd_last_line = NULL;
+	cmd->pid = NULL;
 	cmd->data = lexer->data;
 	cmd->heredoc = nb_heredoc(lexer);
 	if (cmd->heredoc)
@@ -143,6 +144,9 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	cmd->arg = arg(lexer, cmd->cmd);
 	cmd->infile = infile(lexer);
 	outfile(lexer, cmd);
+	// dprintf(2, "infile : %p\n", cmd->infile);
+	// dprintf(2, "outfile : %p\n", cmd->outfile);
+
 	return (cmd);
 }
 
@@ -199,13 +203,13 @@ void	free_lexer(t_lexer *lexer)
 			// printf("word = %s ; token = %d\n", lexer->word, lexer->token);
 			// if (is_separator(lexer->word[0]))
 			// printf("free : %s\n", lexer->word);
-			ft_free(lexer->word);
+			free(lexer->word);
 		}
 		else
 			lexer->word = NULL;
 		tmp = lexer;
 		lexer = lexer->next;
-		ft_free(tmp);
+		free(tmp);
 	}
 }
 

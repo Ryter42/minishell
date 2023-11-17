@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 19:50:59 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 17:32:19 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ t_lexer	*create_node(t_data *data, int *i)
 	if (lexer->word)
 		return (lexer);
 	else
-		return(ft_free(lexer), NULL);
+	{
+		free(lexer);
+		return (NULL);
+	}
 }
 
 t_lexer	*lst_lexer(t_data *data)
@@ -89,14 +92,15 @@ t_cmd	*lexer(t_data *data)
 	t_cmd	*cmd;
 
 	lexer = NULL;
-	if (!first_check(data->str))
+	data->status = !first_check(data->str);
+	if (data->status == 2)
 		return (NULL);
 	lexer = lst_lexer(data);
 	if (!lexer)
 		return (NULL);
 	give_token(lexer);
-	if (!check(lexer))
-		return (NULL);
+	data->status = check(lexer);
+		// return (NULL);
 	// rm_quote
 	// test
 	// if (!lexer || lexer == NULL)
@@ -116,7 +120,9 @@ t_cmd	*lexer(t_data *data)
 	// 	tmp = tmp->prev;
 	// }
 	// printf("data = %p\n", data);
-
-	cmd = clean_cmd(lexer);
+	if (!data->status)
+		cmd = clean_cmd(lexer);
+	else
+		cmd = NULL;
 	return (cmd);
 }

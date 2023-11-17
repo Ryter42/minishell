@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 02:18:29 by elias             #+#    #+#             */
-/*   Updated: 2023/11/16 19:16:41 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 18:48:37 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@
 // 		s = starthd();
 // 		g_in_here_doc = 130;
 // 		close(s->fd);
-// 		ft_free(s->limiter);
-// 		ft_free(s->line);
+// 		free(s->limiter);
+// 		free(s->line);
 // 		write(2, "\n", 1);
 // 		rl_replace_line("", 0);
 // 		rl_on_new_line();
@@ -105,6 +105,7 @@ void	ctrl_c_fork(int signo)
 	tmp = give_adress();
 	// printf("fd = %d\n", tmp->next->fd_heredoc);
 	close(tmp->next->fd_heredoc);
+	// dprintf(2, "appelle de free ctrl c\n");
 	free_all(tmp->next);
 	exit (130);
 	// free_cmd(cmd);

@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 20:20:13 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 16:16:06 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void	exec(t_cmd *cmd, int index)
 	// printf("cmd->next = %p\n", cmd->next);
 
 	// signal(SIGQUIT, signal_ctrl_backslash);
-	// ft_free(cmd->data->pid);
+	// free(cmd->data->pid);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGINT, ctrl_c_fork);
 	signal(SIGQUIT, SIG_IGN);
@@ -207,6 +207,7 @@ void	exec(t_cmd *cmd, int index)
 	// ft_redir(cmd, index);
 	if (!cmd->cmd)
 	{
+		dprintf(2, "free all\n");
 		free_all(cmd);
 		exit(EXIT_SUCCESS);
 	}

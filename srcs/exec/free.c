@@ -6,13 +6,49 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 20:37:11 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 18:48:30 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	printab(char **tab, char *var);
+// void	printab(char **tab, char *var);
+
+void	free_str(char **str)
+{
+	if (*str)
+	{
+		free(*str);
+		*str = NULL;
+	}
+}
+
+void	free_int(int **tab)
+{
+	if (*tab)
+	{
+		free(*tab);
+		*tab = NULL;
+	}
+}
+
+void	free_array(char ***tab)
+{
+	if (*tab)
+	{
+		free(*tab);
+		*tab = NULL;
+	}
+}
+
+void	free_struc(t_cmd **cmd)
+{
+	if (*cmd)
+	{
+		free(*cmd);
+		*cmd = NULL;
+	}
+}
 
 void	free_tab(char **tab)
 {
@@ -23,41 +59,41 @@ void	free_tab(char **tab)
 	// 	return ;
 	while (tab[i])
 	{
-		ft_free(tab[i]);
+		free_str(&tab[i]);
 		i++;
 	}
-	ft_free(tab);
+	free_array(&tab);
 }
 
 void	free_data(t_data *data)
 {
 	// data->pid = NULL;
-	// ft_free(data->pid);
+	// free(data->pid);
 	if (data->env)
 		free_tab(data->env);
 	if (data->path)
 		free_tab(data->path);
 	// if (data->pid)
-	// 	ft_free(data->pid);
+	// 	free(data->pid);
 	if (data->str)
-		ft_free(data->str);
-	ft_free(data);
+		free_str(&data->str);
+	free(data);
 }
 
 // void	free_cmd(t_cmd *cmd)
 // {
 // 	if (cmd->cmd)
-// 		ft_free(cmd->cmd);
+// 		free(cmd->cmd);
 // 	if (cmd->infile)
-// 		ft_free(cmd->infile);
+// 		free(cmd->infile);
 // 	// if (cmd->heredoc)
-// 	// 	ft_free("heredoc = %d\n", cmd->heredoc);
+// 	// 	free("heredoc = %d\n", cmd->heredoc);
 // 	if (cmd->limiter)
 // 		free_tab(cmd->limiter);
 // 	if (cmd->arg)
 // 		free_tab(cmd->arg);
 // 	if (cmd->outfile)
-// 		ft_free(cmd->outfile);
+// 		free(cmd->outfile);
 // }
 
 void	free_cmd(t_cmd *cmd)
@@ -65,30 +101,40 @@ void	free_cmd(t_cmd *cmd)
 	t_cmd	*tmp;
 
 	if (cmd->pid)
-		ft_free(cmd->pid);
+		free_int(&cmd->pid);
 	while (cmd)
 	{
 		// print_cmd(cmd);
 		if (cmd->arg)
+		{
+			// dprintf(2, "free arg\n");
 			free_tab(cmd->arg);
-		if (cmd->infile)
-			ft_free(cmd->infile);
+		}
+		if (cmd->infile && (*cmd->infile))
+		{
+			// dprintf(2, "free infile\n");
+			free(cmd->infile);
+			cmd->infile = NULL;
+		}
 		if (cmd->limiter)
 			free_tab(cmd->limiter);
 		if (cmd->outfile)
-	|		ft_free(cmd->outfile);
+		{
+			// dprintf(2, "free outfile : %p\n", cmd->outfile);
+			free_str(&cmd->outfile);
+		}
 		// if (cmd->hd_last_line)
 		// {
-		// 	ft_free(cmd->hd_last_line);
+		// 	free(cmd->hd_last_line);
 		// 	cmd->hd_last_line = NULL;	
 		// }
 		tmp = cmd;
 		cmd = cmd->next;
-		ft_free(tmp);
+		free_struc(&tmp);
 	}
 	// if (str)
-	// 	ft_free(str);
-	// ft_free(free_struc);
+	// 	free(str);
+	// free(free_struc);
 }
 
 void	free_all(t_cmd *cmd)
@@ -104,7 +150,7 @@ void	free_all(t_cmd *cmd)
 	// }
 }
 
-// void	ft_free(void *var)
+// void	free(void *var)
 // {
 // 	if (var)
 // 	{

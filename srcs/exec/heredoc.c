@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 20:17:08 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_heredoc(t_cmd *cmd)
 // 	{
 // 		// write(1, "heredoc>", 8);
 // 		ft_putstr_fd(str, cmd->fd_heredoc);
-// 		// ft_free(str);
+// 		// free(str);
 // 		str = readline("heredoc> ");
 // 		if (!str)
 // 			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
@@ -97,7 +97,7 @@ void	ft_heredoc(t_cmd *cmd)
 // 		// cmd->hd_last_line = str;
 // 	}
 // 	// get_next_line(0, 0);
-// 	// ft_free(str);
+// 	// free(str);
 // 	// cmd->hd_last_line = NULL;
 // 	close(cmd->fd_heredoc);
 // 	status[1] = 0;
@@ -126,11 +126,11 @@ void	heredoc(t_cmd *cmd, int i)
 		ft_putstr_fd(str, cmd->fd_heredoc);
 		ft_putstr_fd("\n", cmd->fd_heredoc);
 
-		// ft_free(str);
+		// free(str);
 		// cmd->hd_last_line = str;
 	}
 	// get_next_line(0, 0);
-	// ft_free(str);
+	// free(str);
 	// cmd->hd_last_line = NULL;
 	// printf("no exit\n");
 	close(cmd->fd_heredoc);

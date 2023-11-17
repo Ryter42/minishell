@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 19:49:10 by elias             #+#    #+#             */
-/*   Updated: 2023/11/15 23:08:55 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ void	pwd(t_cmd *cmd)
 		// pwd = find_var(cmd->data->env, "PWD", 3);
 		pwd = getcwd(pwd, 0);
 		printf("%s\n", pwd);
-		ft_free(pwd);
+		free(pwd);
 	}
 }

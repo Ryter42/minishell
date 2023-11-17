@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 01:14:00 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 18:31:08 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/16 21:00:22 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*nextline(int fd, int c, char *buf)
 
 	if (c == 0)
 	{
-		ft_free(stash);
+		free(stash);
 		stash = NULL;
 		return (NULL);
 	}
@@ -46,17 +46,17 @@ char	*nextline(int fd, int c, char *buf)
 	{
 		readed = read(fd, buf, BUFFER_SIZE);
 		if (readed == -1)
-			return (ft_free(buf), NULL);
+			return (free(buf), NULL);
 		buf[readed] = '\0';
 		stash = ft_strjoin_gnl(stash, buf);
 		if (backslash(buf) == 1)
 			break ;
 	}
 	if (readed <= 0 && stash[0] == 0)
-		return (ft_free(buf), ft_free(stash), stash = NULL, NULL);
+		return (free(buf), free(stash), stash = NULL, NULL);
 	line = inistash(stash);
 	stash = freestash(stash);
-	return (ft_free(buf), line);
+	return (free(buf), line);
 }
 
 char	*freestash(char *stash)
@@ -83,7 +83,7 @@ char	*freestash(char *stash)
 		j++;
 	}
 	str[j] = '\0';
-	ft_free(stash);
+	free(stash);
 	return (str);
 }
 

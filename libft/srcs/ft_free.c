@@ -6,17 +6,19 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 18:31:36 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/16 18:56:21 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:28:00 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-void	ft_free(void *var)
-{
-	if (var != NULL)
-	{
-		free(var);
-		var = NULL;
-	}
-}
+// void	free(char **var)
+// {
+// 	// printf("address: %p", *var);
+// 	// printf("value: %s", *var);
+// 	if (*var != NULL)
+// 	{
+// 		free(*var);
+// 		*var = NULL;
+// 	}
+// }

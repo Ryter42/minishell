@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 03:10:31 by elias             #+#    #+#             */
-/*   Updated: 2023/11/15 23:08:55 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	replace_var(char **env, t_lexer *lexer, char *var_name)
 		index_word++;
 	}
 	tmp[index] = 0;
-	ft_free(lexer->word);
+	free(lexer->word);
 	lexer->word = tmp;
 }
 

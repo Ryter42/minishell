@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:54:24 by elias             #+#    #+#             */
-/*   Updated: 2023/11/15 23:08:55 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*line_without_quote(char *str)
 		}
 	}
 	res[i2] = 0;
-	return(ft_free(str), res);
+	return(free(str), res);
 }
 
 void	rm_quote(t_lexer *lexer)

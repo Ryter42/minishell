@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/16 20:16:58 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 18:48:45 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void	loopfork(t_cmd *cmd)
 				exec(cmd, cmd->data->nb_cmd);
 			else
 			{
-				ft_free(cmd->pid);
+				// free(cmd->pid);
+				free_all(cmd);
 				exit(130);
 			}
 		}
@@ -132,7 +133,7 @@ int	ft_wait(t_cmd *cmd)
 		waitpid(cmd->pid[i], &cmd->data->status, 0);
 		i++;
 	}
-	// ft_free(cmd->pid);
+	// free(cmd->pid);
 	return (cmd->data->status);
 }
 
@@ -187,6 +188,7 @@ int	execution(t_cmd *cmd)
 	// cmd->data->status = ft_wait(cmd);
 	status = ft_wait(cmd);
 	reset_in_out(cmd);
+	// dprintf(2, "appelle de free dans execution\n");
 	free_cmd(cmd);
 	unlink(".heredoc_tmp");
 	// printf("address de data dans execution = %p\n", cmd->data);
@@ -194,6 +196,7 @@ int	execution(t_cmd *cmd)
 }
 
 /*
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=valgrind.txt -s ./minishell
 des que tu capte $ if (?) remplace par status
 
 */
