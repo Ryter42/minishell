@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 16:16:06 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:38:25 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ void	exec(t_cmd *cmd, int index)
 	// signal(SIGQUIT, signal_ctrl_backslash);
 	// free(cmd->data->pid);
 	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, ctrl_c_fork);
+	signal(SIGINT, ctrl_c_exec);
 	signal(SIGQUIT, SIG_IGN);
 	// if (cmd->limiter && (is_fork_bultin(cmd, index) || !cmd->bultin || !cmd->cmd))
 	// 	ft_heredoc(cmd);
@@ -207,7 +207,7 @@ void	exec(t_cmd *cmd, int index)
 	// ft_redir(cmd, index);
 	if (!cmd->cmd)
 	{
-		dprintf(2, "free all\n");
+		// dprintf(2, "free all\n");
 		free_all(cmd);
 		exit(EXIT_SUCCESS);
 	}
@@ -218,6 +218,7 @@ void	exec(t_cmd *cmd, int index)
 		free_all(cmd);
 		exit(1);
 	}
+	
 	else
 	{
 		if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)

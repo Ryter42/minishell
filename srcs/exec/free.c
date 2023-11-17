@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 18:48:30 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:19:28 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	free_data(t_data *data)
 	free(data);
 }
 
-// void	free_cmd(t_cmd *cmd)
+// void	free_lst(t_cmd *cmd)
 // {
 // 	if (cmd->cmd)
 // 		free(cmd->cmd);
@@ -96,45 +96,99 @@ void	free_data(t_data *data)
 // 		free(cmd->outfile);
 // }
 
+// void	free_cmd(t_cmd *cmd)
+// {
+// 	t_cmd	*tmp;
+
+// 	if (cmd->pid)
+// 		free_int(&cmd->pid);
+// 	while (cmd)
+// 	{
+// 		// print_cmd(cmd);
+// 		if (cmd->arg)
+// 		{
+// 			// dprintf(2, "free arg\n");
+// 			free_tab(cmd->arg);
+// 		}
+// 		if (cmd->infile && (*cmd->infile))
+// 		{
+// 			// dprintf(2, "free infile\n");
+// 			free(cmd->infile);
+// 			cmd->infile = NULL;
+// 		}
+// 		if (cmd->limiter)
+// 			free_tab(cmd->limiter);
+// 		if (cmd->outfile)
+// 		{
+// 			// dprintf(2, "free outfile : %p\n", cmd->outfile);
+// 			free_str(&cmd->outfile);
+// 		}
+// 		// if (cmd->hd_last_line)
+// 		// {
+// 		// 	free(cmd->hd_last_line);
+// 		// 	cmd->hd_last_line = NULL;	
+// 		// }
+// 		tmp = cmd;
+// 		cmd = cmd->next;
+// 		free_struc(&tmp);
+// 	}
+// 	// if (str)
+// 	// 	free(str);
+// 	// free(free_struc);
+// }
+
 void	free_cmd(t_cmd *cmd)
+{
+	if (cmd->arg)
+		free_tab(cmd->arg);
+	if (cmd->limiter)
+		free_tab(cmd->limiter);
+	if (cmd->infile)
+		free_str(&cmd->infile);
+	if (cmd->outfile)
+		free_str(&cmd->outfile);
+}
+
+void	free_prev_lst(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 
-	if (cmd->pid)
-		free_int(&cmd->pid);
 	while (cmd)
 	{
-		// print_cmd(cmd);
-		if (cmd->arg)
-		{
-			// dprintf(2, "free arg\n");
-			free_tab(cmd->arg);
-		}
-		if (cmd->infile && (*cmd->infile))
-		{
-			// dprintf(2, "free infile\n");
-			free(cmd->infile);
-			cmd->infile = NULL;
-		}
-		if (cmd->limiter)
-			free_tab(cmd->limiter);
-		if (cmd->outfile)
-		{
-			// dprintf(2, "free outfile : %p\n", cmd->outfile);
-			free_str(&cmd->outfile);
-		}
-		// if (cmd->hd_last_line)
-		// {
-		// 	free(cmd->hd_last_line);
-		// 	cmd->hd_last_line = NULL;	
-		// }
+		free_cmd(cmd);
+		tmp = cmd;
+		cmd = cmd->prev;
+		free_struc(&tmp);
+	}
+}
+
+void	free_next_lst(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	while (cmd)
+	{
+		free_cmd(cmd);
 		tmp = cmd;
 		cmd = cmd->next;
 		free_struc(&tmp);
 	}
-	// if (str)
-	// 	free(str);
-	// free(free_struc);
+}
+
+void	free_lst(t_cmd *cmd)
+{
+	if (cmd)
+	{
+		if (cmd->pid)
+			free_int(&cmd->pid);
+		if (cmd->next)
+			free_next_lst(cmd->next);
+		if (cmd->prev)
+			free_prev_lst(cmd->prev);
+		free_cmd(cmd);
+		free_struc(&cmd);
+	}
+		
 }
 
 void	free_all(t_cmd *cmd)
@@ -145,7 +199,7 @@ void	free_all(t_cmd *cmd)
 		{
 			if (cmd->data)
 				free_data(cmd->data);
-			free_cmd(cmd);
+			free_lst(cmd);
 		}
 	// }
 }

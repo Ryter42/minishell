@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 17:34:18 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:44:40 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	routine(char **env)
 			cmd->data->status = execution(cmd);
 	}
 	printf("fin du programme\n");
-	free_cmd(cmd);
+	// free_all(cmd);
+	free_data(data);
 	return (1);
 }
 
@@ -122,3 +123,11 @@ int	main(int ac, char **av, char **env)
 	// tab = ft_split(str, " ");
 	// free(str);
 }
+
+// proteger les write de echo pour quand on ecrit dan un fichier ou on peut plus
+// proteger quand y'a plus d'entrer standard
+// leak quand il y a une erreur de parsing et qu'on fait control D
+// command not found s'ecrit avant le heredoc
+// ajouter status
+// remplacer le path de cmd par le nom seul pour imiter exactement le shell
+// lancer le checker de l'entree standard a chaque readline

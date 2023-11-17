@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 22:57:53 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	fork_heredoc(t_cmd *cmd)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_IGN);
-		signal(SIGINT, ctrl_c_fork);
+		signal(SIGINT, ctrl_c_hd);
 		signal(SIGQUIT, SIG_IGN);
 		ft_heredoc(cmd);
 		free_all(cmd);

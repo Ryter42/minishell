@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 18:25:49 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:11:38 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,15 @@ void	cmd_init(t_cmd *cmd, char *command)
 	}
 }
 
-t_cmd	*create_cmd(t_lexer *lexer)
+t_cmd	*create_cmd(t_lexer *lexer, t_cmd *prev)
 {
 	t_cmd	*cmd;
 
 	cmd = malloc(sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
 	cmd->pid = NULL;
+	cmd->fd_heredoc = -1;
 	cmd->data = lexer->data;
 	cmd->heredoc = nb_heredoc(lexer);
 	if (cmd->heredoc)
@@ -144,6 +147,7 @@ t_cmd	*create_cmd(t_lexer *lexer)
 	cmd->arg = arg(lexer, cmd->cmd);
 	cmd->infile = infile(lexer);
 	outfile(lexer, cmd);
+	cmd->prev = prev;
 	// dprintf(2, "infile : %p\n", cmd->infile);
 	// dprintf(2, "outfile : %p\n", cmd->outfile);
 
@@ -163,7 +167,7 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 	t_cmd	*tmp;
 
 	tmp = give_adress();
-	cmd = create_cmd(lexer);
+	cmd = create_cmd(lexer, NULL);
 	tmp->next = cmd;
 	while (lexer && lexer->token != PIPE)
 		lexer = lexer->next;
@@ -171,7 +175,7 @@ t_cmd	*lst_cmd(t_lexer *lexer)
 		lexer = lexer->next;
 	while (lexer)
 	{
-		cmd->next = create_cmd(lexer);
+		cmd->next = create_cmd(lexer, cmd);
 		cmd = cmd->next;
 		while (lexer && lexer->token != PIPE)
 			lexer = lexer->next;

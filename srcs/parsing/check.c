@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 23:51:51 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 17:05:59 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:28:25 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	before_pipe(t_lexer *lexer)
 {
 	while (lexer && lexer->token != PIPE)
 	{
-		if (lexer->token == CMD || lexer->token == INFILE || lexer->token == OUTFILE)
+		if (lexer->token == CMD || lexer->token == INFILE || lexer->token == OUTFILE || lexer->token == LIMITOR)
 			return (1);
 		lexer = lexer->prev;
 	}
@@ -27,7 +27,7 @@ int	after_pipe(t_lexer *lexer)
 {
 	while (lexer && lexer->token != PIPE)
 	{
-		if (lexer->token == CMD || lexer->token == INFILE || lexer->token == OUTFILE)
+		if (lexer->token == CMD || lexer->token == INFILE || lexer->token == OUTFILE || lexer->token == LIMITOR)
 			return (1);
 		lexer = lexer->next;
 	}

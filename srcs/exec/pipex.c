@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 18:48:45 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:37:07 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	ft_nb_cmd(t_cmd *cmd)
 	i = 0;
 	while (cmd)
 	{
-			cmd = cmd->next;
-			i++;
+		cmd = cmd->next;
+		i++;
 	}
 	return (i);
 }
@@ -63,14 +63,17 @@ void	loopfork(t_cmd *cmd)
 {
 	// pid_t	*pid;
 	// int		fd[2];
-	// int		fd_tmp = 0;
+	// int		fd_tmp;
 	// int		nb_loop;
 	t_cmd	*tmp;
+	// t_cmd	*tmp2;
 
 	// nb_loop = 0;
 	// printf("cmd = %p\n", cmd);
 	// printf("cmd->next = %p\n", cmd->next);
 	// printf("cmd->data = %p\n", cmd->data);
+	// tmp2 = cmd;
+	// fd_tmp = 0;
 	cmd->data->nb_cmd = ft_nb_cmd(cmd);
 	cmd->pid = malloc(sizeof(pid_t) * (cmd->data->nb_cmd));
 	cmd->data->nb_cmd = 0;
@@ -101,6 +104,8 @@ void	loopfork(t_cmd *cmd)
 				exit(130);
 			}
 		}
+		if (cmd->bultin)
+			waitpid(cmd->pid[cmd->data->nb_cmd], NULL, 0); // il faudrait essayer de trouver un e meileur solution	
 		// exec_fork_bultin(cmd, cmd->data->nb_cmd);
 		if (!cmd->next && !cmd->data->nb_cmd && is_env_bultin(cmd) == 1)
 		{
@@ -112,11 +117,13 @@ void	loopfork(t_cmd *cmd)
 		if (cmd->data->nb_cmd && cmd->data->fd_tmp)
 			close(cmd->data->fd_tmp);
 		cmd->data->fd_tmp = cmd->data->fd[0];
-		// waitpid(cmd->pid[cmd->data->nb_cmd], NULL, 0);
 		cmd->data->nb_cmd++;
 		// nb_loop++;
 		tmp = cmd;
+		// fd_tmp = tmp->data->fd_tmp;
 		cmd = cmd->next;
+		// free_cmd(tmp);
+		// free_struc(&cmd);
 	}
 	close(tmp->data->fd_tmp);
 	// dprintf(2, "\n\nfin de la commande fd_tmp = %d\n\n", tmp->data->fd_tmp);
@@ -189,7 +196,7 @@ int	execution(t_cmd *cmd)
 	status = ft_wait(cmd);
 	reset_in_out(cmd);
 	// dprintf(2, "appelle de free dans execution\n");
-	free_cmd(cmd);
+	free_lst(cmd);
 	unlink(".heredoc_tmp");
 	// printf("address de data dans execution = %p\n", cmd->data);
 	return (status);

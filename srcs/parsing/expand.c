@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 03:10:31 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 19:37:13 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	replace_var(char **env, t_lexer *lexer, char *var_name)
 	int		index_var;
 	int		index_word;
 
+// 	lexer->data->status
 	index_word = 0;
 	index_var = 0;
 	index = 0;

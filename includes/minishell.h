@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:37:47 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_cmd
 	pid_t			*pid;
 	t_data			*data;
 	struct s_cmd	*next;
-	// struct s_cmd	*prev;
+	struct s_cmd	*prev;
 }	t_cmd;
 
 // typedef struct s_free
@@ -152,7 +152,8 @@ t_token	token_sep(t_lexer *lexer);
 // clean
 t_cmd	*clean_cmd(t_lexer *lexer);
 t_cmd	*lst_cmd(t_lexer *lexer);
-t_cmd	*create_cmd(t_lexer *lexer);
+// t_cmd	*create_cmd(t_lexer *lexer);
+t_cmd	*create_cmd(t_lexer *lexer, t_cmd *prev);
 void	outfile(t_lexer *lexer, t_cmd *cmd);
 void	create_outfile(t_lexer *lexer);
 char	*infile(t_lexer *lexer);
@@ -188,6 +189,7 @@ void	firstcmd(t_data *data);
 void	midlecmd(t_data *data);
 void	lastcmd(t_data *data);
 void	exec(t_cmd *cmd, int index);
+// void	exec(t_cmd *cmd, int index, t_cmd *head);
 char	*pathenv(char **env);
 int		is_there_slash(char *str);
 char	**addslash(char **env);
@@ -220,17 +222,21 @@ void	ft_exit(t_cmd *cmd);
 // free
 void	free_all(t_cmd *cmd);
 void	free_cmd(t_cmd *cmd);
+void	free_lst(t_cmd *cmd);
 void	free_data(t_data *data);
 void	free_tab(char **tab);
 void	free_tab(char **tab);
 void	free_lexer(t_lexer *lexer);
+void	free_struc(t_cmd **cmd);
+
 // void	free(void *var);
 
 void	reset_in_out(t_cmd *cmd);
 void	backup(t_cmd *cmd);
 void	signal_ctrl_c(int signo);
 void	signal_ctrl_backslash(int signo);
-void	ctrl_c_fork(int signo);
+void	ctrl_c_hd(int signo);
+void	ctrl_c_exec(int signo);
 
 
 #endif

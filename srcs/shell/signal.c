@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 02:18:29 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 18:48:37 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/17 23:09:38 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	signal_ctrl_c(int signo)
 	// }
 }
 
-void	ctrl_c_fork(int signo)
+void	ctrl_c_hd(int signo)
 {
 	
 	t_cmd *tmp;
@@ -104,11 +104,31 @@ void	ctrl_c_fork(int signo)
 	// status[1] = 1;
 	tmp = give_adress();
 	// printf("fd = %d\n", tmp->next->fd_heredoc);
-	close(tmp->next->fd_heredoc);
+	if (tmp->next->fd_heredoc > 1)
+	{
+		close(tmp->next->fd_heredoc);
+		tmp->next->fd_heredoc = -1;
+	}
+	// dprintf(2, "appelle de free ctrl c\n");
+	free_all(tmp->next);// faire une double list chainee pour pouvoir free les mailon precedent
+	exit (130);
+	// free_lst(cmd);
+}
+
+void	ctrl_c_exec(int signo)
+{
+	
+	t_cmd *tmp;
+
+	(void)signo;
+	// status[1] = 1;
+	tmp = give_adress();
+	// printf("fd = %d\n", tmp->next->fd_heredoc);
+	// close(tmp->next->fd_heredoc);
 	// dprintf(2, "appelle de free ctrl c\n");
 	free_all(tmp->next);
 	exit (130);
-	// free_cmd(cmd);
+	// free_lst(cmd);
 }
 
 void	signal_ctrl_backslash(int signo)
