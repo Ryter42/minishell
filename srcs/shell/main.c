@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 23:44:40 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/19 20:08:09 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	routine(char **env)
 
 	// status = 0;
 	data = data_init(env);
+	data->status = 0;
 	while (1)
 	{
-		data->status = 0;
 		signal(SIGQUIT, SIG_IGN);
 		// signal(SIG, signal_ctrl_backslash);
 		signal(SIGINT, signal_ctrl_c);
@@ -131,3 +131,10 @@ int	main(int ac, char **av, char **env)
 // ajouter status
 // remplacer le path de cmd par le nom seul pour imiter exactement le shell
 // lancer le checker de l'entree standard a chaque readline
+// control c apres avoir fait la commande "cat" qui r'affiche 2 fois le prompt
+// probleme avec la commande echo "$USER $?" ca viens de la commande var replace
+/*
+Leaks avec ces commandes : 
+-
+-
+*/

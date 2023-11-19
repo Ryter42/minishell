@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 23:37:07 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/19 18:19:20 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int	ft_wait(t_cmd *cmd)
 		waitpid(cmd->pid[i], &cmd->data->status, 0);
 		i++;
 	}
+	// printf("status1 = %d\n", cmd->data->status);
 	// free(cmd->pid);
 	return (cmd->data->status);
 }
@@ -194,6 +195,7 @@ int	execution(t_cmd *cmd)
 	loopfork(cmd);
 	// cmd->data->status = ft_wait(cmd);
 	status = ft_wait(cmd);
+	printf("status = %d\n", status);
 	reset_in_out(cmd);
 	// dprintf(2, "appelle de free dans execution\n");
 	free_lst(cmd);

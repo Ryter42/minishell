@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 19:43:49 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/18 21:52:51 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_cmd	*lexer(t_data *data)
 	t_cmd	*cmd;
 
 	lexer = NULL;
-	data->status = !first_check(data->str);
+	data->status = first_check(data->str);
 	if (data->status == 2)
 		return (NULL);
 	lexer = lst_lexer(data);

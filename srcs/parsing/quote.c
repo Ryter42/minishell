@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:26:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/10/24 20:51:52 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/18 23:26:11 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	quote_verif(char *str)
 			if (find_quote(str, &i) == 0)
 				return (printf("minishell: syntax error missing token `''\n"),0);
 		}
-		if (str[i] == '"')
+		else if (str[i] == '"')
 		{
 			// quote[i] = '2';
 			i++;
@@ -82,7 +82,8 @@ int	quote_verif(char *str)
 			if (find_dbquote(str, &i) == 0)
 				return (printf("minishell: syntax error missing token `\"'\n"),0);
 		}
-		i++;
+		else
+			i++;
 	}
 	return (1);
 }

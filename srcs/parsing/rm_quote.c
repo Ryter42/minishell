@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:54:24 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/18 23:27:33 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ int	num_quote(char *str)
 			find_quote(str, &i);
 			num = num + 2;
 		}
-		if (str[i] == '"')
+		else if (str[i] == '"')
 		{
 			i++;
 			find_dbquote(str, &i);
 			num = num + 2;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (num);
 }

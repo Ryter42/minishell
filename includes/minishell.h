@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 23:37:47 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/19 18:23:58 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-extern int	status[2];
-
+// extern int	status[2];
 typedef enum s_token
 {
 	CMD,
@@ -173,9 +172,12 @@ void	rm_quote(t_lexer *lexer);
 t_lexer	*expand(t_lexer *lexer, char **env);
 void	variable(t_lexer *lexer, char **env);
 void	replace_var(char **env, t_lexer *lexer, char *var_name);
-char	*find_var(char **env, char *name, int len);
+char	*find_var_env(char **env, char *name, int len);
+char	*find_var(char **env, char *name, int len, int status);
 int 	bt_sp_quote(char *str, int i);
+char	*var_name(char *str, int index);
 char	*find_var_name(char *str, int index);
+char	*var_status(void);
 int		variable_len(char *str, int i);
 
 // pipex
@@ -225,9 +227,13 @@ void	free_cmd(t_cmd *cmd);
 void	free_lst(t_cmd *cmd);
 void	free_data(t_data *data);
 void	free_tab(char **tab);
-void	free_tab(char **tab);
 void	free_lexer(t_lexer *lexer);
 void	free_struc(t_cmd **cmd);
+void	free_str(char **str);
+void	free_int(int **tab);
+void	free_array(char ***tab);
+
+
 
 // void	free(void *var);
 
