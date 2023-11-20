@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 22:57:53 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:12:59 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	fork_heredoc(t_cmd *cmd)
 	// printf("data = %p\n", cmd->data);
 	waitpid(pid, &cmd->data->status, 0);
 	// printf("exit\n");
-	cmd->data->status = WEXITSTATUS(cmd->data->status);
+	ft_get_status(cmd);
 	// printf("status = %d\n", cmd->data->status);
 	// status[1] = 0;
 	// dprintf(1, "status = %d\n", status[1]);

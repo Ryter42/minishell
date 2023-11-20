@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   first_check.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 20:11:11 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 16:29:43 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:14:01 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int first_check(char *str)
 {
 	if (!str)
-		return (2);
+		return (0);
 	if (!quote_verif(str))
-		return (2);
+		return (0);
 	if (!metachar_verif(str))
-		return (2);
+		return (0);
 	return (1);
 }
 

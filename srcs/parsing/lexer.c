@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 22:41:34 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/18 21:52:51 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:32:20 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,21 @@ t_cmd	*lexer(t_data *data)
 {
 	t_lexer *lexer;
 	t_cmd	*cmd;
+	int		OK;
 
 	lexer = NULL;
-	data->status = first_check(data->str);
-	if (data->status == 2)
+	OK = first_check(data->str);
+	if (!OK)
+	{
+		data->status = 2;
 		return (NULL);
+	}
 	lexer = lst_lexer(data);
 	if (!lexer)
 		return (NULL);
 	give_token(lexer);
-	data->status = check(lexer);
+	OK = check(lexer);
+		// data->status = 2;
 		// return (NULL);
 	// rm_quote
 	// test
@@ -120,9 +125,12 @@ t_cmd	*lexer(t_data *data)
 	// 	tmp = tmp->prev;
 	// }
 	// printf("data = %p\n", data);
-	if (!data->status)
+	if (OK)
 		cmd = clean_cmd(lexer);
 	else
+	{
+		data->status = 2;
 		cmd = NULL;
+	}
 	return (cmd);
 }

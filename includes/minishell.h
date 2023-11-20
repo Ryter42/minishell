@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/19 18:23:58 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:34:33 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int		variable_len(char *str, int i);
 // pipex
 
 void	ft_heredoc(t_cmd *cmd);
-int		execution(t_cmd *cmd);
+void		execution(t_cmd *cmd);
 t_data	*init(int ac, char **av, char **env);
 void	loopfork(t_cmd *cmd);
 void	get_cmd(t_data *data);
@@ -201,7 +201,7 @@ void	heredoc(t_cmd *cmd, int i);
 int		ft_open(t_data *data);
 int		ft_open_heredoc(void);
 void	fork_heredoc(t_cmd *cmd);
-int		ft_wait(t_cmd *cmd);
+void	ft_wait(t_cmd *cmd);
 void	dup_infile(t_cmd *cmd, int index);
 void	dup_outfile(t_cmd *cmd);
 
@@ -243,6 +243,11 @@ void	signal_ctrl_c(int signo);
 void	signal_ctrl_backslash(int signo);
 void	ctrl_c_hd(int signo);
 void	ctrl_c_exec(int signo);
+void	ft_get_status(t_cmd *cmd);
+void	ft_print_all_error_sig(int sig_status);
+void	ft_print_stder(char *str);
+void	ft_print_error_sig1(int sig_status);
+void	ft_print_error_sig2(int sig_status);
 
 
 #endif

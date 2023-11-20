@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/19 18:19:20 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:34:25 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	loopfork(t_cmd *cmd)
 	// dprintf(2, "\n\nfin de la commande fd_tmp = %d\n\n", tmp->data->fd_tmp);
 }
 
-int	ft_wait(t_cmd *cmd)
+void	ft_wait(t_cmd *cmd)
 {
 	int	i;
 
@@ -140,9 +140,10 @@ int	ft_wait(t_cmd *cmd)
 		waitpid(cmd->pid[i], &cmd->data->status, 0);
 		i++;
 	}
+	ft_get_status(cmd);
 	// printf("status1 = %d\n", cmd->data->status);
 	// free(cmd->pid);
-	return (cmd->data->status);
+	// return (cmd->data->status);
 }
 
 void	reset_in_out(t_cmd *cmd)
@@ -178,9 +179,9 @@ void	reset_in_out(t_cmd *cmd)
 
 
 
-int	execution(t_cmd *cmd)
+void	execution(t_cmd *cmd)
 {
-	int status;
+	// int status;
 	// t_data	*data;
 // 
 	// if (ac < 5)
@@ -194,14 +195,14 @@ int	execution(t_cmd *cmd)
 	// global = free_struc;
 	loopfork(cmd);
 	// cmd->data->status = ft_wait(cmd);
-	status = ft_wait(cmd);
-	printf("status = %d\n", status);
+	ft_wait(cmd);
+	// printf("status = %d\n", status);
 	reset_in_out(cmd);
 	// dprintf(2, "appelle de free dans execution\n");
 	free_lst(cmd);
 	unlink(".heredoc_tmp");
 	// printf("address de data dans execution = %p\n", cmd->data);
-	return (status);
+	// return (status);
 }
 
 /*

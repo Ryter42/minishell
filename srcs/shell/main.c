@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/19 20:08:09 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 19:53:36 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	**create_env(void)
 	env = malloc (sizeof(char *) * 2);
 	if (!env)
 		return (NULL);
-	*env = getcwd(*env, 0);
+	// *env = getcwd(*env, 0);
+	*env = getcwd(NULL, 0);
 	env[1] = NULL;
 	return (env);
 }
@@ -92,10 +93,11 @@ int	routine(char **env)
 		// if (data->status == 2)
 		// 	free_cmd(cmd);
 		if (cmd)
-			cmd->data->status = execution(cmd);
+			execution(cmd);
 	}
 	printf("fin du programme\n");
 	// free_all(cmd);
+	// status = data->status;
 	free_data(data);
 	return (1);
 }
@@ -115,7 +117,7 @@ int	main(int ac, char **av, char **env)
 	// char **tab;
 	// int i = 0;
 	// first_init(data);
-	routine(env);
+	return (routine(env));
 	// while(strcmp("stop", str) != 0)
 	// {
 	// 	str = readline("minishell->");
@@ -128,11 +130,10 @@ int	main(int ac, char **av, char **env)
 // proteger quand y'a plus d'entrer standard
 // leak quand il y a une erreur de parsing et qu'on fait control D
 // command not found s'ecrit avant le heredoc
-// ajouter status
 // remplacer le path de cmd par le nom seul pour imiter exactement le shell
 // lancer le checker de l'entree standard a chaque readline
 // control c apres avoir fait la commande "cat" qui r'affiche 2 fois le prompt
-// probleme avec la commande echo "$USER $?" ca viens de la commande var replace
+// probleme avec la fonction ft_get_status(cmd) elle retourne pas le bon status et on dirait qu'elle inverse les status signaux et les status normaux
 /*
 Leaks avec ces commandes : 
 -

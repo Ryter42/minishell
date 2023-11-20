@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+         #
+#    By: elias <elias@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/11/16 20:54:25 by emoreau          ###   ########.fr        #
+#    Updated: 2023/11/20 19:09:16 by elias            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ OBJ_DIR		=	./obj/
 
 SRCS		=	shell/main.c\
 					shell/signal.c\
+					shell/get_status.c\
 					parsing/lexer.c\
 					parsing/quote.c\
 					parsing/pars_utils.c\

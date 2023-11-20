@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:09 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/20 10:10:35 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ void	cd(t_cmd *cmd)
 	{
 		// printf("env = %p\n", cmd->data->env);
 		// printf("env = %p\n", cmd->arg);
-		if (chdir(path_to_home(find_var(cmd->data->env, "HOME", 4), cmd->arg[1])) == -1)
+		if (chdir(path_to_home(find_var(cmd->data->env, "HOME", 4, cmd->data->status), cmd->arg[1])) == -1)
 		{
-			perror(path_to_home(find_var(cmd->data->env, "HOME", 4), cmd->arg[1]));
+			perror(path_to_home(find_var(cmd->data->env, "HOME", 4, cmd->data->status), cmd->arg[1]));
 			return ;	
 		}
 	}
