@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/21 19:35:16 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 23:30:24 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ t_lexer	*lst_lexer(t_data *data);
 t_cmd	*lexer(t_data *data);
 int 	tokend(char *str, int i);
 int 	stop_token(char c);
+int		is_return(char *cmd);
 
 // check
 

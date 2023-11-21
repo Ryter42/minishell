@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 15:39:06 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 23:45:07 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*path_cmd(t_data *data, char *cmd)
 
 	// if (!cmd)
 	// 	return (NULL);
-	if (is_there_slash(cmd) == 0)
+	if (!is_there_slash(cmd) && !is_return(cmd))
 	{
 		file = findpath(data, cmd);
 		if (file < 0)

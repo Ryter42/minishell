@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/21 21:24:01 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 23:32:35 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ int	is_return(char *cmd)
 
 int	cmd_verif(t_cmd *cmd)
 {
-	if (access(cmd->cmd, F_OK) == -1)
+	if (access(cmd->cmd, F_OK) == -1 || is_return(cmd->cmd))
 	{
 		if (is_there_slash(cmd->cmd))
 			print_error(cmd->cmd, ": No such file or directory\n");
@@ -248,11 +248,11 @@ int	cmd_verif(t_cmd *cmd)
 			print_error(cmd->cmd, ": command not found\n");
 		return (0);
 	}
-	else if (is_return(cmd->arg[0]))
-	{
-		print_error(cmd->arg[0], ": command not found\n");
-		return (0);
-	}
+	// else if (is_return(cmd->arg[0]))
+	// {
+	// 	print_error(cmd->arg[0], ": command not found\n");
+	// 	return (0);
+	// }
 	
 	// else if (access(cmd->cmd, X_OK))
 	// {

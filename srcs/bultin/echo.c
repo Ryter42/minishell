@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:23:18 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 16:21:49 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 23:35:17 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	echo(t_cmd *cmd)
 		if (ft_print_str(cmd->arg[i]) < 0)
 		{
 			write(2, "echo: write error: No space left on device\n", 43);
-			ft_exit(cmd);
+			ft_exit(cmd, 1);
 		}
 		// ft_ft_print_str("%s", cmd->arg[i]);
 		if (cmd->arg[i + 1])
