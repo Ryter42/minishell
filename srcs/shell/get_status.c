@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_status.c                                    :+:      :+:    :+:   */
+/*   get_status.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 19:02:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/20 19:08:13 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/21 18:49:12 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,17 @@ void	ft_get_status(t_cmd *cmd)
 	int	sig_status;
 
 	if (WIFEXITED(cmd->data->status))
+	{
+		// dprintf(2, "normal exit\n");
+		// dprintf(2, "status que je devrais avoir si ca marchait = %d\n", WEXITSTATUS(cmd->data->status));
+		dprintf(2, "status befor : [%d]\n", cmd->data->status);
 		cmd->data->status = WEXITSTATUS(cmd->data->status);
+	}
 	if (WIFSIGNALED(cmd->data->status))
 	{
+		// dprintf(2, "signal exit\n");
 		sig_status = WTERMSIG(cmd->data->status);
+		// dprintf(2, "status que j'aurais eu si je m'etait pas pris la tete = %d\n", WEXITSTATUS(cmd->data->status));
 		ft_print_all_error_sig(sig_status);
 		cmd->data->status = 128 + sig_status;
 	}
@@ -28,6 +35,7 @@ void	ft_get_status(t_cmd *cmd)
 
 void	ft_print_all_error_sig(int sig_status)
 {
+	// dprintf(2, "status ==== %d\n", sig_status);
 	ft_print_error_sig1(sig_status);
 	ft_print_error_sig2(sig_status);
 }

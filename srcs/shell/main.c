@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/21 13:55:25 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 21:25:39 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	routine(char **env)
 	data->status = 0;
 	while (1)
 	{
-		data->fd_tmp = -1;
 		signal(SIGQUIT, SIG_IGN);
 		// signal(SIG, signal_ctrl_backslash);
 		signal(SIGINT, signal_ctrl_c);
@@ -92,6 +91,7 @@ int	routine(char **env)
 		// printf("address de data dans routine = %p\n", cmd->data);
 		// if (data->status == 2)
 		// 	free_cmd(cmd);
+		signal(SIGINT, SIG_IGN);
 		if (cmd)
 			execution(cmd);
 	}
@@ -133,6 +133,7 @@ int	main(int ac, char **av, char **env)
 // control c apres avoir fait la commande "cat" qui r'affiche 2 fois le prompt
 // probleme avec la fonction ft_get_status(cmd) elle retourne pas le bon status et on dirait qu'elle inverse les status signaux et les status normaux
 // lancer le checker de l'entree standard a chaque readline
+// mauvais message d'erreur pour la commande /bin/..
 
 /*
 Leaks avec ces commandes : 
@@ -146,3 +147,53 @@ Leaks avec ces commandes :
 // leak quand il y a une erreur de parsing et qu'on fait control D
 // remplacer le path de cmd par le nom seul pour imiter exactement le shell
 // proteger quand y'a plus d'entrer standard
+
+
+// cas a tester
+/*
+emoreau@made-f0Dr8s11:~/sgoinfre/minishell$ bash --posix
+bash-5.1$ ..
+bash: ..: command not found
+bash-5.1$ ..
+bash: ..: command not found
+bash-5.1$ ../
+bash: ../: Is a directory
+bash-5.1$ /..
+bash: /..: Is a directory
+bash-5.1$ ..
+bash: ..: command not found
+bash-5.1$ < $dfgdfg
+bash: $dfgdfg: ambiguous redirect
+bash-5.1$ ""
+bash: : command not found
+bash-5.1$ exit 12 12
+exit
+bash: exit: too many arguments
+bash-5.1$ echo $?
+127
+bash-5.1$ exit 12 12
+exit
+bash: exit: too many arguments
+bash-5.1$ echo $?
+1
+bash-5.1$ exit 12
+exit
+emoreau@made-f0Dr8s11:~/sgoinfre/minishell$ exit 12 12
+exit
+bash: exit: too many arguments
+emoreau@made-f0Dr8s11:~/sgoinfre/minishell$ bash --posix
+bash-5.1$ exit pol 
+exit
+bash: exit: pol: numeric argument required
+emoreau@made-f0Dr8s11:~/sgoinfre/minishell$ bash --posix
+bash-5.1$ exit 255
+exit
+emoreau@made-f0Dr8s11:~/sgoinfre/minishell$ echo $?
+255
+emoreau@made-f0Dr8s11:~/sgoinfre/minishell$ export 98aya=dfd
+bash: export: `98aya=dfd': not a valid identifier
+
+*/
+
+// si on se chauffe de zinzin on peut gerer le cas :
+// -~

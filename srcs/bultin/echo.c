@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:23:18 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 13:13:50 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:21:49 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	echo(t_cmd *cmd)
 		i++;
 	}
 	if (!nl)
-		if (ft_print_str("\n"))
+		if (ft_print_str("\n") < 0)
 			write(2, "echo: write error: No space left on device\n", 43);
 	// if (write(1, " ", 1) == -1)
 	// 	write(2, "OK\n", 3);

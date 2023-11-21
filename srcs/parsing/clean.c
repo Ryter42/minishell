@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 11:14:30 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:39:06 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_cmd	*create_cmd(t_lexer *lexer, t_cmd *prev)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->pid = NULL;
+	// cmd->pid = NULL;
 	cmd->fd_heredoc = -1;
 	cmd->data = lexer->data;
 	cmd->heredoc = nb_heredoc(lexer);

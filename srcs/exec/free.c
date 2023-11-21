@@ -6,13 +6,22 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/21 12:41:45 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 15:34:10 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 // void	printab(char **tab, char *var);
+
+void	ft_close(int *fd)
+{
+	if (*fd > -1)
+	{
+		close(*fd);
+		*fd = -1;
+	}
+}
 
 void	free_str(char **str)
 {
@@ -182,8 +191,8 @@ void	free_lst(t_cmd *cmd)
 {
 	if (cmd)
 	{
-		if (cmd->pid)
-			free_int(&cmd->pid);
+		// if (cmd->pid)
+		// 	free_int(&cmd->pid);
 		if (cmd->next)
 			free_next_lst(cmd->next);
 		if (cmd->prev)

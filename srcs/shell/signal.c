@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 02:18:29 by elias             #+#    #+#             */
-/*   Updated: 2023/11/20 18:38:35 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/21 19:26:30 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@
 // 	{
 // 		s = starthd();
 // 		g_in_here_doc = 130;
-// 		close(s->fd);
+// 		ft_close(&s->fd);
 // 		free(s->limiter);
 // 		free(s->line);
 // 		write(2, "\n", 1);
@@ -87,6 +87,7 @@ void	signal_ctrl_c(int signo)
 	(void)signo;
 	// if (g_in_here_doc != 1)
 	// {
+		dprintf(2, "open in here2\n");
 		// g_in_here_doc = 130;
 		write(2, "\n", 1);
 		rl_replace_line("", 0);
@@ -95,18 +96,35 @@ void	signal_ctrl_c(int signo)
 	// }
 }
 
-void	ctrl_c_hd(int signo)
+
+void	signal_ctrl_c_child(int signo)
+{
+	if (signo == SIGINT)
+	{
+		dprintf(2, "open in here\n");
+		rl_on_new_line();
+		printf("\n");
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+
+
+void	ctrl_c_fork(int signo)
 {
 	
 	t_cmd *tmp;
 
 	(void)signo;
 	// status[1] = 1;
+		dprintf(2, "open in here3\n");
 	tmp = give_adress();
-	// printf("fd = %d\n", tmp->next->fd_heredoc);
+	write(2, "\n", 1);
+	rl_replace_line("", 0);
+	rl_redisplay();
 	if (tmp->next->fd_heredoc > 1)
 	{
-		close(tmp->next->fd_heredoc);
+		ft_close(&tmp->next->fd_heredoc);
 		tmp->next->fd_heredoc = -1;
 	}
 	// dprintf(2, "appelle de free ctrl c\n");
@@ -115,25 +133,25 @@ void	ctrl_c_hd(int signo)
 	// free_lst(cmd);
 }
 
-void	ctrl_c_exec(int signo)
-{
+// void	ctrl_c_exec(int signo)
+// {
 	
-	t_cmd *tmp;
+// 	t_cmd *tmp;
 
-	(void)signo;
-	// status[1] = 1;
-	tmp = give_adress();
-	// printf("fd = %d\n", tmp->next->fd_heredoc);
-	// close(tmp->next->fd_heredoc);
-	// dprintf(2, "appelle de free ctrl c\n");
-	// rl_replace_line("", 0);
-	// rl_on_new_line();
-	// rl_redisplay();
-	// write(2, "\n", 1);
-	free_all(tmp->next);
-	exit (130);
-	// free_lst(cmd);
-}
+// 	(void)signo;
+// 	// status[1] = 1;
+// 	tmp = give_adress();
+// 	// printf("fd = %d\n", tmp->next->fd_heredoc);
+// 	// ft_close(&tmp->next->fd_heredoc);
+// 	// dprintf(2, "appelle de free ctrl c\n");
+// 	// rl_replace_line("", 0);
+// 	// rl_on_new_line();
+// 	// rl_redisplay();
+// 	// write(2, "\n", 1);
+// 	free_all(tmp->next);
+// 	exit (130);
+// 	// free_lst(cmd);
+// }
 
 void	signal_ctrl_backslash(int signo)
 {

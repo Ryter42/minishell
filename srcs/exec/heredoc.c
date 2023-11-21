@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 18:04:26 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/20 19:12:59 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/21 19:11:40 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	fork_heredoc(t_cmd *cmd)
 	// signal(SIGINT, SIG_IGN);
 	// status[1] = 1;
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGINT, ctrl_c_hd);
+		signal(SIGINT, ctrl_c_fork);
 		signal(SIGQUIT, SIG_IGN);
 		ft_heredoc(cmd);
 		free_all(cmd);
@@ -46,8 +46,9 @@ void	fork_heredoc(t_cmd *cmd)
 	}
 	// printf("data = %p\n", cmd->data);
 	waitpid(pid, &cmd->data->status, 0);
+	cmd->data->status = WEXITSTATUS(cmd->data->status);
 	// printf("exit\n");
-	ft_get_status(cmd);
+	// ft_get_status(cmd);
 	// printf("status = %d\n", cmd->data->status);
 	// status[1] = 0;
 	// dprintf(1, "status = %d\n", status[1]);
@@ -99,7 +100,7 @@ void	ft_heredoc(t_cmd *cmd)
 // 	// get_next_line(0, 0);
 // 	// free(str);
 // 	// cmd->hd_last_line = NULL;
-// 	close(cmd->fd_heredoc);
+// 	ft_close(&cmd->fd_heredoc);
 // 	status[1] = 0;
 // }
 
@@ -133,7 +134,7 @@ void	heredoc(t_cmd *cmd, int i)
 	// free(str);
 	// cmd->hd_last_line = NULL;
 	// printf("no exit\n");
-	close(cmd->fd_heredoc);
+	ft_close(&cmd->fd_heredoc);
 	// status[1] = 0;
 }
 
@@ -147,8 +148,8 @@ void	heredoc(t_cmd *cmd, int i)
 // 		fd = open(data->av[1], O_RDONLY);
 // 	if (fd == -1)
 // 	{
-// 		close(data->fd[0]);
-// 		close(data->fd[1]);
+// 		ft_close(&data->fd[0]);
+// 		ft_close(&data->fd[1]);
 // 		perror(data->av[1]);
 // 		ft_ft_free(data);
 // 		exit(EXIT_FAILURE);

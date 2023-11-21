@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/21 12:59:34 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 19:35:16 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+extern int status;
 // extern int	status[2];
 typedef enum s_token
 {
@@ -87,7 +88,7 @@ typedef struct s_cmd
 	int				fd_heredoc;
 	char			**limiter;
 	// char			*hd_last_line;
-	pid_t			*pid;
+	pid_t			pid;
 	t_data			*data;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
@@ -220,7 +221,7 @@ void	unset(t_cmd *cmd);
 void	env(t_cmd *cmd);
 void	export(t_cmd *cmd);
 void	cd(t_cmd *cmd);
-void	ft_exit(t_cmd *cmd);
+void	ft_exit(t_cmd *cmd, int status);
 int		ft_print_str(char *str);
 
 // free
@@ -234,6 +235,8 @@ void	free_struc(t_cmd **cmd);
 void	free_str(char **str);
 void	free_int(int **tab);
 void	free_array(char ***tab);
+void	ft_close(int *fd);
+
 
 
 
@@ -245,6 +248,8 @@ void	signal_ctrl_c(int signo);
 void	signal_ctrl_backslash(int signo);
 void	ctrl_c_hd(int signo);
 void	ctrl_c_exec(int signo);
+void	ctrl_c_fork(int signo);
+void	signal_ctrl_c_child(int signo);
 void	ft_get_status(t_cmd *cmd);
 void	ft_print_all_error_sig(int sig_status);
 void	ft_print_stder(char *str);

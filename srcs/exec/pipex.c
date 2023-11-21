@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 13:50:04 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 19:19:58 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	loopfork(t_cmd *cmd)
 	// int		fd_tmp;
 	// int		nb_loop;
 	t_cmd	*tmp;
+	// int		fd_tmp = -1;
 	// t_cmd	*tmp2;
 
 	// nb_loop = 0;
@@ -75,8 +76,10 @@ void	loopfork(t_cmd *cmd)
 	// tmp2 = cmd;
 	// fd_tmp = 0;
 	cmd->data->nb_cmd = ft_nb_cmd(cmd);
-	cmd->pid = malloc(sizeof(pid_t) * (cmd->data->nb_cmd));
+	// cmd->pid = malloc(sizeof(pid_t) * (cmd->data->nb_cmd));
 	cmd->data->nb_cmd = 0;
+	// cmd->data->fd_tmp = -1;
+	cmd->data->status = -1;
 	
 	// dprintf(2, " cmd numero %d\n", cmd->data->nb_cmd);
 	// dprintf(2, "\n\ndebut de la commande fd_tmp = %d\n\n", cmd->data->fd_tmp);
@@ -90,11 +93,14 @@ void	loopfork(t_cmd *cmd)
 		if (pipe(cmd->data->fd) < 0)
 			return ;
 		backup(cmd);
-		cmd->pid[cmd->data->nb_cmd] = fork();
-		if (cmd->pid[cmd->data->nb_cmd] < 0)
+		cmd->pid = fork();
+		if (cmd->pid < 0)
 			return ;
-		if (cmd->pid[cmd->data->nb_cmd] == 0)
+		// dprintf(2, "\033[1;33mpid = %d\n\033[0m", cmd->pid);
+		if (cmd->pid == 0)
 		{
+			
+			// dprintf(2, "\033[1;32mpid = %d\n\033[0m", cmd->pid);
 			if (cmd->data->status != 130)
 				exec(cmd, cmd->data->nb_cmd);
 			else
@@ -105,7 +111,7 @@ void	loopfork(t_cmd *cmd)
 			}
 		}
 		if (cmd->bultin)
-			waitpid(cmd->pid[cmd->data->nb_cmd], NULL, 0); // il faudrait essayer de trouver un e meileur solution	
+			waitpid(cmd->pid, NULL, 0); // il faudrait essayer de trouver un e meileur solution	
 		// exec_fork_bultin(cmd, cmd->data->nb_cmd);
 		if (!cmd->next && !cmd->data->nb_cmd && is_env_bultin(cmd) == 1)
 		{
@@ -113,35 +119,41 @@ void	loopfork(t_cmd *cmd)
 				exec_env_bultin(cmd, cmd->data->nb_cmd);
 		}
 		if (cmd->data->fd[1])
-			close(cmd->data->fd[1]);
+			ft_close(&cmd->data->fd[1]);
 		if (cmd->data->nb_cmd && cmd->data->fd_tmp)
-			close(cmd->data->fd_tmp);
+			ft_close(&cmd->data->fd_tmp);
 		cmd->data->fd_tmp = cmd->data->fd[0];
 		cmd->data->nb_cmd++;
-		// nb_loop++;
 		tmp = cmd;
-		// fd_tmp = tmp->data->fd_tmp;
 		cmd = cmd->next;
+		// nb_loop++;
+		// fd_tmp = tmp->data->fd_tmp;
 		// free_cmd(tmp);
 		// free_struc(&cmd);
 	}
-	if (tmp->data->fd_tmp > -1)
-		close(tmp->data->fd_tmp);
+	// dprintf(2, "adress de tmp = %p\n", tmp);
+	// dprintf(2, "\033[1;31mpid = %d\n\033[0m", tmp->pid);
+	// dprintf(2, "fd = %d\n", tmp->data->fd_tmp);
+	ft_close(&tmp->data->fd_tmp);
 	// dprintf(2, "\n\nfin de la commande fd_tmp = %d\n\n", tmp->data->fd_tmp);
 }
 
 void	ft_wait(t_cmd *cmd)
 {
-	int	i;
-
-	i = 0;
-	while (i < cmd->data->nb_cmd)
+	// t_cmd	*tmp;
+	
+	while (cmd)
 	{
-		// dprintf(2, " wait numero %d\n", cmd->data->nb_cmd);
-		waitpid(cmd->pid[i], &cmd->data->status, 0);
-		i++;
+		// dprintf(2, "\033[1;35mcmd = %p\n", cmd);
+		// dprintf(2, "status = %p\n", &cmd->data->status);
+		// dprintf(2, "pid = %d\n\033[0m", cmd->pid);
+		waitpid(cmd->pid, &cmd->data->status, 0);
+		// if (WIFEXITED(cmd->data->status))
+		cmd->data->status = WEXITSTATUS(cmd->data->status);
+		// tmp = cmd;
+		cmd = cmd->next;
 	}
-	ft_get_status(cmd);
+	// ft_get_status(tmp);
 	// printf("status1 = %d\n", cmd->data->status);
 	// free(cmd->pid);
 	// return (cmd->data->status);
@@ -154,13 +166,13 @@ void	reset_in_out(t_cmd *cmd)
 		perror("reset redir out");
 		exit (EXIT_FAILURE);
 	}
-	close(cmd->data->fd_out);
+	ft_close(&cmd->data->fd_out);
 	if (dup2(cmd->data->fd_in, STDIN_FILENO) == -1)
 	{
 		perror("reset redir in");
 		exit (EXIT_FAILURE);
 	}
-	close(cmd->data->fd_out);
+	ft_close(&cmd->data->fd_out);
 	// ne fonctionne pas a tester avec la commande < Makefile echo
 }
 
