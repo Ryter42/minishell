@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/18 23:28:36 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 12:33:46 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	open_infile(t_cmd *cmd,int index)
 	{
 		close(cmd->data->fd[0]);
 		close(cmd->data->fd[1]);
-		printf("%s: %s: No such file or directory\n",cmd->cmd, cmd->infile);
+		printf("%s: %s: No such file or directory\n",rm_path(cmd->cmd), cmd->infile);
+		// perror(cmd->infile);
 		free_all(cmd);
 		exit(EXIT_FAILURE);
 	}
@@ -185,6 +186,23 @@ void	print_cmd(t_cmd *cmd)
 		printf("add = %d\n", cmd->add_out);
 }
 
+char	*rm_path(char *path)
+{
+	int	i;
+
+	i = 0;
+	while (path[i])
+		i++;
+	i--;
+	while (i > 0 && path[i] != '/')
+		i--;
+	// dprintf(2, "----------------i = %d\n", i);
+	if (i == 0)
+		return (path);
+	else
+		return (path + i + 1);
+}
+
 void	exec(t_cmd *cmd, int index)
 {
 	// mettre waitpid au bon endroit
@@ -223,7 +241,7 @@ void	exec(t_cmd *cmd, int index)
 	{
 		if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
 		{
-			perror(cmd->cmd);
+			perror(rm_path(cmd->cmd));
 			free_all(cmd);
 			exit(EXIT_FAILURE);
 		}

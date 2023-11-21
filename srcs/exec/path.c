@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:41:05 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/17 15:27:17 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 11:14:05 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	findpath(t_data *data, char *cmd)
 			i++;
 		}
 	}
-	printf("%s : command not found\n", cmd);
+	// printf("%s : command not found\n", cmd);
 	// close(data->fd[1]);
 	// close(data->fd[0]);
 	// close(data->fd_tmp);

@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 03:55:20 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 23:11:38 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 11:14:30 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ char	*path_cmd(t_data *data, char *cmd)
 	{
 		file = findpath(data, cmd);
 		if (file < 0)
-			return (free(cmd), NULL);
+			return (cmd);
+			// return (free(cmd), NULL);
 		path_cmd = ft_strjoin(data->path[file], cmd);
 		free(cmd);
 		// cmd = NULL;

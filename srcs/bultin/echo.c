@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 18:23:18 by elias             #+#    #+#             */
-/*   Updated: 2023/11/14 13:06:56 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:13:50 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,23 @@ void	echo(t_cmd *cmd)
 	while (cmd->arg[i])
 	{
 		// dprintf(2, "%s", cmd->arg[i]);
-		printf("%s", cmd->arg[i]);
-		// ft_printf("%s", cmd->arg[i]);
+		if (ft_print_str(cmd->arg[i]) < 0)
+		{
+			write(2, "echo: write error: No space left on device\n", 43);
+			ft_exit(cmd);
+		}
+		// ft_ft_print_str("%s", cmd->arg[i]);
 		if (cmd->arg[i + 1])
-			printf(" ");
-		// printf("test");
+			ft_print_str(" ");
+		// ft_print_str("test");
 		// write(1, " ", 1);
 		i++;
 	}
 	if (!nl)
-		printf("\n");
+		if (ft_print_str("\n"))
+			write(2, "echo: write error: No space left on device\n", 43);
+	// if (write(1, " ", 1) == -1)
+	// 	write(2, "OK\n", 3);
+		
 		// write (1, "\n", 1);
 }

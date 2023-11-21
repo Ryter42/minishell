@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:54 by elias             #+#    #+#             */
-/*   Updated: 2023/11/15 13:40:15 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:28:34 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,14 @@ void	print_sort_tab(char **tab)
 	tab = sort_tab(tab);
 	while (tab[i])
 	{
-		printf("declare -x %s\n", tab[i]);
+		if (ft_print_str("declare -x ") == -1)
+		{
+			write(2, "export: write error: No space left on device\n", 45);
+			return ;
+		}
+		ft_print_str(tab[i]);
+		ft_print_str("\n");
+		// printf("declare -x %s\n", tab[i]);
 		i++;
 	}
 }
@@ -120,9 +127,19 @@ void	export(t_cmd *cmd)
 	i = 1;
 	if (!cmd->arg[1])
 		print_sort_tab(cmd->data->env);
-	else if (cmd->arg[i][0] == '-')
+	else if (cmd->arg[1][0] == '-')
 	{
-		printf("bash: export: %c%c: invalid option", cmd->arg[1][0], cmd->arg[1][1]);
+		if (!cmd->arg[1][1])
+			write(2, "minishell: export: `-': not a valid identifier\n", 47);
+			// printf("minishell: export: `-': not a valid identifier\n");
+		else
+		{
+			write(2, "minishell: export: ", 19);
+			write(2, &cmd->arg[1][0], 1);
+			write(2, &cmd->arg[1][1], 1);
+			write(2, ": invalid option\n", 17);
+		}
+			// printf("minishell: export: %c%c: invalid option\n", cmd->arg[1][0], cmd->arg[1][1]);
 		return ;
 	}
 	while (cmd->arg[i])

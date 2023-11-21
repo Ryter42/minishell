@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 15:38:55 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/19 18:23:38 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 12:41:45 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,10 @@ void	free_data(t_data *data)
 void	free_cmd(t_cmd *cmd)
 {
 	if (cmd->arg)
+	{
+		cmd->arg[0] = cmd->cmd;
 		free_tab(cmd->arg);
+	}
 	if (cmd->limiter)
 		free_tab(cmd->limiter);
 	if (cmd->infile)

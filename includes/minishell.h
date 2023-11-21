@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:36:25 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/20 19:34:33 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/21 12:59:34 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,8 @@ int		variable_len(char *str, int i);
 // pipex
 
 void	ft_heredoc(t_cmd *cmd);
-void		execution(t_cmd *cmd);
+void	execution(t_cmd *cmd);
+char	*rm_path(char *path);
 t_data	*init(int ac, char **av, char **env);
 void	loopfork(t_cmd *cmd);
 void	get_cmd(t_data *data);
@@ -220,6 +221,7 @@ void	env(t_cmd *cmd);
 void	export(t_cmd *cmd);
 void	cd(t_cmd *cmd);
 void	ft_exit(t_cmd *cmd);
+int		ft_print_str(char *str);
 
 // free
 void	free_all(t_cmd *cmd);

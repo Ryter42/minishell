@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 23:51:39 by elias             #+#    #+#             */
-/*   Updated: 2023/11/20 19:34:25 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/21 13:50:04 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ void	loopfork(t_cmd *cmd)
 		// free_cmd(tmp);
 		// free_struc(&cmd);
 	}
-	close(tmp->data->fd_tmp);
+	if (tmp->data->fd_tmp > -1)
+		close(tmp->data->fd_tmp);
 	// dprintf(2, "\n\nfin de la commande fd_tmp = %d\n\n", tmp->data->fd_tmp);
 }
 

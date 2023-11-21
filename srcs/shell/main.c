@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 17:35:08 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/20 19:53:36 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/21 13:55:25 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_data	*data_init(char **env)
 	}
 	data->str = NULL;
 	// data->pid = NULL;
-	data->fd_tmp = 0;
 	data->env = init_env(env);
 	data->path = addslash(data->env);
 	// printf("path = %p\n", data->path);
@@ -67,6 +66,7 @@ int	routine(char **env)
 	data->status = 0;
 	while (1)
 	{
+		data->fd_tmp = -1;
 		signal(SIGQUIT, SIG_IGN);
 		// signal(SIG, signal_ctrl_backslash);
 		signal(SIGINT, signal_ctrl_c);
@@ -77,7 +77,7 @@ int	routine(char **env)
 		if (data->str)
 			free(data->str);
 		data->str = readline("minishell& ");
-		if (data->str == NULL)
+		if (data->str == NULL || !isatty(STDIN_FILENO))
 			break;
 		if (!*(data->str))
 			continue;
@@ -106,18 +106,19 @@ int	routine(char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	(void)ac;
+	// (void)ac;
 	(void)av;
-	if (!isatty(STDIN_FILENO))
+	if (ac == 1 && isatty(STDIN_FILENO))
 	{
-		write(2, "minishell: stdin is not a tty", 30);
-		exit(1);
+		routine(env);
 	}
+		// write(2, "minishell: stdin is not a tty", 30);
+		// exit(1);
 	// char *str;
 	// char **tab;
 	// int i = 0;
 	// first_init(data);
-	return (routine(env));
+	return (0);
 	// while(strcmp("stop", str) != 0)
 	// {
 	// 	str = readline("minishell->");
@@ -126,16 +127,22 @@ int	main(int ac, char **av, char **env)
 	// free(str);
 }
 
-// proteger les write de echo pour quand on ecrit dan un fichier ou on peut plus
-// proteger quand y'a plus d'entrer standard
-// leak quand il y a une erreur de parsing et qu'on fait control D
-// command not found s'ecrit avant le heredoc
-// remplacer le path de cmd par le nom seul pour imiter exactement le shell
-// lancer le checker de l'entree standard a chaque readline
+// probleme restant :
+
+// no such file or directory au lieu de command not found quand on fait une commande qui existe pas
 // control c apres avoir fait la commande "cat" qui r'affiche 2 fois le prompt
 // probleme avec la fonction ft_get_status(cmd) elle retourne pas le bon status et on dirait qu'elle inverse les status signaux et les status normaux
+// lancer le checker de l'entree standard a chaque readline
+
 /*
 Leaks avec ces commandes : 
--
+- "cat" puis controle c erreur a la prochaine commande
 -
 */
+
+// probleme regle :
+
+// proteger les write de echo pour quand on ecrit dans un fichier ou on peut plus
+// leak quand il y a une erreur de parsing et qu'on fait control D
+// remplacer le path de cmd par le nom seul pour imiter exactement le shell
+// proteger quand y'a plus d'entrer standard

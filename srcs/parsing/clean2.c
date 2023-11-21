@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 16:58:35 by elias             #+#    #+#             */
-/*   Updated: 2023/11/17 18:23:27 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/21 12:25:25 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ char	**arg(t_lexer *lexer, char *cmd)
 	tab = malloc(sizeof(char *) * (nb_arg(lexer) + 2));
 	if (!tab)
 		return (NULL);
-	tab[0] = cmd;
+	// tab[0] = cmd;
+	tab[0] = rm_path(cmd);
 	while (lexer && lexer->token != PIPE)
 	{
 		if (lexer->token == ARG)

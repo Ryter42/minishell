@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: elias <elias@student.42.fr>                +#+  +:+       +#+         #
+#    By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 19:25:41 by emoreau           #+#    #+#              #
-#    Updated: 2023/11/20 19:09:16 by elias            ###   ########.fr        #
+#    Updated: 2023/11/21 12:59:56 by emoreau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRCS		=	shell/main.c\
 					exec/exec.c\
 					exec/path.c\
 					bultin/bultin.c\
+					bultin/bultins_utils.c\
 					bultin/echo.c\
 					bultin/pwd.c\
 					bultin/cd.c\
