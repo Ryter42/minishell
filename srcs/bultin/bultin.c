@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bultin.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 16:27:42 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 23:34:11 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/22 19:58:36 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ void	exec_env_bultin(t_cmd *cmd, int index)
 		unset(cmd);
 	if (ft_strncmp(cmd->cmd, "exit", 4) == 0 && ft_strlen(cmd->cmd) == 4)
 	{
-		// free(cmd->data->pid); // verifier que ca ne pause jamais probleme
-		ft_exit(cmd, 1);
+		ft_exit(cmd);
 	}
 	// reset_in_out(cmd);
 
@@ -104,7 +103,7 @@ void	exec_fork_bultin(t_cmd *cmd, int index)
 	{
 		// dprintf(2, "cmd->next = %p et index = %d\n", cmd->next, index);
 		if (ft_strncmp(cmd->cmd, "exit", 4) == 0 && ft_strlen(cmd->cmd) == 4)
-			ft_exit(cmd, 1);
+			ft_exit(cmd);
 		if (ft_strncmp(cmd->cmd, "cd", 2) == 0 && ft_strlen(cmd->cmd) == 2)
 			cd(cmd);
 		if (ft_strncmp(cmd->cmd, "export", 6) == 0 && ft_strlen(cmd->cmd) == 6)

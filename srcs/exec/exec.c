@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
+/*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 17:43:37 by emoreau           #+#    #+#             */
-/*   Updated: 2023/11/21 23:32:35 by elias            ###   ########.fr       */
+/*   Updated: 2023/11/22 20:04:44 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,22 +289,22 @@ void	exec(t_cmd *cmd, int index)
 	// ft_redir(cmd, index);
 	if (!cmd->cmd)
 	{
-		dprintf(2, "free all\n");
-		free_all(cmd);
-		exit(EXIT_SUCCESS);
+		// dprintf(2, "free all\n");
+		// free_all(cmd);
+		exit_ft(cmd, EXIT_SUCCESS);
 	}
 	// printf("bultin = %d\n", cmd->bultin);
 	if (cmd->bultin)
 	{
 		exec_fork_bultin(cmd, index);
-		free_all(cmd);
-		exit(1);
+		// free_all(cmd);
+		exit_ft(cmd, 1);
 	}
 	
 	else
 	{
 		if (!cmd_verif(cmd))
-			ft_exit(cmd, 1);
+			exit_ft(cmd, 1);
 		else if (execve(cmd->cmd, cmd->arg, cmd->data->env) == -1)
 		{
 			

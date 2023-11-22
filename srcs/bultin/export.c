@@ -6,7 +6,7 @@
 /*   By: emoreau <emoreau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:22:54 by elias             #+#    #+#             */
-/*   Updated: 2023/11/21 13:28:34 by emoreau          ###   ########.fr       */
+/*   Updated: 2023/11/22 20:02:15 by emoreau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,35 @@ int	unvalid_char(char c)
 		return (0);
 }
 
+// int	valid_export(char *arg)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (arg[0] == '=')
+// 	{
+// 		printf("minishell: export: `%s': not a valid identifier\n", arg);
+// 		return(0);
+// 	}
+// 	while (arg[i] && arg[i] != '=' && !unvalid_char(arg[i]))
+// 		i++;
+// 	if (arg[i] == '=')
+// 		return (1);
+// 	else if (!arg[i])
+// 		return (0);
+// 	else
+// 	{
+// 		printf("minishell: export: `%s': not a valid identifier\n", arg);
+// 		return (0);
+// 	}
+// }
+
 int	valid_export(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (arg[0] == '=')
+	if (arg[0] == '=' || ft_isdigit(arg[0]))
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", arg);
 		return(0);
